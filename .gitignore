@@ -1,0 +1,8 @@
+node_modules/
+.DS_Store
+.cache/
+playwright-report/
+test-results/
+
+# Local GitHub credential; never commit or publish
+.github-token.key
