@@ -1631,7 +1631,7 @@ letter-spacing:0}
 display:none}
 }
 
-/* Use native math layout to center the accent over the upright progress symbol. */
+/* Use native math layout: italic variable, upright accent, centered output. */
 .method-output math.output-variable {
   font-family: "STIX Two Math", "Cambria Math", math;
   font-style: normal;
