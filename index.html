@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f9e7e4">
   <meta name="description" content="Keqing is an in-context robot progress model. One successful reference trajectory defines the scale for measuring progress across unseen tasks, objects, trajectories, and embodiments.">
-  <title>Keqing · Toward a Universal Progress Model</title>
+  <title>Keqing: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" href="icon.png">
   <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
@@ -13,16 +13,14 @@
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
-    <a class="wordmark" href="#" aria-label="Keqing home"><img src="icon.png" alt="" width="26" height="26">keqing<span class="wordmark-dot">.</span></a>
+    <a class="wordmark" href="#" aria-label="Keqing home"><img src="icon.png" alt="" width="26" height="26">Keqing<span class="wordmark-dot">.</span></a>
     <nav aria-label="Main navigation"><a href="#overview">Overview</a><a href="#method">Method</a><a href="#benchmark">Benchmark</a><a href="#applications">Applications</a></nav>
     <a class="header-link" href="#resources">Resources <span aria-hidden="true">↗</span></a>
   </header>
 
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
-      <div class="eyebrow"><span class="sparkle" aria-hidden="true">✦</span> A NEW PERSPECTIVE ON ROBOT PROGRESS</div>
-      <div class="hero-name" aria-hidden="true">keqing<span>.</span></div>
-      <h1 id="hero-title">Toward a Universal<br><em>Progress Model</em></h1>
+      <h1 id="hero-title"><span class="title-brand"><img src="icon.png" alt="" width="48" height="48">Keqing:</span> Toward Universal Progress Modeling <span class="title-continuation">through In-Context Learning and Semantic Alignment</span></h1>
       <p class="hero-description">One demonstration. Your definition of progress.<br>A shared measure across trajectories and embodiments.</p>
       <p class="authors">Paimon Team</p>
       <div class="hero-actions" aria-label="Research resources">
@@ -30,26 +28,26 @@
         <button class="button button-quiet" type="button" disabled>Paper <span class="soon">Coming soon</span></button>
         <button class="button button-quiet" type="button" disabled>Code <span class="soon">Coming soon</span></button>
       </div>
-      <div class="hero-tags"><span>One-shot generalization</span><i aria-hidden="true"></i><span>In-context learning</span><i aria-hidden="true"></i><span>Cross-embodiment transfer</span><i aria-hidden="true"></i><span>4B &amp; 27B</span></div>
+      <div class="hero-tags"><span>One-shot generalization</span><span>In-context learning</span><span>Cross-embodiment transfer</span><span>4B &amp; 27B</span></div>
     </section>
 
     <section class="teaser content-width" aria-labelledby="teaser-title">
       <div class="figure-topline"><h2 id="teaser-title">One reference. A common scale.</h2><span class="small-label">CONCEPTUAL OVERVIEW</span></div>
       <div class="teaser-layout">
         <div class="reference-side">
-          <div class="diagram-label"><span class="step-dot">01</span> Define progress with a successful reference</div>
+          <div class="diagram-label"><span class="step-dot">01</span> Define your reference scale</div>
           <div class="reference-frames">
-            <div class="reference-frame"><div class="frame-placeholder"><svg width="20" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><rect x="2" y="2" width="20" height="16" rx="2"/><circle cx="8" cy="7" r="1.5"/><path d="m3 16 6-6 4 4 3-3 5 5"/></svg><small>Keyframe 01</small></div><span class="frame-score" data-score="0">0%</span></div>
-            <div class="reference-frame"><div class="frame-placeholder"><svg width="20" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><rect x="2" y="2" width="20" height="16" rx="2"/><circle cx="8" cy="7" r="1.5"/><path d="m3 16 6-6 4 4 3-3 5 5"/></svg><small>Keyframe 02</small></div><span class="frame-score" data-score="1">30%</span></div>
-            <div class="reference-frame"><div class="frame-placeholder"><svg width="20" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><rect x="2" y="2" width="20" height="16" rx="2"/><circle cx="8" cy="7" r="1.5"/><path d="m3 16 6-6 4 4 3-3 5 5"/></svg><small>Keyframe 03</small></div><span class="frame-score" data-score="2">70%</span></div>
-            <div class="reference-frame"><div class="frame-placeholder"><svg width="20" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><rect x="2" y="2" width="20" height="16" rx="2"/><circle cx="8" cy="7" r="1.5"/><path d="m3 16 6-6 4 4 3-3 5 5"/></svg><small>Keyframe 04</small></div><span class="frame-score" data-score="3">100%</span></div>
+            <div class="reference-frame"><div class="frame-placeholder"><svg width="20" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><rect x="2" y="2" width="20" height="16" rx="2"/><circle cx="8" cy="7" r="1.5"/><path d="m3 16 6-6 4 4 3-3 5 5"/></svg><small>Frame 01</small></div><span class="frame-score" data-score="0">0%</span></div>
+            <div class="reference-frame"><div class="frame-placeholder"><svg width="20" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><rect x="2" y="2" width="20" height="16" rx="2"/><circle cx="8" cy="7" r="1.5"/><path d="m3 16 6-6 4 4 3-3 5 5"/></svg><small>Frame 02</small></div><span class="frame-score" data-score="1">30%</span></div>
+            <div class="reference-frame"><div class="frame-placeholder"><svg width="20" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><rect x="2" y="2" width="20" height="16" rx="2"/><circle cx="8" cy="7" r="1.5"/><path d="m3 16 6-6 4 4 3-3 5 5"/></svg><small>Frame 03</small></div><span class="frame-score" data-score="2">70%</span></div>
+            <div class="reference-frame"><div class="frame-placeholder"><svg width="20" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><rect x="2" y="2" width="20" height="16" rx="2"/><circle cx="8" cy="7" r="1.5"/><path d="m3 16 6-6 4 4 3-3 5 5"/></svg><small>Frame 04</small></div><span class="frame-score" data-score="3">100%</span></div>
           </div>
-          <div class="reference-baseline"><span>Start</span><span>Your semantic milestones</span><span>Success</span></div>
+          <div class="reference-baseline"><span>Start</span><span>Semantic milestones</span><span>Success</span></div>
         </div>
         <div class="diagram-connector" aria-hidden="true">→</div>
-        <div class="model-symbol"><img src="icon.png" alt="" width="40" height="40"><strong>keqing</strong><span>Progress model</span><div>4B <span>·</span> 27B</div></div>
+        <div class="model-symbol"><img src="icon.png" alt="" width="40" height="40"><strong>Keqing</strong><span>Progress model</span><div>4B <span>·</span> 27B</div></div>
         <div class="diagram-connector" aria-hidden="true">→</div>
-        <div class="output-side"><div class="diagram-label"><span class="step-dot">02</span> Measure any trajectory</div><div class="trajectory-row"><span class="trajectory-marker complete"></span><span>Successful</span><span class="mini-track"><i style="width:90%"></i></span></div><div class="trajectory-row"><span class="trajectory-marker suboptimal"></span><span>Suboptimal</span><span class="mini-track"><i style="width:62%"></i></span></div><div class="trajectory-row"><span class="trajectory-marker failed"></span><span>Failed</span><span class="mini-track"><i style="width:27%"></i></span></div><p>Current frame + reference → progress</p></div>
+        <div class="output-side"><div class="diagram-label"><span class="step-dot">02</span> Evaluate any trajectory</div><div class="trajectory-row"><span class="trajectory-marker complete"></span><span>Successful</span><span class="mini-track"><i style="width:90%"></i></span></div><div class="trajectory-row"><span class="trajectory-marker suboptimal"></span><span>Suboptimal</span><span class="mini-track"><i style="width:62%"></i></span></div><div class="trajectory-row"><span class="trajectory-marker failed"></span><span>Failed</span><span class="mini-track"><i style="width:27%"></i></span></div><p>Current frame + reference → progress</p></div>
       </div>
       <div class="figure-footnote"><span><span class="tiny-dot"></span> Reference images &amp; trajectory videos coming soon</span><span>Schematic only · not model predictions</span></div>
     </section>
@@ -68,7 +66,7 @@
 
     <section class="section method-section" id="method" aria-labelledby="method-title"><div class="content-width">
       <div class="section-heading centered"><span class="eyebrow">02 / THE METHOD</span><h2 id="method-title">A reference to reason with.<br><em>A scale to measure against.</em></h2><p>A vision-language model reads the reference and the current frame together.<br>The progress head predicts where that frame belongs on your scale.</p></div>
-      <div class="method-flow"><div class="method-inputs"><div class="method-box"><span class="small-label">IN-CONTEXT REFERENCE</span><strong>Successful trajectory</strong><p>Selected keyframes + assigned progress</p><div class="mini-keyframes" aria-hidden="true"><span>k₁, p₁</span><span>k₂, p₂</span><span>…</span><span>kₙ, pₙ</span></div></div><div class="method-box query-box"><span class="small-label">QUERY</span><strong>Current frame</strong><p>Any trajectory of the same task,<br>including a different embodiment</p><div class="query-types">Successful <span>·</span> Suboptimal <span>·</span> Failed</div></div></div><span class="flow-arrow" aria-hidden="true">→</span><div class="vlm-box"><img src="icon.png" width="46" height="46" alt=""><h3>Keqing VLM</h3><p>Reason across visual context</p><div class="size-pills"><span>4B</span><span>27B</span></div><div class="progress-head">Progress head</div></div><span class="flow-arrow" aria-hidden="true">→</span><div class="method-output"><span class="small-label">OUTPUT</span><span class="output-variable">p̂</span><h3>Relative progress</h3><p>Aligned with the<br>reference scale</p></div></div>
+      <div class="method-flow"><div class="method-inputs"><div class="method-box"><span class="small-label">REFERENCE CONTEXT</span><strong>Successful trajectory</strong><p>Selected keyframes + assigned progress</p><div class="mini-keyframes" aria-hidden="true"><span>k₁, p₁</span><span>k₂, p₂</span><span>…</span><span>kₙ, pₙ</span></div></div><div class="method-box query-box"><span class="small-label">QUERY</span><strong>Current frame</strong><p>Any trajectory of the same task,<br>including a different embodiment</p><div class="query-types">Successful <span>·</span> Suboptimal <span>·</span> Failed</div></div></div><span class="flow-arrow" aria-hidden="true">→</span><div class="vlm-box"><img src="icon.png" width="46" height="46" alt=""><h3>Keqing VLM</h3><p>Reason across visual context</p><div class="size-pills"><span>4B</span><span>27B</span></div><div class="progress-head">Progress head</div></div><span class="flow-arrow" aria-hidden="true">→</span><div class="method-output"><span class="small-label">OUTPUT</span><span class="output-variable">p̂</span><h3>Relative progress</h3><p>Aligned with the<br>reference scale</p></div></div>
       <section class="embodiment-section" aria-labelledby="embodiment-title">
         <div class="embodiment-copy">
           <span class="small-label">CROSS-EMBODIMENT TRANSFER</span>
@@ -78,9 +76,9 @@
           <ul class="embodiment-types" aria-label="Supported embodiments"><li>Grippers</li><li>Dexterous hands</li><li>Human hands</li></ul>
         </div>
         <figure class="embodiment-example">
-          <div class="embodiment-step"><span class="small-label">REFERENCE / HUMAN HAND</span><strong>One successful demonstration</strong><p>Keyframes + user-defined progress</p></div>
+          <div class="embodiment-step"><span class="small-label">REFERENCE · HUMAN HAND</span><strong>One successful demonstration</strong><p>Keyframes + user-defined progress</p></div>
           <div class="embodiment-bridge"><span aria-hidden="true">↓</span><span>Keqing · same task, shared scale</span></div>
-          <div class="embodiment-step"><span class="small-label">QUERY / DEXTEROUS ROBOT HAND</span><strong>Other trajectories of the same task</strong><p>Current frame → reference-aligned progress</p></div>
+          <div class="embodiment-step"><span class="small-label">QUERY · DEXTEROUS HAND</span><strong>Other trajectories of the same task</strong><p>Current frame → reference-aligned progress</p></div>
           <figcaption>Conceptual example · demonstration media coming soon</figcaption>
         </figure>
       </section>
@@ -99,6 +97,6 @@
 
     <section class="resources-section content-width" id="resources" aria-labelledby="resources-title"><div><span class="eyebrow">05 / WHAT’S NEXT</span><h2 id="resources-title">More to come.</h2><p>Paper, models, code, and the benchmark will be linked here as they become available.</p></div><div class="resource-list"><div><span>Research paper</span><span>Coming soon</span></div><div><span>Code &amp; model weights <small>4B / 27B</small></span><span>Coming soon</span></div><div><span>Progress benchmark</span><span>Coming soon</span></div></div></section>
   </main>
-  <footer class="content-width"><a class="wordmark" href="#"><img src="icon.png" width="24" height="24" alt="">keqing<span class="wordmark-dot">.</span></a><p>A shared scale. A clearer sense of progress.</p><span>Paimon Team</span></footer>
+  <footer class="content-width"><a class="wordmark" href="#"><img src="icon.png" width="24" height="24" alt="">Keqing<span class="wordmark-dot">.</span></a><p>A shared scale. A clearer sense of progress.</p><span>Paimon Team</span></footer>
 </body>
 </html>
