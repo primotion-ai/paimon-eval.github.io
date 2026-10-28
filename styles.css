@@ -1631,23 +1631,10 @@ letter-spacing:0}
 display:none}
 }
 
-/* Separate rows keep the hat centered and clear of the italic letter. */
+/* LaTeX \hat{p}, rendered by MathJax with its TeX math fonts. */
 .method-output .output-variable {
-  display: grid;
-  justify-items: center;
-  width: max-content;
+  display: block;
+  height: .95em;
+  width: auto;
   margin: 16px auto;
-  font-family: var(--serif);
-}
-.progress-accent {
-  display: block;
-  width: .42em;
-  height: .17em;
-  transform: translateX(.05em);
-}
-.progress-letter {
-  display: block;
-  font-style: italic;
-  line-height: 1;
-  margin-top: -.32em;
 }

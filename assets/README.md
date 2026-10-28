@@ -10,3 +10,5 @@ Current media placeholders are in `index.html`:
 - `.application-card`: add downstream example figures here when available.
 
 Replace placeholder contents with images that have descriptive `alt` text. Do not present the current schematic values as experimental predictions.
+
+`progress-symbol.svg` is generated from the LaTeX source `\hat{p}` using MathJax 3.2.2 with its TeX math fonts and SVG path output. Its letter, accent, and spacing are engine-generated; do not replace them with webpage fonts or manually position the hat.
