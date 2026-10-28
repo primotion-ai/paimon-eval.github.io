@@ -1631,10 +1631,23 @@ letter-spacing:0}
 display:none}
 }
 
-/* Use native math layout: italic variable, upright accent, centered output. */
-.method-output math.output-variable {
-  font-family: "STIX Two Math", "Cambria Math", math;
-  font-style: normal;
+/* Separate rows keep the hat centered and clear of the italic letter. */
+.method-output .output-variable {
+  display: grid;
+  justify-items: center;
   width: max-content;
-  margin-inline: auto;
+  margin: 16px auto;
+  font-family: var(--serif);
+}
+.progress-accent {
+  display: block;
+  width: .42em;
+  height: .17em;
+  transform: translateX(.05em);
+}
+.progress-letter {
+  display: block;
+  font-style: italic;
+  line-height: 1;
+  margin-top: -.32em;
 }
