@@ -1639,3 +1639,93 @@ display:none}
   width: auto;
   margin: 16px auto;
 }
+
+/* Method context and four media-ready capability sections. */
+.reference-divider {
+  height: 1px;
+  margin: 16px 0;
+  background: var(--line);
+}
+.capability-section {
+  padding-bottom: 0;
+}
+.capability-section > .section-heading {
+  margin-bottom: 40px;
+}
+.capability-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: 56px;
+  padding: 48px 0;
+  border-top: 1px solid var(--line);
+}
+.capability-row:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.capability-copy h3 {
+  margin: 14px 0 20px;
+  font-family: var(--serif);
+  font-size: 38px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -.5px;
+}
+.capability-copy p {
+  font-size: 17px;
+  line-height: 1.8;
+}
+.capability-copy p + p {
+  margin-top: 14px;
+}
+.capability-media {
+  margin: 0;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fcf9f7;
+}
+.capability-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 240px;
+  padding: 28px 20px;
+  text-align: center;
+  border: 1px dashed #d7c3b9;
+  border-radius: 5px;
+}
+.capability-placeholder > span {
+  margin-bottom: 12px;
+  font-size: 30px;
+  color: var(--accent);
+}
+.capability-placeholder strong {
+  font-size: 18px;
+  font-weight: 500;
+}
+.capability-placeholder p {
+  max-width: 330px;
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.capability-media figcaption {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #7f685f;
+  text-align: center;
+}
+@media (max-width: 1050px) {
+  .capability-row { gap: 32px; }
+  .site-header nav { gap: 16px; font-size: 14px; }
+}
+@media (max-width: 760px) {
+  .site-header nav a:nth-child(n+3) { display: none; }
+  .capability-section > .section-heading { margin-bottom: 30px; }
+  .capability-row { grid-template-columns: 1fr; gap: 26px; padding: 34px 0; }
+  .capability-copy h3 { font-size: 32px; }
+  .capability-media { padding: 18px; }
+  .capability-placeholder { min-height: 210px; padding: 24px 16px; }
+}

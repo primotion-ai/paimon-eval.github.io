@@ -6,6 +6,10 @@ Current media placeholders are in `index.html`:
 
 - `.reference-frames`: four successful-reference keyframes.
 - `.teaser`: overview figure or trajectory demonstration.
+- `#user-defined-scales .capability-media`: comparison under different user-defined progress scales.
+- `#one-shot-generalization .capability-media`: unseen-task and object demonstrations, with one reference per task.
+- `#semantic-alignment .capability-media`: aligned semantic milestones across trajectories.
+- `#cross-embodiment .embodiment-example`: human-to-robot or other cross-effector demonstrations.
 - `.benchmark-figure`: benchmark comparison figure.
 - `.application-card`: add downstream example figures here when available.
 

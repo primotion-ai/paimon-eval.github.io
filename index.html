@@ -7,14 +7,14 @@
   <meta name="description" content="Keqing is an in-context robot progress model. One successful reference trajectory defines the scale for measuring progress across unseen tasks, objects, trajectories, and embodiments.">
   <title>Keqing: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" href="icon.png">
-  <link rel="stylesheet" href="styles.css?v=20261029-dataset">
+  <link rel="stylesheet" href="styles.css?v=20261029-capabilities">
   <script src="script.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <a class="wordmark" href="#" aria-label="Keqing home"><img src="icon.png" alt="" width="26" height="26">Keqing<span class="wordmark-dot">.</span></a>
-    <nav aria-label="Main navigation"><a href="#overview">Overview</a><a href="#method">Method</a><a href="#benchmark">Benchmark</a><a href="#applications">Applications</a></nav>
+    <nav aria-label="Main navigation"><a href="#overview">Overview</a><a href="#method">Method</a><a href="#capabilities">Capabilities</a><a href="#benchmark">Benchmark</a><a href="#applications">Applications</a></nav>
     <a class="header-link" href="#resources">Resources <span aria-hidden="true">↗</span></a>
   </header>
 
@@ -65,37 +65,81 @@
     </section>
 
     <section class="section method-section" id="method" aria-labelledby="method-title"><div class="content-width">
-      <div class="section-heading centered"><span class="eyebrow">02 / THE METHOD</span><h2 id="method-title">A reference to reason with.<br><em>A scale to measure against.</em></h2><p>A vision-language model reads the reference and the current frame together.<br>The progress head predicts where that frame belongs on your scale.</p></div>
-      <div class="method-flow"><div class="method-inputs"><div class="method-box"><span class="small-label">REFERENCE CONTEXT</span><strong>Successful trajectory</strong><p>Selected keyframes + assigned progress</p><div class="mini-keyframes" aria-hidden="true"><span>k₁, p₁</span><span>k₂, p₂</span><span>…</span><span>kₙ, pₙ</span></div></div><div class="method-box query-box"><span class="small-label">QUERY</span><strong>Current frame</strong><p>Any trajectory of the same task,<br>including a different embodiment</p><div class="query-types">Successful <span>·</span> Suboptimal <span>·</span> Failed</div></div></div><span class="flow-arrow" aria-hidden="true">→</span><div class="vlm-box"><img src="icon.png" width="46" height="46" alt=""><h3>Keqing VLM</h3><p>Reason across visual context</p><div class="size-pills"><span>4B</span><span>27B</span></div><div class="progress-head">Progress head</div></div><span class="flow-arrow" aria-hidden="true">→</span><div class="method-output"><span class="small-label">OUTPUT</span><img class="output-variable" src="assets/progress-symbol.svg" alt="Predicted progress: p hat"><h3>Relative progress</h3><p>Aligned with the<br>reference scale</p></div></div>
-      <section class="embodiment-section" aria-labelledby="embodiment-title">
-        <div class="embodiment-copy">
-          <span class="small-label">CROSS-EMBODIMENT TRANSFER</span>
+      <div class="section-heading centered"><span class="eyebrow">02 / THE METHOD</span><h2 id="method-title">A reference to reason with.<br><em>A scale to measure against.</em></h2><p>A vision-language model reads the task instruction, reference keyframes,<br>and current frame together.<br>The progress head predicts where that frame belongs on your scale.</p></div>
+      <div class="method-flow"><div class="method-inputs"><div class="method-box"><span class="small-label">REFERENCE CONTEXT</span><strong>Task instruction</strong><p>A language description of the task</p><div class="reference-divider"></div><strong>Successful trajectory</strong><p>Selected keyframes + assigned progress</p><div class="mini-keyframes" aria-hidden="true"><span>k₁, p₁</span><span>k₂, p₂</span><span>…</span><span>kₙ, pₙ</span></div></div><div class="method-box query-box"><span class="small-label">QUERY</span><strong>Current frame</strong><p>Any trajectory of the same task,<br>including a different embodiment</p><div class="query-types">Successful <span>·</span> Suboptimal <span>·</span> Failed</div></div></div><span class="flow-arrow" aria-hidden="true">→</span><div class="vlm-box"><img src="icon.png" width="46" height="46" alt=""><h3>Keqing VLM</h3><p>Reason across visual context</p><div class="size-pills"><span>4B</span><span>27B</span></div><div class="progress-head">Progress head</div></div><span class="flow-arrow" aria-hidden="true">→</span><div class="method-output"><span class="small-label">OUTPUT</span><img class="output-variable" src="assets/progress-symbol.svg" alt="Predicted progress: p hat"><h3>Relative progress</h3><p>Aligned with the<br>reference scale</p></div></div>
+      <div class="scale-explorer" id="scale-explorer" hidden><div class="explorer-copy"><span class="small-label">EXPLORE THE IDEA</span><h3>The reference sets the meaning.</h3><p>Select a semantic milestone, then change its assigned scale. The example shows the alignment Keqing aims to learn.</p><span class="schematic-label">Illustration only · no model inference</span></div><div class="explorer-controls"><fieldset class="scale-toggle"><legend>Reference progress scale</legend><label><input type="radio" name="scale" value="uniform" checked><span>Evenly spaced</span></label><label><input type="radio" name="scale" value="custom"><span>Custom milestones</span></label></fieldset><div class="milestone-control"><label for="milestone">Query frame’s semantic stage</label><output id="milestone-name" for="milestone">Object grasped</output></div><input id="milestone" type="range" min="0" max="3" step="1" value="1" aria-describedby="explorer-note"><div class="range-labels"><span>Start</span><span>Grasp</span><span>Place</span><span>Finish</span></div><div class="aligned-output"><span>Matching reference progress <small id="explorer-note">Same semantic stage → same target value</small></span><output id="aligned-progress" for="milestone">33%</output></div></div></div>
+      <div class="data-note"><span class="small-label">A STRONGER DATA FOUNDATION</span><p>Keqing is trained on processed and filtered <strong>Robometer</strong> data, with more precise annotations produced using <strong>GPT 6 astra</strong> and <strong>6.1 sol</strong>. The same annotation approach also underpins our progress benchmark.</p></div>
+    </div></section>
+
+    <section class="section capability-section content-width" id="capabilities" aria-labelledby="capabilities-title">
+      <div class="section-heading">
+        <span class="eyebrow">03 / CAPABILITIES IN ACTION</span>
+        <h2 id="capabilities-title">Four capabilities.<br><em>A clearer picture of progress.</em></h2>
+        <p>From choosing the progress scale to transferring it across tasks and effectors.</p>
+      </div>
+      <section class="capability-row" id="user-defined-scales" aria-labelledby="scales-title">
+        <div class="capability-copy">
+          <span class="small-label">01 / USER-DEFINED PROGRESS SCALES</span>
+          <h3 id="scales-title">Your milestones.<br>Your measure of progress.</h3>
+          <p>Assign progress values to keyframes from a successful trajectory. These annotations define the scale that Keqing uses to evaluate other trajectories of the same task.</p>
+          <p>Different assignments can place different emphasis on the same semantic milestones. The model’s estimates follow the reference scale provided in context.</p>
+        </div>
+        <figure class="capability-media" aria-label="Placeholder for user-defined progress scale comparison">
+          <div class="capability-placeholder"><span aria-hidden="true">↔</span><strong>Progress-scale comparison</strong><p>Same reference keyframes, different assigned scales</p></div>
+          <figcaption>Comparison figure coming soon</figcaption>
+        </figure>
+      </section>
+      <section class="capability-row" id="one-shot-generalization" aria-labelledby="generalization-title">
+        <div class="capability-copy">
+          <span class="small-label">02 / ONE-SHOT MULTI-TASK GENERALIZATION</span>
+          <h3 id="generalization-title">A new task.<br>One successful reference.</h3>
+          <p>For each new task, provide its instruction and one successful reference trajectory. Keqing uses that context to evaluate progress on unseen tasks and objects without task-specific fine-tuning.</p>
+          <p>It reasons about the relationship between the reference keyframes and the current frame, allowing the same model to work across different tasks.</p>
+        </div>
+        <figure class="capability-media" aria-label="Placeholder for one-shot generalization demonstrations">
+          <div class="capability-placeholder"><span aria-hidden="true">↗</span><strong>Unseen tasks &amp; objects</strong><p>One reference per task, multiple query trajectories</p></div>
+          <figcaption>Multi-task demonstration videos coming soon</figcaption>
+        </figure>
+      </section>
+      <section class="capability-row" id="semantic-alignment" aria-labelledby="alignment-title">
+        <div class="capability-copy">
+          <span class="small-label">03 / SEMANTIC PROGRESS ALIGNMENT</span>
+          <h3 id="alignment-title">Different trajectories.<br>Matching semantic milestones.</h3>
+          <p>Frames at the same semantic stage receive similar progress values on the reference scale, even when trajectories differ in execution speed, motion, or outcome.</p>
+          <p>This alignment makes progress comparable across successful, suboptimal, and failed executions, and helps retrieve corresponding keyframes from different trajectories.</p>
+        </div>
+        <figure class="capability-media" aria-label="Placeholder for semantic progress alignment comparison">
+          <div class="capability-placeholder"><span aria-hidden="true">≈</span><strong>Cross-trajectory alignment</strong><p>Corresponding task stages on a shared progress scale</p></div>
+          <figcaption>Alignment visualization coming soon</figcaption>
+        </figure>
+      </section>
+      <section class="capability-row" id="cross-embodiment" aria-labelledby="embodiment-title">
+        <div class="capability-copy">
+          <span class="small-label">04 / CROSS-EMBODIMENT TRANSFER</span>
           <h3 id="embodiment-title">A human demonstration.<br>A robot’s progress.</h3>
           <p>Record one successful human-hand trajectory and label its keyframes with progress values. Use it as in-context reference to evaluate other trajectories of the same task executed by a dexterous robot hand.</p>
           <p>The reference and query can come from different embodiments, while the task and its semantic progress scale stay shared.</p>
           <ul class="embodiment-types" aria-label="Supported embodiments"><li>Grippers</li><li>Dexterous hands</li><li>Human hands</li></ul>
         </div>
         <figure class="embodiment-example">
-          <div class="embodiment-step"><span class="small-label">REFERENCE · HUMAN HAND</span><strong>One successful demonstration</strong><p>Keyframes + user-defined progress</p></div>
+          <div class="embodiment-step"><span class="small-label">REFERENCE · HUMAN HAND</span><strong>One successful demonstration</strong><p>Task instruction + keyframes + progress</p></div>
           <div class="embodiment-bridge"><span aria-hidden="true">↓</span><span>Keqing · same task, shared scale</span></div>
           <div class="embodiment-step"><span class="small-label">QUERY · DEXTEROUS HAND</span><strong>Other trajectories of the same task</strong><p>Current frame → reference-aligned progress</p></div>
           <figcaption>Conceptual example · demonstration media coming soon</figcaption>
         </figure>
       </section>
-      <div class="scale-explorer" id="scale-explorer" hidden><div class="explorer-copy"><span class="small-label">EXPLORE THE IDEA</span><h3>The reference sets the meaning.</h3><p>Select a semantic milestone, then change its assigned scale. The example shows the alignment Keqing aims to learn.</p><span class="schematic-label">Illustration only · no model inference</span></div><div class="explorer-controls"><fieldset class="scale-toggle"><legend>Reference progress scale</legend><label><input type="radio" name="scale" value="uniform" checked><span>Evenly spaced</span></label><label><input type="radio" name="scale" value="custom"><span>Custom milestones</span></label></fieldset><div class="milestone-control"><label for="milestone">Query frame’s semantic stage</label><output id="milestone-name" for="milestone">Object grasped</output></div><input id="milestone" type="range" min="0" max="3" step="1" value="1" aria-describedby="explorer-note"><div class="range-labels"><span>Start</span><span>Grasp</span><span>Place</span><span>Finish</span></div><div class="aligned-output"><span>Matching reference progress <small id="explorer-note">Same semantic stage → same target value</small></span><output id="aligned-progress" for="milestone">33%</output></div></div></div>
-      <div class="data-note"><span class="small-label">A STRONGER DATA FOUNDATION</span><p>Keqing is trained on processed and filtered <strong>Robometer</strong> data, with more precise annotations produced using <strong>GPT 6 astra</strong> and <strong>6.1 sol</strong>. The same annotation approach also underpins our progress benchmark.</p></div>
-    </div></section>
+    </section>
 
-    <section class="section content-width benchmark-section" id="benchmark" aria-labelledby="benchmark-title"><div class="benchmark-heading"><div class="section-heading"><span class="eyebrow">03 / A BETTER MEASURE</span><h2 id="benchmark-title">Better labels.<br><em>Fairer comparisons.</em></h2></div><div class="benchmark-description"><p>A progress model should be judged throughout a task—not only at its endpoint. We introduce a more precisely annotated benchmark to evaluate progress across the full course of execution.</p><p>Designed to improve on the progress annotations used in Robometer and RoboReward, it provides a fairer basis for comparing what different progress models actually understand.</p></div></div><div class="benchmark-panel"><div class="benchmark-result"><span class="small-label">KEQING ON OUR PROGRESS BENCHMARK</span><h3>State of the art.</h3><p>Keqing achieves state-of-the-art results on our benchmark.</p><span class="result-note">Full results, metrics, and evaluation protocol coming soon.</span></div><div class="benchmark-figure media-placeholder"><span class="placeholder-symbol" aria-hidden="true">▥</span><strong>Benchmark results</strong><span>Comparison figure to be added</span></div></div><div class="benchmark-values"><span><i aria-hidden="true">↳</i> Full-trajectory evaluation</span><span><i aria-hidden="true">≈</i> Semantic consistency</span><span><i aria-hidden="true">✧</i> More precise annotations</span></div></section>
+    <section class="section content-width benchmark-section" id="benchmark" aria-labelledby="benchmark-title"><div class="benchmark-heading"><div class="section-heading"><span class="eyebrow">04 / A BETTER MEASURE</span><h2 id="benchmark-title">Better labels.<br><em>Fairer comparisons.</em></h2></div><div class="benchmark-description"><p>A progress model should be judged throughout a task—not only at its endpoint. We introduce a more precisely annotated benchmark to evaluate progress across the full course of execution.</p><p>Designed to improve on the progress annotations used in Robometer and RoboReward, it provides a fairer basis for comparing what different progress models actually understand.</p></div></div><div class="benchmark-panel"><div class="benchmark-result"><span class="small-label">KEQING ON OUR PROGRESS BENCHMARK</span><h3>State of the art.</h3><p>Keqing achieves state-of-the-art results on our benchmark.</p><span class="result-note">Full results, metrics, and evaluation protocol coming soon.</span></div><div class="benchmark-figure media-placeholder"><span class="placeholder-symbol" aria-hidden="true">▥</span><strong>Benchmark results</strong><span>Comparison figure to be added</span></div></div><div class="benchmark-values"><span><i aria-hidden="true">↳</i> Full-trajectory evaluation</span><span><i aria-hidden="true">≈</i> Semantic consistency</span><span><i aria-hidden="true">✧</i> More precise annotations</span></div></section>
 
-    <section class="section applications-section content-width" id="applications" aria-labelledby="applications-title"><div class="section-heading"><span class="eyebrow">04 / BEYOND EVALUATION</span><h2 id="applications-title">A measure of progress.<br><em>A foundation for better robots.</em></h2><p>From learning better policies to understanding the data they learn from.</p></div><div class="application-grid">
+    <section class="section applications-section content-width" id="applications" aria-labelledby="applications-title"><div class="section-heading"><span class="eyebrow">05 / BEYOND EVALUATION</span><h2 id="applications-title">A measure of progress.<br><em>A foundation for better robots.</em></h2><p>From learning better policies to understanding the data they learn from.</p></div><div class="application-grid">
       <article class="application-card"><div class="application-top"><span class="application-index">01</span><span class="application-category">ONLINE LEARNING</span><span aria-hidden="true">↗</span></div><h3>Reinforcement fine-tuning</h3><p>Use Keqing’s progress estimates as a reward signal for reinforcement fine-tuning, following a DSRL-based approach.</p><div class="application-footer"><span>Progress → reward → policy improvement</span><span class="detail-note">Details to follow</span></div></article>
       <article class="application-card"><div class="application-top"><span class="application-index">02</span><span class="application-category">OFFLINE LEARNING</span><span aria-hidden="true">↗</span></div><h3>Progress-weighted offline RL</h3><p>Weight offline learning with progress information in an AW-BC-based approach, helping policies learn from task advancement.</p><div class="application-footer"><span>Progress-informed policy learning</span><span class="detail-note">Details to follow</span></div></article>
       <article class="application-card"><div class="application-top"><span class="application-index">03</span><span class="application-category">DATA ANNOTATION</span><span aria-hidden="true">↗</span></div><h3>Semantic keyframe transfer</h3><p>Mark semantic keyframes in one successful trajectory. Retrieve frames with the closest progress values in other trajectories to find corresponding task stages.</p><div class="application-footer"><span>Annotate once. Align across trajectories.</span><span class="detail-note">Details to follow</span></div></article>
       <article class="application-card"><div class="application-top"><span class="application-index">04</span><span class="application-category">DATA CURATION</span><span aria-hidden="true">↗</span></div><h3>Pretraining data filtering</h3><p>Use progress patterns to identify successful and failed trajectories, and flag executions with repeated setbacks for more informed data selection.</p><div class="application-footer"><span>Understand the journey, not just the outcome.</span><span class="detail-note">Details to follow</span></div></article>
     </div><div class="failure-note"><span aria-hidden="true">◎</span><p><strong>A signal for failure detection.</strong> Progress estimates can also help identify stalled or regressing execution, providing a useful signal for recognizing when a robot is no longer advancing toward its goal.</p></div></section>
 
-    <section class="resources-section content-width" id="resources" aria-labelledby="resources-title"><div><span class="eyebrow">05 / WHAT’S NEXT</span><h2 id="resources-title">More to come.</h2><p>Paper, models, code, dataset, and benchmark will be released progressively and linked here as they become available.</p></div><div class="resource-list"><div><span>Research paper</span><span>Coming soon</span></div><div><span>Code &amp; model weights <small>4B / 27B</small></span><span>Coming soon</span></div><div><span>Dataset</span><span>Coming soon</span></div><div><span>Progress benchmark</span><span>Coming soon</span></div></div></section>
+    <section class="resources-section content-width" id="resources" aria-labelledby="resources-title"><div><span class="eyebrow">06 / WHAT’S NEXT</span><h2 id="resources-title">More to come.</h2><p>Paper, models, code, dataset, and benchmark will be released progressively and linked here as they become available.</p></div><div class="resource-list"><div><span>Research paper</span><span>Coming soon</span></div><div><span>Code &amp; model weights <small>4B / 27B</small></span><span>Coming soon</span></div><div><span>Dataset</span><span>Coming soon</span></div><div><span>Progress benchmark</span><span>Coming soon</span></div></div></section>
   </main>
   <footer class="content-width"><a class="wordmark" href="#"><img src="icon.png" width="24" height="24" alt="">Keqing<span class="wordmark-dot">.</span></a><p>A shared scale. A clearer sense of progress.</p><span>Paimon Team</span></footer>
 </body>
