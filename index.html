@@ -7,9 +7,9 @@
   <meta name="description" content="Keqing is an in-context robot progress model. One successful reference trajectory defines the scale for measuring progress across unseen tasks, objects, trajectories, and embodiments.">
   <title>Keqing: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" href="icon.png">
-  <link rel="stylesheet" href="styles.css?v=20261029-trajectories">
+  <link rel="stylesheet" href="styles.css?v=20261029-comparison">
   <script src="script.js" defer></script>
-  <script src="dataset-explorer.js?v=20261029-trajectories" defer></script>
+  <script src="dataset-explorer.js?v=20261029-comparison" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -135,7 +135,7 @@
       <section class="annotation-examples" id="annotation-examples" aria-labelledby="annotation-title">
         <div class="annotation-heading">
           <div><span class="small-label">DATASET ANNOTATION EXAMPLES</span><h3 id="annotation-title">Inspect the labels.<br>Follow the trajectory.</h3></div>
-          <p>Choose a task and a trajectory. Play or scrub through its frames to follow how the annotated progress changes throughout execution.</p>
+          <p>Choose a task and a trajectory. Compare their progress curves, then play or scrub through the highlighted trajectory frame by frame.</p>
         </div>
         <div id="dataset-loading" class="dataset-loading" role="status">Loading trajectory examples…</div>
         <button id="dataset-retry" class="dataset-button" type="button" hidden>Retry loading examples</button>
@@ -170,9 +170,10 @@
               <div class="dataset-panel-heading"><h4>Annotated progress</h4><output id="dataset-progress" for="dataset-timeline">0%</output></div>
               <div class="dataset-trajectory-meta"><span id="dataset-outcome" class="dataset-outcome"></span><span id="dataset-reference" hidden>ICL reference</span></div>
               <button id="dataset-chart-button" class="dataset-chart-button" type="button" aria-label="View event for the entire trajectory" aria-haspopup="dialog">
-                <svg id="dataset-chart" role="img" aria-labelledby="dataset-chart-title dataset-chart-description"><title id="dataset-chart-title">Annotated progress across the trajectory</title><desc id="dataset-chart-description">A dashed line marks the frame shown on the left.</desc></svg>
-                <span class="dataset-chart-caption"><span><i aria-hidden="true"></i>Progress label</span><span>View trajectory event <span aria-hidden="true">↗</span></span></span>
+                <svg id="dataset-chart" role="img" aria-labelledby="dataset-chart-title dataset-chart-description"><title id="dataset-chart-title">Progress comparison across trajectories</title><desc id="dataset-chart-description">A dashed line marks the frame shown on the left.</desc></svg>
+                <span class="dataset-chart-caption"><span id="dataset-chart-count"></span><span>View trajectory event <span aria-hidden="true">↗</span></span></span>
               </button>
+              <div id="dataset-legend" class="dataset-legend" role="group" aria-label="Select a trajectory to highlight"></div>
             </div>
           </div>
         </div>

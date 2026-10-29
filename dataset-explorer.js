@@ -12,6 +12,12 @@
   const dialog = get('event-dialog');
   const assets = new URL('assets/annotation-examples/', document.baseURI);
   const outcomes = { success: 'Success', suboptimal: 'Suboptimal', failure: 'Failure' };
+  const palettes = {
+    success: ['#3978b7', '#3e916e', '#479da3'],
+    suboptimal: ['#c69a25', '#d6b148'],
+    failure: ['#df843f', '#cd555b'],
+  };
+  let trajectoryColors = [], visibleIndices = [];
   const percent = value => `${new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(value * 100)}%`;
   let data, task, trajectory, currentFrame = 0, requestedFrame = 0;
   let playing = false, timer, selection = 0, frameRequest = 0, initialized = false;
@@ -54,7 +60,7 @@
     cursor.setAttribute('x2', x);
     dot.setAttribute('cx', x);
     dot.setAttribute('cy', y);
-    get('chart-description').textContent = `Frame ${currentFrame + 1} of ${trajectory.frames.length}, annotated progress ${percent(trajectory.frames[currentFrame].progress)}. The dashed line marks the displayed frame.`;
+    get('chart-description').textContent = `${visibleIndices.length} trajectories are compared. Trajectory ${Number(trajectorySelect.value) + 1} is highlighted. Frame ${currentFrame + 1} of ${trajectory.frames.length}, annotated progress ${percent(trajectory.frames[currentFrame].progress)}. The dashed line marks the displayed frame.`;
   }
 
   async function showFrame(index) {
@@ -124,18 +130,59 @@
       chart.append(svgElement('line', { x1: left, y1: plot.y(value), x2: right, y2: plot.y(value), class: 'dataset-gridline' }));
       chart.append(svgElement('text', { x: left - 10, y: plot.y(value) + 5, 'text-anchor': 'end', class: 'dataset-axis-label' }, `${value * 100}%`));
     });
-    const last = trajectory.frames.length - 1;
+    const last = Math.max(...visibleIndices.map(index => task.trajectories[index].frames.length - 1));
+    plot.x = index => left + (right - left) * index / Math.max(1, last);
     [...new Set([0, Math.round(last / 4), Math.round(last / 2), Math.round(last * 3 / 4), last])].forEach(index => {
       chart.append(svgElement('text', { x: plot.x(index), y: bottom + 25, 'text-anchor': 'middle', class: 'dataset-axis-label' }, index + 1));
     });
     chart.append(svgElement('text', { x: (left + right) / 2, y: height - 4, 'text-anchor': 'middle', class: 'dataset-axis-label' }, 'Frame'));
-    const points = trajectory.frames.map((frame, index) => `${plot.x(index)},${plot.y(frame.progress)}`);
-    chart.append(svgElement('path', { d: `M${left},${bottom} L${points.join(' L')} L${right},${bottom} Z`, class: 'dataset-chart-area' }));
-    chart.append(svgElement('polyline', { points: points.join(' '), class: 'dataset-chart-line' }));
+    const selectedIndex = Number(trajectorySelect.value);
+    // Draw the selected trajectory last so it stays visible at crossings.
+    const drawOrder = [...visibleIndices.filter(index => index !== selectedIndex), selectedIndex];
+    drawOrder.forEach(index => {
+      const points = task.trajectories[index].frames.map((frame, frameIndex) => `${plot.x(frameIndex)},${plot.y(frame.progress)}`);
+      chart.append(svgElement('polyline', {
+        points: points.join(' '),
+        class: `dataset-chart-line${index === selectedIndex ? ' is-active' : ''}`,
+        'data-trajectory': index,
+        style: `--trajectory-color: ${trajectoryColors[index]}`,
+      }));
+    });
     cursor = svgElement('line', { y1: top, y2: bottom, class: 'dataset-chart-cursor' });
     dot = svgElement('circle', { r: 5.5, class: 'dataset-chart-dot' });
     chart.append(cursor, dot);
     updateCursor();
+  }
+
+  function updateComparison() {
+    const selectedIndex = Number(trajectorySelect.value);
+    const allIndices = task.trajectories.map((_, index) => index);
+    // Prefer query trajectories when there are more than six, while always including the selection.
+    visibleIndices = allIndices.filter(index => !task.trajectories[index].is_reference).slice(0, 6);
+    for (const index of allIndices) {
+      if (visibleIndices.length >= 6) break;
+      if (!visibleIndices.includes(index)) visibleIndices.push(index);
+    }
+    if (!visibleIndices.includes(selectedIndex)) visibleIndices[visibleIndices.length - 1] = selectedIndex;
+    visibleIndices.sort((a, b) => a - b);
+    root.querySelector('.dataset-progress-panel').style.setProperty('--selected-trajectory-color', trajectoryColors[selectedIndex]);
+    get('chart-count').textContent = `${visibleIndices.length} of ${task.trajectories.length} trajectories`;
+    get('legend').replaceChildren(...visibleIndices.map(index => {
+      const item = task.trajectories[index];
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'dataset-legend-button';
+      button.dataset.trajectory = index;
+      button.style.setProperty('--trajectory-color', trajectoryColors[index]);
+      button.setAttribute('aria-pressed', String(index === selectedIndex));
+      button.setAttribute('aria-label', `Select trajectory ${index + 1}, ${outcomes[item.outcome]}${item.is_reference ? ', ICL reference' : ''}`);
+      const swatch = document.createElement('i');
+      swatch.setAttribute('aria-hidden', 'true');
+      const label = document.createElement('span');
+      label.textContent = `${String(index + 1).padStart(2, '0')} · ${outcomes[item.outcome]}`;
+      button.append(swatch, label);
+      return button;
+    }));
   }
 
   function chooseTrajectory() {
@@ -155,19 +202,25 @@
     get('image-message').hidden = false;
     get('frame-counter').textContent = `Frame 1 / ${trajectory.frames.length}`;
     get('progress').value = percent(trajectory.frames[0].progress);
-    get('outcome').textContent = outcomes[trajectory.outcome];
+    get('outcome').textContent = `Trajectory ${String(Number(trajectorySelect.value) + 1).padStart(2, '0')} · ${outcomes[trajectory.outcome]}`;
     get('outcome').dataset.outcome = trajectory.outcome;
     get('reference').hidden = !trajectory.is_reference;
     get('event-title').textContent = task.instruction;
     get('event-scope').textContent = `Trajectory ${Number(trajectorySelect.value) + 1} · ${outcomes[trajectory.outcome]} · Frames 1–${trajectory.frames.length}`;
     // One event covers the full trajectory for now. Dataset event annotations are not imported.
     get('event-description').textContent = 'Event description coming soon.';
+    updateComparison();
     drawChart();
     showFrame(0);
   }
 
   function chooseTask() {
     task = data.tasks[Number(taskSelect.value)];
+    const counts = { success: 0, suboptimal: 0, failure: 0 };
+    trajectoryColors = task.trajectories.map(item => {
+      const palette = palettes[item.outcome];
+      return palette[counts[item.outcome]++ % palette.length];
+    });
     trajectorySelect.replaceChildren(...task.trajectories.map((item, index) => new Option(
       `${String(index + 1).padStart(2, '0')} · ${outcomes[item.outcome]}${item.is_reference ? ' · ICL reference' : ''}`, index,
     )));
@@ -198,7 +251,23 @@
   get('frame-retry').addEventListener('click', () => { pause(); showFrame(requestedFrame); });
   taskSelect.addEventListener('change', chooseTask);
   trajectorySelect.addEventListener('change', chooseTrajectory);
-  get('chart-button').addEventListener('click', () => { pause(); dialog.showModal(); });
+  get('legend').addEventListener('click', event => {
+    const button = event.target.closest('button[data-trajectory]');
+    if (!button) return;
+    trajectorySelect.value = button.dataset.trajectory;
+    chooseTrajectory();
+    get('legend').querySelector('[aria-pressed="true"]').focus({ preventScroll: true });
+  });
+  get('chart-button').addEventListener('click', event => {
+    const line = event.target.closest('.dataset-chart-line');
+    if (line && line.dataset.trajectory !== trajectorySelect.value) {
+      trajectorySelect.value = line.dataset.trajectory;
+      chooseTrajectory();
+      return;
+    }
+    pause();
+    dialog.showModal();
+  });
   dialog.addEventListener('close', () => get('chart-button').focus({ preventScroll: true }));
   dialog.addEventListener('click', event => {
     if (event.target !== dialog) return;
