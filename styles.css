@@ -121,6 +121,7 @@ color:#605052;
 margin-top:20px}
 .hero-actions{
 display:flex;
+flex-wrap:wrap;
 align-items:center;
 justify-content:center;
 gap:12px;
