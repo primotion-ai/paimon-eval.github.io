@@ -13,7 +13,7 @@
 npm run dev
 ```
 
-访问 `http://localhost:4173`。也可以直接打开 `index.html`。网页字体从 Google Fonts 加载；离线时使用系统字体。
+访问 `http://localhost:4173`。数据浏览器通过 HTTP 加载 JSON 与 PNG，需要使用上述本地服务器。网页字体从 Google Fonts 加载；离线时使用系统字体。
 
 ## 发布到 GitHub.io
 
@@ -27,10 +27,10 @@ npm run dev
 
 ## 后续补充内容
 
-- **图片 / 视频**：放入 `assets/`，在 `index.html` 替换对应占位。所有图片位置保留为空白示意。
+- **图片 / 视频**：放入 `assets/`，在 `index.html` 替换对应占位。除数据集实例外，其余图片位置仍保留为空白示意。
 - **论文 / 代码**：将 hero 内禁用的按钮替换为有实际 URL 的 `<a>`，并更新 Resources 区域。
 - **榜单**：当前仅写入项目提供的 SOTA 结论，没有编造指标、分数、基线排名或实验结果；发布正式论文时补入具体比较图、评测指标与协议。
-- **交互示意**：`script.js` 仅演示“相同语义阶段对齐参考进度”，不会调用模型。示意值不是模型预测或实验数据。
+- **交互示意**：方法区的 `script.js` 仅演示“相同语义阶段对齐参考进度”，不会调用模型。示意值不是模型预测或实验数据。
 - **多本体 / 跨本体迁移**：四项核心能力之一，涵盖夹爪、灵巧手和人手；方法区以“人手成功参考 → 灵巧手同任务轨迹评估”为具体示例。
 - **方法文字**：介绍 4B / 27B、in-context reference、当前帧和 progress head；训练数据说明保留，未展开监督训练细节。
 - **下游应用**：已包含 DSRL 强化微调、AW-BC 离线学习、语义 keyframe 转移、预训练数据清洗，并简述 failure detection。
@@ -42,3 +42,14 @@ npm run dev
 ```bash
 npm run check
 ```
+
+## 数据集轨迹浏览器
+
+`dataset-explorer.js` 展示真实标注样例：3 个任务、16 条轨迹、512 张 PNG。
+左侧播放或拖动逐帧图片；右侧绘制最终 `progress` 并同步虚线。显示帧号从 1 开始，原始索引从 0 开始；播放速度是演示速度，不代表采集 FPS。
+点击进度图弹出覆盖整个轨迹的事件窗口，目前仅预留说明，不导入原始数据中的 events。待提供准确文本和分段后再接入。
+
+- 公共资源：`assets/annotation-examples/index.json` 与其引用的 PNG。
+- 本地源数据：`bench_example/`，已排除 Git 提交；NPZ 按要求删除，原始标注和溯源 JSON 留在本地。
+- 重新导出：在包含本地源数据的机器运行 `python3 scripts/prepare-examples.py`。该脚本只导出进度、任务、轨迹类别、参考标记和 PNG，不导出标注文本或机器路径。
+- GitHub Pages 直接发布已导出的 assets；无需在 CI 中访问本地源数据。

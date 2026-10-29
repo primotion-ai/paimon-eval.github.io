@@ -7,8 +7,9 @@
   <meta name="description" content="Keqing is an in-context robot progress model. One successful reference trajectory defines the scale for measuring progress across unseen tasks, objects, trajectories, and embodiments.">
   <title>Keqing: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" href="icon.png">
-  <link rel="stylesheet" href="styles.css?v=20261029-annotations">
+  <link rel="stylesheet" href="styles.css?v=20261029-trajectories">
   <script src="script.js" defer></script>
+  <script src="dataset-explorer.js?v=20261029-trajectories" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -133,32 +134,56 @@
     <section class="section content-width benchmark-section" id="benchmark" aria-labelledby="benchmark-title"><div class="benchmark-heading"><div class="section-heading"><span class="eyebrow">04 / A BETTER MEASURE</span><h2 id="benchmark-title">Better labels.<br><em>Fairer comparisons.</em></h2></div><div class="benchmark-description"><p>A progress model should be judged throughout a task—not only at its endpoint. We introduce a more precisely annotated benchmark to evaluate progress across the full course of execution.</p><p>Designed to improve on the progress annotations used in Robometer and RoboReward, it provides a fairer basis for comparing what different progress models actually understand.</p></div></div>
       <section class="annotation-examples" id="annotation-examples" aria-labelledby="annotation-title">
         <div class="annotation-heading">
-          <div><span class="small-label">DATASET ANNOTATION EXAMPLES</span><h3 id="annotation-title">Inspect the labels.<br>Follow the reasoning.</h3></div>
-          <p>Selected dataset trajectories will pair task instructions and frames with progress labels and annotation rationales, showing how each label follows from the observed task state.</p>
+          <div><span class="small-label">DATASET ANNOTATION EXAMPLES</span><h3 id="annotation-title">Inspect the labels.<br>Follow the trajectory.</h3></div>
+          <p>Choose a task and a trajectory. Play or scrub through its frames to follow how the annotated progress changes throughout execution.</p>
         </div>
-        <div class="annotation-grid">
-          <article class="annotation-card">
-            <div class="annotation-card-heading"><span class="small-label">EXAMPLE 01</span><span class="annotation-status">Coming soon</span></div>
-            <h4>Semantic milestones</h4>
-            <div class="annotation-task"><span class="small-label">TASK INSTRUCTION</span><p>To accompany the dataset example</p></div>
-            <div class="annotation-filmstrip" aria-label="Placeholder frames and progress labels"><div class="annotation-frame"><div class="annotation-image"><span>Frame 01</span></div><span class="annotation-progress">Progress: <span aria-label="Label pending">—</span></span></div><div class="annotation-frame"><div class="annotation-image"><span>Frame 02</span></div><span class="annotation-progress">Progress: <span aria-label="Label pending">—</span></span></div><div class="annotation-frame"><div class="annotation-image"><span>Frame 03</span></div><span class="annotation-progress">Progress: <span aria-label="Label pending">—</span></span></div></div>
-            <div class="annotation-rationale"><span class="small-label">WHAT THE LABELS SHOULD CAPTURE</span><p>Progress should increase when a meaningful task milestone is reached. The label should be justified by what is visible in the frame.</p></div>
-          </article>
-          <article class="annotation-card">
-            <div class="annotation-card-heading"><span class="small-label">EXAMPLE 02</span><span class="annotation-status">Coming soon</span></div>
-            <h4>Stalled execution</h4>
-            <div class="annotation-task"><span class="small-label">TASK INSTRUCTION</span><p>To accompany the dataset example</p></div>
-            <div class="annotation-filmstrip" aria-label="Placeholder frames and progress labels"><div class="annotation-frame"><div class="annotation-image"><span>Frame 01</span></div><span class="annotation-progress">Progress: <span aria-label="Label pending">—</span></span></div><div class="annotation-frame"><div class="annotation-image"><span>Frame 02</span></div><span class="annotation-progress">Progress: <span aria-label="Label pending">—</span></span></div><div class="annotation-frame"><div class="annotation-image"><span>Frame 03</span></div><span class="annotation-progress">Progress: <span aria-label="Label pending">—</span></span></div></div>
-            <div class="annotation-rationale"><span class="small-label">WHAT THE LABELS SHOULD CAPTURE</span><p>Additional motion or elapsed time alone should not imply advancement. Labels should reflect whether the task has actually moved forward.</p></div>
-          </article>
-          <article class="annotation-card">
-            <div class="annotation-card-heading"><span class="small-label">EXAMPLE 03</span><span class="annotation-status">Coming soon</span></div>
-            <h4>Setbacks & recovery</h4>
-            <div class="annotation-task"><span class="small-label">TASK INSTRUCTION</span><p>To accompany the dataset example</p></div>
-            <div class="annotation-filmstrip" aria-label="Placeholder frames and progress labels"><div class="annotation-frame"><div class="annotation-image"><span>Frame 01</span></div><span class="annotation-progress">Progress: <span aria-label="Label pending">—</span></span></div><div class="annotation-frame"><div class="annotation-image"><span>Frame 02</span></div><span class="annotation-progress">Progress: <span aria-label="Label pending">—</span></span></div><div class="annotation-frame"><div class="annotation-image"><span>Frame 03</span></div><span class="annotation-progress">Progress: <span aria-label="Label pending">—</span></span></div></div>
-            <div class="annotation-rationale"><span class="small-label">WHAT THE LABELS SHOULD CAPTURE</span><p>Labels should capture lost progress after a setback and renewed progress during recovery, making changes throughout execution visible.</p></div>
-          </article>
+        <div id="dataset-loading" class="dataset-loading" role="status">Loading trajectory examples…</div>
+        <button id="dataset-retry" class="dataset-button" type="button" hidden>Retry loading examples</button>
+        <noscript><p>Enable JavaScript to explore the dataset trajectories and their progress labels.</p></noscript>
+        <div id="dataset-browser" hidden>
+          <div class="dataset-selectors">
+            <label for="dataset-task"><span class="small-label">TASK INSTRUCTION</span><select id="dataset-task"></select></label>
+            <label for="dataset-trajectory"><span class="small-label">TRAJECTORY</span><select id="dataset-trajectory"></select></label>
+          </div>
+          <div class="dataset-panels">
+            <div class="dataset-frame-panel">
+              <div class="dataset-panel-heading"><h4>Trajectory frames</h4><span id="dataset-frame-counter">Frame 1 / 32</span></div>
+              <div class="dataset-image-stage" id="dataset-image-stage" aria-busy="true">
+                <img id="dataset-image" width="320" height="240" alt="" decoding="async" hidden>
+                <div class="dataset-image-message" id="dataset-image-message">Loading frame…</div>
+              </div>
+              <div class="dataset-playback">
+                <div class="dataset-transport">
+                  <button class="dataset-icon-button" id="dataset-previous" type="button" aria-label="Previous frame" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5v14M18 5l-9 7 9 7Z"/></svg></button>
+                  <button class="dataset-button dataset-play" id="dataset-play" type="button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path id="dataset-play-symbol" d="m8 5 11 7-11 7Z"/></svg><span id="dataset-play-label">Play</span></button>
+                  <button class="dataset-icon-button" id="dataset-next" type="button" aria-label="Next frame" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5v14M6 5l9 7-9 7Z"/></svg></button>
+                </div>
+                <label class="dataset-speed-label" for="dataset-speed">Speed<select id="dataset-speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label>
+              </div>
+              <label class="visually-hidden" for="dataset-timeline">Trajectory frame</label>
+              <input id="dataset-timeline" class="dataset-timeline" type="range" min="0" max="31" value="0" step="1" disabled>
+              <div class="dataset-timeline-labels"><span>Start</span><span>Drag to explore</span><span>End</span></div>
+              <p id="dataset-frame-error" class="dataset-frame-error" role="status" hidden></p>
+              <button id="dataset-frame-retry" class="dataset-button" type="button" hidden>Retry frame</button>
+            </div>
+            <div class="dataset-progress-panel">
+              <div class="dataset-panel-heading"><h4>Annotated progress</h4><output id="dataset-progress" for="dataset-timeline">0%</output></div>
+              <div class="dataset-trajectory-meta"><span id="dataset-outcome" class="dataset-outcome"></span><span id="dataset-reference" hidden>ICL reference</span></div>
+              <button id="dataset-chart-button" class="dataset-chart-button" type="button" aria-label="View event for the entire trajectory" aria-haspopup="dialog">
+                <svg id="dataset-chart" role="img" aria-labelledby="dataset-chart-title dataset-chart-description"><title id="dataset-chart-title">Annotated progress across the trajectory</title><desc id="dataset-chart-description">A dashed line marks the frame shown on the left.</desc></svg>
+                <span class="dataset-chart-caption"><span><i aria-hidden="true"></i>Progress label</span><span>View trajectory event <span aria-hidden="true">↗</span></span></span>
+              </button>
+            </div>
+          </div>
         </div>
+        <dialog id="dataset-event-dialog" class="dataset-event-dialog" aria-labelledby="dataset-event-title" aria-describedby="dataset-event-description">
+          <form method="dialog"><button class="dataset-event-close" aria-label="Close event" autofocus>×</button></form>
+          <span class="small-label">TRAJECTORY EVENT</span>
+          <h3 id="dataset-event-title"></h3>
+          <p id="dataset-event-scope" class="dataset-event-scope"></p>
+          <div class="dataset-event-description" id="dataset-event-description">Event description coming soon.</div>
+          <form method="dialog"><button class="dataset-button">Back to trajectory</button></form>
+        </dialog>
       </section>
       <div class="benchmark-panel"><div class="benchmark-result"><span class="small-label">KEQING ON OUR PROGRESS BENCHMARK</span><h3>State of the art.</h3><p>Keqing achieves state-of-the-art results on our benchmark.</p><span class="result-note">Full results, metrics, and evaluation protocol coming soon.</span></div><div class="benchmark-figure media-placeholder"><span class="placeholder-symbol" aria-hidden="true">▥</span><strong>Benchmark results</strong><span>Comparison figure to be added</span></div></div><div class="benchmark-values"><span><i aria-hidden="true">↳</i> Full-trajectory evaluation</span><span><i aria-hidden="true">≈</i> Semantic consistency</span><span><i aria-hidden="true">✧</i> More precise annotations</span></div></section>
 

@@ -6,3 +6,7 @@ test-results/
 
 # Local GitHub credential; never commit or publish
 .github-token.key
+
+# Local source export; only the curated viewer assets are published
+/bench_example/
+/.bench_example_export_*/
