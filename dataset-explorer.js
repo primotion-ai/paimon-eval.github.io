@@ -9,7 +9,9 @@
   const timeline = get('timeline');
   const image = get('image');
   const chart = get('chart');
-  const dialog = get('event-dialog');
+  const bubble = get('event-bubble');
+  const chartWrap = get('chart-wrap');
+  let eventAnchor = null;
   const assets = new URL('assets/annotation-examples/', document.baseURI);
   const outcomes = { success: 'Success', suboptimal: 'Suboptimal', failure: 'Failure' };
   const palettes = {
@@ -152,21 +154,14 @@
     dot = svgElement('circle', { r: 5.5, class: 'dataset-chart-dot' });
     chart.append(cursor, dot);
     updateCursor();
+    positionEventBubble();
   }
 
   function updateComparison() {
     const selectedIndex = Number(trajectorySelect.value);
-    const allIndices = task.trajectories.map((_, index) => index);
-    // Prefer query trajectories when there are more than six, while always including the selection.
-    visibleIndices = allIndices.filter(index => !task.trajectories[index].is_reference).slice(0, 6);
-    for (const index of allIndices) {
-      if (visibleIndices.length >= 6) break;
-      if (!visibleIndices.includes(index)) visibleIndices.push(index);
-    }
-    if (!visibleIndices.includes(selectedIndex)) visibleIndices[visibleIndices.length - 1] = selectedIndex;
-    visibleIndices.sort((a, b) => a - b);
+    visibleIndices = task.trajectories.map((_, index) => index);
     root.querySelector('.dataset-progress-panel').style.setProperty('--selected-trajectory-color', trajectoryColors[selectedIndex]);
-    get('chart-count').textContent = `${visibleIndices.length} of ${task.trajectories.length} trajectories`;
+    get('chart-count').textContent = `${visibleIndices.length} trajectories`;
     get('legend').replaceChildren(...visibleIndices.map(index => {
       const item = task.trajectories[index];
       const button = document.createElement('button');
@@ -186,6 +181,7 @@
   }
 
   function chooseTrajectory() {
+    closeEventBubble();
     pause();
     selection += 1;
     currentFrame = 0;
@@ -258,21 +254,80 @@
     chooseTrajectory();
     get('legend').querySelector('[aria-pressed="true"]').focus({ preventScroll: true });
   });
+  function closeEventBubble(restoreFocus = false) {
+    const hadFocus = bubble.contains(document.activeElement);
+    bubble.hidden = true;
+    eventAnchor = null;
+    get('chart-button').setAttribute('aria-expanded', 'false');
+    if (restoreFocus || hadFocus) get('chart-button').focus({ preventScroll: true });
+  }
+
+  function positionEventBubble() {
+    if (bubble.hidden || !eventAnchor || !plot) return;
+    const bounds = chart.getBoundingClientRect();
+    const container = chartWrap.getBoundingClientRect();
+    const x = bounds.left - container.left + plot.x(eventAnchor.frame);
+    const y = bounds.top - container.top + plot.y(eventAnchor.progress);
+    const width = bubble.offsetWidth;
+    const height = bubble.offsetHeight;
+    const left = Math.max(0, Math.min(chartWrap.clientWidth - width, x - width / 2));
+    const above = y >= height + 14;
+    const top = Math.max(0, Math.min(chartWrap.clientHeight - height, above ? y - height - 14 : y + 14));
+    bubble.style.left = `${left}px`;
+    bubble.style.top = `${top}px`;
+    bubble.style.setProperty('--arrow-left', `${Math.max(16, Math.min(width - 16, x - left))}px`);
+    bubble.dataset.placement = above ? 'above' : 'below';
+  }
+
   get('chart-button').addEventListener('click', event => {
-    const line = event.target.closest('.dataset-chart-line');
-    if (line && line.dataset.trajectory !== trajectorySelect.value) {
-      trajectorySelect.value = line.dataset.trajectory;
+    if (!trajectory || !plot) return;
+    const bounds = chart.getBoundingClientRect();
+    const last = Math.max(...task.trajectories.map(item => item.frames.length - 1));
+    let index = Number(trajectorySelect.value);
+    let frame = currentFrame;
+    let progress = trajectory.frames[currentFrame].progress;
+    // Mouse/touch clicks anchor to the closest curve at this x-coordinate.
+    // Keyboard activation and the caption anchor to the current displayed frame.
+    if (event.detail > 0 && event.clientY >= bounds.top && event.clientY <= bounds.bottom) {
+      frame = Math.max(0, Math.min(last, (event.clientX - bounds.left - plot.x(0)) / (plot.x(last) - plot.x(0)) * last));
+      const curveProgress = item => {
+        const position = Math.min(frame, item.frames.length - 1);
+        const lower = Math.floor(position);
+        const upper = Math.min(lower + 1, item.frames.length - 1);
+        return item.frames[lower].progress + (item.frames[upper].progress - item.frames[lower].progress) * (position - lower);
+      };
+      const line = event.target.closest('.dataset-chart-line');
+      if (line) index = Number(line.dataset.trajectory);
+      else {
+        let distance = Infinity;
+        // Prefer the highlighted curve at exact intersections.
+        for (const candidate of [index, ...visibleIndices.filter(value => value !== index)]) {
+          const next = Math.abs(plot.y(curveProgress(task.trajectories[candidate])) - (event.clientY - bounds.top));
+          if (next < distance) { distance = next; index = candidate; }
+        }
+      }
+      progress = curveProgress(task.trajectories[index]);
+    }
+    if (index !== Number(trajectorySelect.value)) {
+      trajectorySelect.value = index;
       chooseTrajectory();
-      return;
     }
     pause();
-    dialog.showModal();
+    eventAnchor = { frame, progress };
+    bubble.hidden = false;
+    get('chart-button').setAttribute('aria-expanded', 'true');
+    positionEventBubble();
+    if (event.detail === 0) get('event-close').focus({ preventScroll: true });
   });
-  dialog.addEventListener('close', () => get('chart-button').focus({ preventScroll: true }));
-  dialog.addEventListener('click', event => {
-    if (event.target !== dialog) return;
-    const rect = dialog.getBoundingClientRect();
-    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
+  get('event-close').addEventListener('click', () => closeEventBubble(true));
+  document.addEventListener('pointerdown', event => {
+    if (!bubble.hidden && !chartWrap.contains(event.target)) closeEventBubble();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !bubble.hidden) {
+      event.preventDefault();
+      closeEventBubble(true);
+    }
   });
   document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); });
   if ('ResizeObserver' in window) new ResizeObserver(drawChart).observe(chart);

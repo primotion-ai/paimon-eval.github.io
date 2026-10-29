@@ -17,4 +17,4 @@ Replace placeholder contents with images that have descriptive `alt` text. Do no
 
 `progress-symbol.svg` is generated from the LaTeX source `\hat{p}` using MathJax 3.2.2 with its TeX math fonts and SVG path output. Its letter, accent, and spacing are engine-generated; do not replace them with webpage fonts or manually position the hat.
 
-`annotation-examples/` contains the real PNG sequences and the public `index.json` used by `dataset-explorer.js`. Progress values are exported unchanged. The whole-trajectory event dialog is a placeholder awaiting curated descriptions; source dataset events are not published. Regenerate these assets with `python3 scripts/prepare-examples.py` when the local `bench_example/` source is available.
+`annotation-examples/` contains the real PNG sequences and the public `index.json` used by `dataset-explorer.js`. Progress values are exported unchanged. The whole-trajectory event bubble is a placeholder awaiting curated descriptions; source dataset events are not published. Regenerate these assets with `python3 scripts/prepare-examples.py` when the local `bench_example/` source is available.

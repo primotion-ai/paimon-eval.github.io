@@ -7,9 +7,9 @@
   <meta name="description" content="Keqing is an in-context robot progress model. One successful reference trajectory defines the scale for measuring progress across unseen tasks, objects, trajectories, and embodiments.">
   <title>Keqing: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" href="icon.png">
-  <link rel="stylesheet" href="styles.css?v=20261029-comparison">
+  <link rel="stylesheet" href="styles.css?v=20261029-bubbles">
   <script src="script.js" defer></script>
-  <script src="dataset-explorer.js?v=20261029-comparison" defer></script>
+  <script src="dataset-explorer.js?v=20261029-bubbles" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -169,22 +169,23 @@
             <div class="dataset-progress-panel">
               <div class="dataset-panel-heading"><h4>Annotated progress</h4><output id="dataset-progress" for="dataset-timeline">0%</output></div>
               <div class="dataset-trajectory-meta"><span id="dataset-outcome" class="dataset-outcome"></span><span id="dataset-reference" hidden>ICL reference</span></div>
-              <button id="dataset-chart-button" class="dataset-chart-button" type="button" aria-label="View event for the entire trajectory" aria-haspopup="dialog">
+              <div id="dataset-chart-wrap" class="dataset-chart-wrap">
+              <button id="dataset-chart-button" class="dataset-chart-button" type="button" aria-label="View event for the entire trajectory" aria-expanded="false" aria-controls="dataset-event-bubble">
                 <svg id="dataset-chart" role="img" aria-labelledby="dataset-chart-title dataset-chart-description"><title id="dataset-chart-title">Progress comparison across trajectories</title><desc id="dataset-chart-description">A dashed line marks the frame shown on the left.</desc></svg>
                 <span class="dataset-chart-caption"><span id="dataset-chart-count"></span><span>View trajectory event <span aria-hidden="true">↗</span></span></span>
               </button>
+              <aside id="dataset-event-bubble" class="dataset-event-bubble" role="note" aria-labelledby="dataset-event-title" hidden>
+                <button id="dataset-event-close" class="dataset-event-close" type="button" aria-label="Close event">×</button>
+                <span class="small-label">TRAJECTORY EVENT</span>
+                <h3 id="dataset-event-title"></h3>
+                <p id="dataset-event-scope" class="dataset-event-scope"></p>
+                <p id="dataset-event-description">Event description coming soon.</p>
+              </aside>
+              </div>
               <div id="dataset-legend" class="dataset-legend" role="group" aria-label="Select a trajectory to highlight"></div>
             </div>
           </div>
         </div>
-        <dialog id="dataset-event-dialog" class="dataset-event-dialog" aria-labelledby="dataset-event-title" aria-describedby="dataset-event-description">
-          <form method="dialog"><button class="dataset-event-close" aria-label="Close event" autofocus>×</button></form>
-          <span class="small-label">TRAJECTORY EVENT</span>
-          <h3 id="dataset-event-title"></h3>
-          <p id="dataset-event-scope" class="dataset-event-scope"></p>
-          <div class="dataset-event-description" id="dataset-event-description">Event description coming soon.</div>
-          <form method="dialog"><button class="dataset-button">Back to trajectory</button></form>
-        </dialog>
       </section>
       <div class="benchmark-panel"><div class="benchmark-result"><span class="small-label">KEQING ON OUR PROGRESS BENCHMARK</span><h3>State of the art.</h3><p>Keqing achieves state-of-the-art results on our benchmark.</p><span class="result-note">Full results, metrics, and evaluation protocol coming soon.</span></div><div class="benchmark-figure media-placeholder"><span class="placeholder-symbol" aria-hidden="true">▥</span><strong>Benchmark results</strong><span>Comparison figure to be added</span></div></div><div class="benchmark-values"><span><i aria-hidden="true">↳</i> Full-trajectory evaluation</span><span><i aria-hidden="true">≈</i> Semantic consistency</span><span><i aria-hidden="true">✧</i> More precise annotations</span></div></section>
 
