@@ -201,10 +201,6 @@
     get('outcome').textContent = `Trajectory ${String(Number(trajectorySelect.value) + 1).padStart(2, '0')} · ${outcomes[trajectory.outcome]}`;
     get('outcome').dataset.outcome = trajectory.outcome;
     get('reference').hidden = !trajectory.is_reference;
-    get('event-title').textContent = task.instruction;
-    get('event-scope').textContent = `Trajectory ${Number(trajectorySelect.value) + 1} · ${outcomes[trajectory.outcome]} · Frames 1–${trajectory.frames.length}`;
-    // One event covers the full trajectory for now. Dataset event annotations are not imported.
-    get('event-description').textContent = 'Event description coming soon.';
     updateComparison();
     drawChart();
     showFrame(0);
@@ -308,11 +304,12 @@
       }
       progress = curveProgress(task.trajectories[index]);
     }
-    if (index !== Number(trajectorySelect.value)) {
-      trajectorySelect.value = index;
-      chooseTrajectory();
-    }
-    pause();
+    // Inspect the clicked curve independently of the selected/playing trajectory.
+    const inspectedTrajectory = task.trajectories[index];
+    get('event-title').textContent = task.instruction;
+    get('event-scope').textContent = `Trajectory ${index + 1} · ${outcomes[inspectedTrajectory.outcome]} · Frames 1–${inspectedTrajectory.frames.length}`;
+    // One event covers the full trajectory until curated descriptions are supplied.
+    get('event-description').textContent = 'Event description coming soon.';
     eventAnchor = { frame, progress };
     bubble.hidden = false;
     get('chart-button').setAttribute('aria-expanded', 'true');
