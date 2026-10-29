@@ -10,6 +10,7 @@ Current media placeholders are in `index.html`:
 - `#one-shot-generalization .capability-media`: unseen-task and object demonstrations, with one reference per task.
 - `#semantic-alignment .capability-media`: aligned semantic milestones across trajectories.
 - `#cross-embodiment .embodiment-example`: human-to-robot or other cross-effector demonstrations.
+- `#annotation-examples .annotation-card`: three dataset example slots (semantic milestones, stalled execution, setbacks/recovery). Replace the instruction placeholder, frame placeholders, dash progress labels, and general criteria with the actual instruction, images, annotated values, and frame-specific reasoning. Remove the Coming soon status only when the real example is present.
 - `.benchmark-figure`: benchmark comparison figure.
 - `.application-card`: add downstream example figures here when available.
 

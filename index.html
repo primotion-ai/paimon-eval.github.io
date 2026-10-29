@@ -7,7 +7,7 @@
   <meta name="description" content="Keqing is an in-context robot progress model. One successful reference trajectory defines the scale for measuring progress across unseen tasks, objects, trajectories, and embodiments.">
   <title>Keqing: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" href="icon.png">
-  <link rel="stylesheet" href="styles.css?v=20261029-capabilities">
+  <link rel="stylesheet" href="styles.css?v=20261029-annotations">
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -130,7 +130,37 @@
       </section>
     </section>
 
-    <section class="section content-width benchmark-section" id="benchmark" aria-labelledby="benchmark-title"><div class="benchmark-heading"><div class="section-heading"><span class="eyebrow">04 / A BETTER MEASURE</span><h2 id="benchmark-title">Better labels.<br><em>Fairer comparisons.</em></h2></div><div class="benchmark-description"><p>A progress model should be judged throughout a task—not only at its endpoint. We introduce a more precisely annotated benchmark to evaluate progress across the full course of execution.</p><p>Designed to improve on the progress annotations used in Robometer and RoboReward, it provides a fairer basis for comparing what different progress models actually understand.</p></div></div><div class="benchmark-panel"><div class="benchmark-result"><span class="small-label">KEQING ON OUR PROGRESS BENCHMARK</span><h3>State of the art.</h3><p>Keqing achieves state-of-the-art results on our benchmark.</p><span class="result-note">Full results, metrics, and evaluation protocol coming soon.</span></div><div class="benchmark-figure media-placeholder"><span class="placeholder-symbol" aria-hidden="true">▥</span><strong>Benchmark results</strong><span>Comparison figure to be added</span></div></div><div class="benchmark-values"><span><i aria-hidden="true">↳</i> Full-trajectory evaluation</span><span><i aria-hidden="true">≈</i> Semantic consistency</span><span><i aria-hidden="true">✧</i> More precise annotations</span></div></section>
+    <section class="section content-width benchmark-section" id="benchmark" aria-labelledby="benchmark-title"><div class="benchmark-heading"><div class="section-heading"><span class="eyebrow">04 / A BETTER MEASURE</span><h2 id="benchmark-title">Better labels.<br><em>Fairer comparisons.</em></h2></div><div class="benchmark-description"><p>A progress model should be judged throughout a task—not only at its endpoint. We introduce a more precisely annotated benchmark to evaluate progress across the full course of execution.</p><p>Designed to improve on the progress annotations used in Robometer and RoboReward, it provides a fairer basis for comparing what different progress models actually understand.</p></div></div>
+      <section class="annotation-examples" id="annotation-examples" aria-labelledby="annotation-title">
+        <div class="annotation-heading">
+          <div><span class="small-label">DATASET ANNOTATION EXAMPLES</span><h3 id="annotation-title">Inspect the labels.<br>Follow the reasoning.</h3></div>
+          <p>Selected dataset trajectories will pair task instructions and frames with progress labels and annotation rationales, showing how each label follows from the observed task state.</p>
+        </div>
+        <div class="annotation-grid">
+          <article class="annotation-card">
+            <div class="annotation-card-heading"><span class="small-label">EXAMPLE 01</span><span class="annotation-status">Coming soon</span></div>
+            <h4>Semantic milestones</h4>
+            <div class="annotation-task"><span class="small-label">TASK INSTRUCTION</span><p>To accompany the dataset example</p></div>
+            <div class="annotation-filmstrip" aria-label="Placeholder frames and progress labels"><div class="annotation-frame"><div class="annotation-image"><span>Frame 01</span></div><span class="annotation-progress">Progress: <span aria-label="Label pending">—</span></span></div><div class="annotation-frame"><div class="annotation-image"><span>Frame 02</span></div><span class="annotation-progress">Progress: <span aria-label="Label pending">—</span></span></div><div class="annotation-frame"><div class="annotation-image"><span>Frame 03</span></div><span class="annotation-progress">Progress: <span aria-label="Label pending">—</span></span></div></div>
+            <div class="annotation-rationale"><span class="small-label">WHAT THE LABELS SHOULD CAPTURE</span><p>Progress should increase when a meaningful task milestone is reached. The label should be justified by what is visible in the frame.</p></div>
+          </article>
+          <article class="annotation-card">
+            <div class="annotation-card-heading"><span class="small-label">EXAMPLE 02</span><span class="annotation-status">Coming soon</span></div>
+            <h4>Stalled execution</h4>
+            <div class="annotation-task"><span class="small-label">TASK INSTRUCTION</span><p>To accompany the dataset example</p></div>
+            <div class="annotation-filmstrip" aria-label="Placeholder frames and progress labels"><div class="annotation-frame"><div class="annotation-image"><span>Frame 01</span></div><span class="annotation-progress">Progress: <span aria-label="Label pending">—</span></span></div><div class="annotation-frame"><div class="annotation-image"><span>Frame 02</span></div><span class="annotation-progress">Progress: <span aria-label="Label pending">—</span></span></div><div class="annotation-frame"><div class="annotation-image"><span>Frame 03</span></div><span class="annotation-progress">Progress: <span aria-label="Label pending">—</span></span></div></div>
+            <div class="annotation-rationale"><span class="small-label">WHAT THE LABELS SHOULD CAPTURE</span><p>Additional motion or elapsed time alone should not imply advancement. Labels should reflect whether the task has actually moved forward.</p></div>
+          </article>
+          <article class="annotation-card">
+            <div class="annotation-card-heading"><span class="small-label">EXAMPLE 03</span><span class="annotation-status">Coming soon</span></div>
+            <h4>Setbacks & recovery</h4>
+            <div class="annotation-task"><span class="small-label">TASK INSTRUCTION</span><p>To accompany the dataset example</p></div>
+            <div class="annotation-filmstrip" aria-label="Placeholder frames and progress labels"><div class="annotation-frame"><div class="annotation-image"><span>Frame 01</span></div><span class="annotation-progress">Progress: <span aria-label="Label pending">—</span></span></div><div class="annotation-frame"><div class="annotation-image"><span>Frame 02</span></div><span class="annotation-progress">Progress: <span aria-label="Label pending">—</span></span></div><div class="annotation-frame"><div class="annotation-image"><span>Frame 03</span></div><span class="annotation-progress">Progress: <span aria-label="Label pending">—</span></span></div></div>
+            <div class="annotation-rationale"><span class="small-label">WHAT THE LABELS SHOULD CAPTURE</span><p>Labels should capture lost progress after a setback and renewed progress during recovery, making changes throughout execution visible.</p></div>
+          </article>
+        </div>
+      </section>
+      <div class="benchmark-panel"><div class="benchmark-result"><span class="small-label">KEQING ON OUR PROGRESS BENCHMARK</span><h3>State of the art.</h3><p>Keqing achieves state-of-the-art results on our benchmark.</p><span class="result-note">Full results, metrics, and evaluation protocol coming soon.</span></div><div class="benchmark-figure media-placeholder"><span class="placeholder-symbol" aria-hidden="true">▥</span><strong>Benchmark results</strong><span>Comparison figure to be added</span></div></div><div class="benchmark-values"><span><i aria-hidden="true">↳</i> Full-trajectory evaluation</span><span><i aria-hidden="true">≈</i> Semantic consistency</span><span><i aria-hidden="true">✧</i> More precise annotations</span></div></section>
 
     <section class="section applications-section content-width" id="applications" aria-labelledby="applications-title"><div class="section-heading"><span class="eyebrow">05 / BEYOND EVALUATION</span><h2 id="applications-title">A measure of progress.<br><em>A foundation for better robots.</em></h2><p>From learning better policies to understanding the data they learn from.</p></div><div class="application-grid">
       <article class="application-card"><div class="application-top"><span class="application-index">01</span><span class="application-category">ONLINE LEARNING</span><span aria-hidden="true">↗</span></div><h3>Reinforcement fine-tuning</h3><p>Use Keqing’s progress estimates as a reward signal for reinforcement fine-tuning, following a DSRL-based approach.</p><div class="application-footer"><span>Progress → reward → policy improvement</span><span class="detail-note">Details to follow</span></div></article>

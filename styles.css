@@ -1729,3 +1729,112 @@ display:none}
   .capability-media { padding: 18px; }
   .capability-placeholder { min-height: 210px; padding: 24px 16px; }
 }
+
+/* Dataset examples precede the quantitative benchmark comparison. */
+.annotation-examples {
+  margin-top: 42px;
+  padding: 38px 0 8px;
+  border-top: 1px solid var(--line);
+}
+.annotation-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 48px;
+  align-items: center;
+  margin-bottom: 28px;
+}
+.annotation-heading h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 38px;
+  line-height: 1.2;
+  margin: 12px 0 0;
+  letter-spacing: -.5px;
+}
+.annotation-heading > p {
+  font-size: 17px;
+  line-height: 1.8;
+}
+.annotation-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.annotation-card {
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fcf9f7;
+}
+.annotation-card-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.annotation-status {
+  font-size: 14px;
+  color: #81685e;
+}
+.annotation-card h4 {
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.4;
+  margin: 16px 0 20px;
+  letter-spacing: -.3px;
+}
+.annotation-task p {
+  margin-top: 5px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.annotation-filmstrip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 22px 0;
+}
+.annotation-image {
+  min-height: 92px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px dashed #d7c3b9;
+  border-radius: 4px;
+  background: #fff8;
+  color: #81685e;
+  font-size: 14px;
+  text-align: center;
+}
+.annotation-progress {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--accent);
+  text-align: center;
+}
+.annotation-rationale {
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.annotation-rationale p {
+  margin-top: 10px;
+  font-size: 16px;
+  line-height: 1.8;
+}
+@media (min-width: 761px) and (max-width: 1050px) {
+  .annotation-grid { grid-template-columns: 1fr; }
+  .annotation-card { display: grid; grid-template-columns: 1fr 1.25fr; column-gap: 32px; }
+  .annotation-card-heading, .annotation-card h4, .annotation-task { grid-column: 1; }
+  .annotation-filmstrip { grid-column: 2; grid-row: 1 / 4; align-self: center; margin: 0; }
+  .annotation-rationale { grid-column: 1 / -1; margin-top: 22px; }
+}
+@media (max-width: 760px) {
+  .annotation-heading { grid-template-columns: 1fr; gap: 20px; }
+  .annotation-heading h3 { font-size: 32px; }
+  .annotation-grid { grid-template-columns: 1fr; }
+  .annotation-card { padding: 22px; }
+  .annotation-image { min-height: 104px; }
+}
