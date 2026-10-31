@@ -58,9 +58,9 @@ npm run check
 
 ## Benchmark 结果
 
-`benchmark_results/ood_20261031/` 为本地原始结果目录，不随网站提交。公开资源在 `assets/benchmark/ood_20261031/`，含四张 Matplotlib SVG、精简 JSON 和完整精度 CSV。
+`benchmark_results/ood_20261031/` 为本地原始结果目录，不随网站提交。公开资源在 `assets/benchmark/ood_20261031/`，含一张平均总分 Matplotlib SVG、精简 JSON 和完整精度 CSV。
 
-平均分为同轨迹 Overall、跨轨迹 Overall、末帧一致率的等权平均，MAE 不计入平均分。每张柱状图独立按对应分数降序排列；表格按未舍入的平均分升序，缺失平均分的模型在前单列为未排名。页面数字保留一位小数，每列按原始精度加粗最佳值（MAE 取最小）。非成功包含次优与失败。
+平均分为同轨迹 Overall、跨轨迹 Overall、末帧一致率的等权平均，MAE 不计入平均分。柱状图仅展示平均总分，按分数降序排列；表格按未舍入的平均分升序，缺失平均分的模型在前单列为未排名。页面数字保留一位小数，每列按原始精度加粗最佳值（MAE 取最小）。非成功包含次优与失败。
 
 重新生成图表、结果表和公开导出：
 

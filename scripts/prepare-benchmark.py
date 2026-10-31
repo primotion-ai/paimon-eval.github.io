@@ -64,9 +64,6 @@ plt.rcParams.update({
 })
 CHARTS = [
     ('average', 'Average score', 'Equal-weight mean of the three overall agreement rates.'),
-    ('within_overall', 'Within-trajectory agreement', 'Overall pair agreement within individual trajectories.'),
-    ('cross_overall', 'Cross-trajectory agreement', 'Overall pair agreement across different trajectories.'),
-    ('terminal_agreement', 'Terminal outcome agreement', 'Agreement with the annotated success, suboptimal, or failure outcome.'),
 ]
 chart_markup = []
 for key, title, description in CHARTS:
@@ -148,4 +145,4 @@ public = {
     'models': [{key: model[key] for key in ['model']+columns} for model in ordered],
 }
 (DEST / 'results.json').write_text(json.dumps(public, ensure_ascii=False, indent=2)+'\n')
-print(f'Generated 4 SVG charts, {len(models)} table rows, 12 score columns, and sanitized CSV/JSON exports.')
+print(f'Generated {len(CHARTS)} SVG chart, {len(models)} table rows, 12 score columns, and sanitized CSV/JSON exports.')

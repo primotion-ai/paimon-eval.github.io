@@ -20,4 +20,4 @@ Replace placeholder contents with images that have descriptive `alt` text. Do no
 
 `yuheng-icon.svg` preserves the balance-scale paths from the naming note in an orange-red gradient (`#ff3b16` → `#ff7624` → `#ffac45`). The transparent 1024×1024 PNG is `../icon.png`; `yuheng-favicon-32.png` is the 32×32 PNG fallback for the SVG favicon. All site marks share this artwork.
 
-`benchmark/ood_20261031/` contains reproducible Matplotlib SVG charts and sanitized CSV/JSON results. Regenerate with `scripts/prepare-benchmark.py`; the input export remains local. Average is the equal-weight mean of the three overall agreement metrics, excluding MAE.
+`benchmark/ood_20261031/` contains a reproducible Matplotlib SVG chart of Average scores and sanitized CSV/JSON results. Regenerate with `scripts/prepare-benchmark.py`; the input export remains local. Average is the equal-weight mean of the three overall agreement metrics, excluding MAE.
