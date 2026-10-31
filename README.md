@@ -1,6 +1,8 @@
-# Keqing — 论文项目主页
+# Yuheng — 论文项目主页
 
-标题：**Keqing: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment**
+标题：**Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment**
+命名灵感：来自北斗七星的玉衡星，寓意平衡与衡量，与机器人任务进度的衡量相呼应。
+
 作者占位：**Paimon Team**
 
 无需安装依赖或构建的静态网页。支持 GitHub Pages 根域名与项目子路径、移动端和键盘操作。已有 `icon.png` 用作标识和 favicon。

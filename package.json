@@ -1,8 +1,8 @@
 {
-  "name": "keqing-paper-website",
+  "name": "yuheng-paper-website",
   "version": "1.0.0",
   "private": true,
-  "description": "Keqing: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment — paper website",
+  "description": "Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment — paper website",
   "scripts": {
     "dev": "python3 -m http.server 4173 --bind 127.0.0.1",
     "check": "node --check script.js && node --check dataset-explorer.js"
