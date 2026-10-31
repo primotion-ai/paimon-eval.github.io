@@ -640,7 +640,7 @@ margin-top:12px}
 .benchmark-panel{
 display:grid;
 grid-template-columns:1fr 1fr;
-margin-top:36px;
+margin-top:22px;
 min-height:240px;
 border:1px solid var(--line);
 border-radius:9px;
@@ -695,7 +695,7 @@ margin-top:4px}
 .benchmark-values{
 display:flex;
 justify-content:space-between;
-padding-top:22px;
+padding-top:28px;
 font-size:15px;
 color:#948076}
 .benchmark-values i{
