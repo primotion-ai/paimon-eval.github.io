@@ -10,7 +10,6 @@ Current media placeholders are in `index.html`:
 - `#one-shot-generalization .capability-media`: unseen-task and object demonstrations, with one reference per task.
 - `#semantic-alignment .capability-media`: aligned semantic milestones across trajectories.
 - `#cross-embodiment .embodiment-example`: human-to-robot or other cross-effector demonstrations.
-- `.benchmark-figure`: benchmark comparison figure.
 - `.application-card`: add downstream example figures here when available.
 
 Replace placeholder contents with images that have descriptive `alt` text. Do not present the current schematic values as experimental predictions.
@@ -20,3 +19,5 @@ Replace placeholder contents with images that have descriptive `alt` text. Do no
 `annotation-examples/` contains the real PNG sequences and the public `index.json` used by `dataset-explorer.js`. Progress values are exported unchanged. The whole-trajectory event bubble is a placeholder awaiting curated descriptions; source dataset events are not published. Regenerate these assets with `python3 scripts/prepare-examples.py` when the local `bench_example/` source is available.
 
 `yuheng-icon.svg` preserves the balance-scale paths from the naming note in an orange-red gradient (`#ff3b16` → `#ff7624` → `#ffac45`). The transparent 1024×1024 PNG is `../icon.png`; `yuheng-favicon-32.png` is the 32×32 PNG fallback for the SVG favicon. All site marks share this artwork.
+
+`benchmark/ood_20261031/` contains reproducible Matplotlib SVG charts and sanitized CSV/JSON results. Regenerate with `scripts/prepare-benchmark.py`; the input export remains local. Average is the equal-weight mean of the three overall agreement metrics, excluding MAE.

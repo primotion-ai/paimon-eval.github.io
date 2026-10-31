@@ -55,3 +55,17 @@ npm run check
 - 本地源数据：`bench_example/`，已排除 Git 提交；NPZ 按要求删除，原始标注和溯源 JSON 留在本地。
 - 重新导出：在包含本地源数据的机器运行 `python3 scripts/prepare-examples.py`。该脚本只导出进度、任务、轨迹类别、参考标记和 PNG，不导出标注文本或机器路径。
 - GitHub Pages 直接发布已导出的 assets；无需在 CI 中访问本地源数据。
+
+## Benchmark 结果
+
+`benchmark_results/ood_20261031/` 为本地原始结果目录，不随网站提交。公开资源在 `assets/benchmark/ood_20261031/`，含四张 Matplotlib SVG、精简 JSON 和完整精度 CSV。
+
+平均分为同轨迹 Overall、跨轨迹 Overall、末帧一致率的等权平均，MAE 不计入平均分。每张柱状图独立按对应分数降序排列；表格按未舍入的平均分升序，缺失平均分的模型在前单列为未排名。页面数字保留一位小数，每列按原始精度加粗最佳值（MAE 取最小）。非成功包含次优与失败。
+
+重新生成图表、结果表和公开导出：
+
+```bash
+UV_CACHE_DIR=/tmp/yuheng-uv-cache uv run --no-project --with matplotlib==3.11.2 python scripts/prepare-benchmark.py
+```
+
+原始内部模型名在生成脚本中映射为公开模型名，页面不展示训练步数。RynnValue 的绝对进度指标及平均分保留为不适用，不补零或按两项计算平均分。

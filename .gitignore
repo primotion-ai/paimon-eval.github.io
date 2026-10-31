@@ -10,3 +10,6 @@ test-results/
 # Local source export; only the curated viewer assets are published
 /bench_example/
 /.bench_example_export_*/
+
+# Local benchmark exports include private machine provenance
+/benchmark_results/
