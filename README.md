@@ -5,7 +5,7 @@
 
 作者占位：**Paimon Team**
 
-无需安装依赖或构建的静态网页。支持 GitHub Pages 根域名与项目子路径、移动端和键盘操作。已有 `icon.png` 用作标识和 favicon。
+无需安装依赖或构建的静态网页。支持 GitHub Pages 根域名与项目子路径、移动端和键盘操作。天平图标 `icon.png` 为 1024×1024 透明 PNG，沿用命名说明中的天平造型。矢量原稿为 `assets/yuheng-icon.svg`，浏览器 favicon 使用该 SVG 和 `assets/yuheng-favicon-32.png`。
 
 ## 本地查看
 
