@@ -19,4 +19,4 @@ Replace placeholder contents with images that have descriptive `alt` text. Do no
 
 `annotation-examples/` contains the real PNG sequences and the public `index.json` used by `dataset-explorer.js`. Progress values are exported unchanged. The whole-trajectory event bubble is a placeholder awaiting curated descriptions; source dataset events are not published. Regenerate these assets with `python3 scripts/prepare-examples.py` when the local `bench_example/` source is available.
 
-`yuheng-icon.svg` preserves the balance-scale paths from the naming note in the site accent color (`#ad514e`). The transparent 1024×1024 PNG is `../icon.png`; `yuheng-favicon-32.png` is the 32×32 PNG fallback for the SVG favicon. All site marks share this artwork.
+`yuheng-icon.svg` preserves the balance-scale paths from the naming note in an orange-red gradient (`#ff3b16` → `#ff7624` → `#ffac45`). The transparent 1024×1024 PNG is `../icon.png`; `yuheng-favicon-32.png` is the 32×32 PNG fallback for the SVG favicon. All site marks share this artwork.
