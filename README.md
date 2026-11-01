@@ -79,3 +79,15 @@ UV_CACHE_DIR=/tmp/yuheng-uv-cache uv run --no-project --with matplotlib==3.11.2 
 ## Reference scale 图片示例
 
 `EXPLORE THE IDEA` 使用 `assets/scale-explorer/` 的四张 PNG。拖动语义阶段时切换图片和曲线高亮；切换均匀/自定义标尺时，四个曲线值与右下角输出来自同一组数值。横向位置等距，不展示横轴数字；纵轴从 0% 到 100%，间隔 25%。原始图片目录 `explore_the_idea_example/` 留在本地，发布资源保留原图内容。
+
+## User-defined progress scales 结果
+
+`#user-defined-scales` 展示同一条 Close the drawer 轨迹的参考帧 0、17、31，以及 Yuheng 27B 在 `[0, 20, 100]%` / `[0, 60, 100]%` 两种参考标尺下的 32 帧原始预测。曲线标记位于参考帧的实际预测值，不强制贴合标注值。
+
+原始导出 `capabilities/different_progress_scale/` 留在本地。公开图片、精简数值和桌面/窄屏 SVG 放在 `assets/capabilities/different-progress-scale/`。重新生成：
+
+```bash
+UV_CACHE_DIR=/tmp/yuheng-uv-cache uv run --no-project --with matplotlib==3.11.2 python scripts/prepare-scale-comparison.py
+```
+
+导出时校验图片 SHA-256、帧索引及 CSV/JSON 数值；不平滑或重新归一化预测。

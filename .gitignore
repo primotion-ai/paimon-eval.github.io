@@ -19,3 +19,6 @@ test-results/
 
 # Local source images; curated stage images are published under assets
 /explore_the_idea_example/
+
+# Source experiment exports; only curated figures and results are published
+/capabilities/different_progress_scale/

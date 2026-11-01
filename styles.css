@@ -1966,3 +1966,20 @@ display:none}
   .explorer-visuals { grid-template-columns: 1fr; gap: 18px; }
   .explorer-frame { width: 100%; max-width: 360px; justify-self: center; }
 }
+
+/* Reference-scale experiment: three keyframes, label legend, full prediction curves. */
+.scale-reference-frames { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.scale-reference-frames > div { min-width: 0; text-align: center; }
+.scale-reference-frames img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: contain; border-radius: 5px; }
+.scale-reference-frames span { display: block; margin-top: 8px; font-size: 15px; color: var(--muted); }
+.scale-comparison-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 24px; margin: 24px 0 12px; font-size: 16px; }
+.scale-comparison-legend > span { display: flex; align-items: center; gap: 9px; white-space: nowrap; }
+.scale-comparison-legend i { display: inline-block; width: 25px; height: 3px; position: relative; background: currentColor; }
+.scale-key-20 { color: #c6533b; }
+.scale-key-60 { color: #3978b7; }
+.scale-comparison-legend i::after { content: ''; position: absolute; width: 7px; height: 7px; top: -2px; left: 9px; border: 2px solid currentColor; background: #fcf9f7; border-radius: 50%; }
+.scale-comparison-legend .scale-key-60::after { border-radius: 0; transform: rotate(45deg); }
+.scale-comparison-plot { display: block; }
+.scale-comparison-plot img { display: block; width: 100%; height: auto; }
+.scale-comparison > figcaption { font-size: 15px; line-height: 1.65; margin-top: 10px; }
+@media (max-width: 480px) { .scale-reference-frames { gap: 8px; } }

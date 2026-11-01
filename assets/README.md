@@ -6,7 +6,6 @@ Current media placeholders are in `index.html`:
 
 - `.reference-frames`: four successful-reference keyframes.
 - `.teaser`: overview figure or trajectory demonstration.
-- `#user-defined-scales .capability-media`: comparison under different user-defined progress scales.
 - `#one-shot-generalization .capability-media`: unseen-task and object demonstrations, with one reference per task.
 - `#semantic-alignment .capability-media`: aligned semantic milestones across trajectories.
 - `#cross-embodiment .embodiment-example`: human-to-robot or other cross-effector demonstrations.
@@ -25,3 +24,5 @@ Replace placeholder contents with images that have descriptive `alt` text. Do no
 `benchmark-comparison/index.json` contains AstraLabel ground truth and eight selected model curves for six Close the drawer trajectories. Frame paths reuse `annotation-examples/`; no PNGs are duplicated. Regenerate with `python3 scripts/prepare-comparison.py`. Predictions are copied unchanged from the local comparison export, including Robometer's supplied interpolation.
 
 `scale-explorer/` contains four unmodified 320×240 PNGs from the local `explore_the_idea_example/` folder: frames 0000, 0015, 0023 and 0030 map to Start, Grasp, Move and Finish(Place). `script.js` switches these images and plots the same four reference-scale values used by the progress output. Horizontal positions are equally spaced semantic stages, not the original frame indices.
+
+`capabilities/different-progress-scale/` contains three ICL reference images, full-precision predictions under two label scales, and responsive Matplotlib SVG figures. Regenerate with `scripts/prepare-scale-comparison.py`. Curve markers identify reference frame indices 0, 17 and 31 at their actual predicted progress values.
