@@ -98,4 +98,4 @@ UV_CACHE_DIR=/tmp/yuheng-uv-cache uv run --no-project --with matplotlib==3.11.2 
 
 运行 `python3 scripts/prepare-semantic-alignment.py` 从本地 `capabilities/semantic_progress_alignment/` 导出精简数据到 `assets/capabilities/semantic-alignment/index.json`。脚本核对 CSV/JSON 进度和图片校验值，64 张图片全部复用 `assets/annotation-examples/`，不重复上传。网页直接使用动态帧图，不额外生成视频文件。
 
-语义对齐图下方的粗体描述按 0%、25%、50%、75%、100% 五个阶段更新，中间档位显示前一阶段描述；向下调整也重新按目标进度计算。图片下方不显示帧号或百分比，图片替代文本仍包含匹配信息以便无障碍访问。
+语义对齐图下方的粗体描述按 0%、25%、50%、75%、95% 五个阶段更新，中间档位显示前一阶段描述；向下调整也重新按目标进度计算。图片下方不显示帧号或百分比，图片替代文本仍包含匹配信息以便无障碍访问。

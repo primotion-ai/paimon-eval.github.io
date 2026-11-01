@@ -101,6 +101,7 @@
     updateGuide();
   }
 
+  const milestoneThresholds = [0, 25, 50, 75, 95];
   const milestoneDescriptions = [
     'The robot arm starts moving.',
     'Ready to start pushing the drawer.',
@@ -114,8 +115,8 @@
     get('target').value = `${target}%`;
     get('up').disabled = target === 100;
     get('down').disabled = target === 0;
-    const milestone = Math.floor(target / 25);
-    const description = `Progress ${milestone * 25}%: ${milestoneDescriptions[milestone]}`;
+    const milestone = milestoneThresholds.filter(threshold => target >= threshold).length - 1;
+    const description = `Progress ${milestoneThresholds[milestone]}%: ${milestoneDescriptions[milestone]}`;
     if (get('event-text').textContent !== description) get('event-text').textContent = description;
     updateGuide();
     showMatches();
