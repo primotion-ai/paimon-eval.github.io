@@ -1961,7 +1961,7 @@ display:none}
 .explorer-progress-line { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 .explorer-progress-point { fill: #fff; stroke: var(--accent); stroke-width: 2; }
 .explorer-progress-point.is-current { fill: var(--accent); stroke: #fff; stroke-width: 2.5; }
-@media (min-width: 1101px) { .scale-explorer { grid-template-columns: minmax(0, .8fr) minmax(0, 1.4fr); align-items: center; } }
+@media (min-width: 1101px) { .scale-explorer { grid-template-columns: minmax(0, .8fr) minmax(0, 1.4fr); align-items: start; } }
 @media (max-width: 600px) {
   .explorer-visuals { grid-template-columns: 1fr; gap: 18px; }
   .explorer-frame { width: 100%; max-width: 360px; justify-self: center; }
