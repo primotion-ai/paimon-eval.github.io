@@ -3,7 +3,7 @@ const explorer = document.querySelector('#scale-explorer');
 const milestone = document.querySelector('#milestone');
 const milestoneName = document.querySelector('#milestone-name');
 const alignedProgress = document.querySelector('#aligned-progress');
-const stages = ['Task start', 'Object grasped', 'Object placed', 'Task complete'];
+const stages = ['Start', 'Grasp', 'Move', 'Finish(Place)'];
 const scales = { uniform: [0, 33, 67, 100], custom: [0, 20, 85, 100] };
 function updateIllustration() {
   const selectedScale = document.querySelector('input[name="scale"]:checked').value;
