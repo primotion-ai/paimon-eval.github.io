@@ -22,3 +22,5 @@ test-results/
 
 # Source experiment exports; only curated figures and results are published
 /capabilities/different_progress_scale/
+
+/capabilities/semantic_progress_alignment/

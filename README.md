@@ -91,3 +91,9 @@ UV_CACHE_DIR=/tmp/yuheng-uv-cache uv run --no-project --with matplotlib==3.11.2 
 ```
 
 导出时校验图片 SHA-256、帧索引及 CSV/JSON 数值；不平滑或重新归一化预测。
+
+## Semantic progress alignment 交互
+
+`#semantic-alignment` 展示两条共享 ICL 参考的 Yuheng 27B 预测曲线。左侧箭头将目标进度从 0% 到 100% 按 5% 调整，水平虚线同步移动；下方两张 PNG 各自匹配绝对进度差最小的帧。匹配不限制时间方向，不平滑或单调化；若距离完全相等，取原始帧序中更早的一帧。图片加载使用请求版本检查，避免快速操作显示旧结果。
+
+运行 `python3 scripts/prepare-semantic-alignment.py` 从本地 `capabilities/semantic_progress_alignment/` 导出精简数据到 `assets/capabilities/semantic-alignment/index.json`。脚本核对 CSV/JSON 进度和图片校验值，64 张图片全部复用 `assets/annotation-examples/`，不重复上传。网页直接使用动态帧图，不额外生成视频文件。
