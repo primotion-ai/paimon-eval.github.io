@@ -123,7 +123,7 @@ for model in ordered:
     rows.append(f'<tr class="{model["kind"]}" data-model="{html.escape(model["model"], quote=True)}"><th scope="row">{label}</th>{"".join(cells)}</tr>')
 
 template = (ROOT / 'scripts' / 'benchmark-section.html').read_text()
-markup = template.replace('{{charts}}', '\n'.join(chart_markup)).replace('{{rows}}', '\n'.join(rows))
+markup = template.replace('{{charts}}', '\n'.join(chart_markup)).replace('{{rows}}', '\n'.join(rows)).replace('{{comparison}}', (ROOT / 'scripts/comparison-section.html').read_text())
 page_path = ROOT / 'index.html'
 page = page_path.read_text()
 if '<!-- BENCHMARK RESULTS START -->' in page:
