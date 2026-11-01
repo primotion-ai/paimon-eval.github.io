@@ -97,7 +97,8 @@ for key, title, description in CHARTS:
     output.write_text(chart)
     missing = ' RynnValue is not included because this metric is not applicable.' if key in ('average','terminal_agreement') else ''
     chart_markup.append(f'''<figure class="result-chart" aria-labelledby="chart-{key}-title">
-      <figcaption><div><h4 id="chart-{key}-title">{title}</h4><p>{description}</p></div><span class="result-direction">Higher is better ↑</span></figcaption>
+      <figcaption><h4 id="chart-{key}-title">{title}</h4>
+      <div class="results-chart-key" aria-label="Chart colors"><span><i class="key-27b" aria-hidden="true"></i>Yuheng 27B</span><span><i class="key-4b" aria-hidden="true"></i>Yuheng 4B</span><span><i class="key-baseline" aria-hidden="true"></i>Other models</span></div></figcaption>
       <div class="result-chart-scroll" tabindex="0" role="region" aria-label="{title} chart; scroll horizontally"><img src="assets/benchmark/ood_20261031/{key}.svg" width="{chart_width}" height="304" style="min-width: {chart_width}px" loading="lazy" alt="{title}: models sorted from highest to lowest, with scores to one decimal place. Full numerical results are in the table below.{missing}"></div>
     </figure>''')
 
