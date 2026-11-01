@@ -75,3 +75,7 @@ UV_CACHE_DIR=/tmp/yuheng-uv-cache uv run --no-project --with matplotlib==3.11.2 
 指标说明下的 `#method-comparison` 展示 Close the drawer 的六条轨迹，PNG 直接复用 `assets/annotation-examples/`。AstraLabel 真值为黑色，八个模型按 benchmark Average 分数降序排列；所有曲线均为连续实线；左侧（截至当前帧）正常显示，右侧未来帧不透明度为 24%，按时间淡化。任务、轨迹、播放和时间轴独立于原标注示例。
 
 本地源文件 `benchmark_compare_example/close_drawer.json` / `close_drawer_frames.csv` 不提交。运行 `python3 scripts/prepare-comparison.py` 会核对 CSV、帧索引、真值与 PNG 路径，并导出不含原始推理附加字段的 `assets/benchmark-comparison/index.json`。模型值原样保留，不另做平滑或归一化。之后按上面的命令运行 `scripts/prepare-benchmark.py`，从 `scripts/comparison-section.html` 同步页面。
+
+## Reference scale 图片示例
+
+`EXPLORE THE IDEA` 使用 `assets/scale-explorer/` 的四张 PNG。拖动语义阶段时切换图片和曲线高亮；切换均匀/自定义标尺时，四个曲线值与右下角输出来自同一组数值。横向位置等距，不展示横轴数字；纵轴从 0% 到 100%，间隔 25%。原始图片目录 `explore_the_idea_example/` 留在本地，发布资源保留原图内容。

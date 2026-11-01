@@ -16,3 +16,6 @@ test-results/
 
 # Raw method comparison exports; publish only selected progress curves
 /benchmark_compare_example/
+
+# Local source images; curated stage images are published under assets
+/explore_the_idea_example/

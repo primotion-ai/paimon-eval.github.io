@@ -23,3 +23,5 @@ Replace placeholder contents with images that have descriptive `alt` text. Do no
 `benchmark/ood_20261031/` contains a reproducible Matplotlib SVG chart of Average scores and sanitized CSV/JSON results. Regenerate with `scripts/prepare-benchmark.py`; the input export remains local. Average is the equal-weight mean of the three overall agreement metrics, excluding MAE.
 
 `benchmark-comparison/index.json` contains AstraLabel ground truth and eight selected model curves for six Close the drawer trajectories. Frame paths reuse `annotation-examples/`; no PNGs are duplicated. Regenerate with `python3 scripts/prepare-comparison.py`. Predictions are copied unchanged from the local comparison export, including Robometer's supplied interpolation.
+
+`scale-explorer/` contains four unmodified 320×240 PNGs from the local `explore_the_idea_example/` folder: frames 0000, 0015, 0023 and 0030 map to Start, Grasp, Move and Finish(Place). `script.js` switches these images and plots the same four reference-scale values used by the progress output. Horizontal positions are equally spaced semantic stages, not the original frame indices.
