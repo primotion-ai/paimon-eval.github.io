@@ -38,7 +38,6 @@
     get('frame-retry').hidden = true;
     matches.forEach((_, index) => {
       get(`image-${index}`).hidden = true;
-      get(`frame-label-${index}`).textContent = 'Loading frame…';
     });
     try {
       const images = await Promise.all(matches.map(loadImage));
@@ -50,7 +49,6 @@
         image.dataset.frameIndex = frame.frame_index;
         image.dataset.target = selectedTarget;
         image.hidden = false;
-        get(`frame-label-${index}`).textContent = `Frame ${frame.frame_index + 1} · ${percent(frame.progress)}`;
       });
       get('frames').setAttribute('aria-busy', 'false');
       // Buffer adjacent target matches; do not fetch every trajectory frame up front.
@@ -60,7 +58,6 @@
     } catch {
       if (currentRequest !== request) return;
       get('frames').setAttribute('aria-busy', 'false');
-      matches.forEach((_, index) => { get(`frame-label-${index}`).textContent = 'Frame unavailable'; });
       get('frame-error').hidden = false;
       get('frame-retry').hidden = false;
     }
@@ -104,11 +101,22 @@
     updateGuide();
   }
 
+  const milestoneDescriptions = [
+    'The robot arm starts moving.',
+    'Ready to start pushing the drawer.',
+    'The drawer is more than halfway closed.',
+    'The drawer is almost fully closed.',
+    'The drawer is fully closed.',
+  ];
+
   function setTarget(value) {
     target = Math.max(0, Math.min(100, Math.round(value / 5) * 5));
     get('target').value = `${target}%`;
     get('up').disabled = target === 100;
     get('down').disabled = target === 0;
+    const milestone = Math.floor(target / 25);
+    const description = `Progress ${milestone * 25}%: ${milestoneDescriptions[milestone]}`;
+    if (get('event-text').textContent !== description) get('event-text').textContent = description;
     updateGuide();
     showMatches();
   }

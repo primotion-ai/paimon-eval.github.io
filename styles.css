@@ -2003,14 +2003,15 @@ display:none}
 .alignment-axis-label { fill: var(--muted); font: 14px var(--sans); }
 .alignment-curve { fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 .alignment-guide { stroke: #665b56; stroke-width: 1.8; stroke-dasharray: 6 5; }
-.alignment-instruction { margin: 18px 0; font-size: 15px; line-height: 1.6; color: var(--muted); }
+.alignment-event { margin-top: 18px; font-size: 17px; line-height: 1.6; color: var(--ink); }
+.alignment-event strong { font-weight: 650; }
+.alignment-instruction { margin: 8px 0 18px; font-size: 15px; line-height: 1.6; color: var(--muted); }
 .alignment-frames { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .alignment-frame-card { min-width: 0; }
 .alignment-frame-card h4 { font-size: 16px; font-weight: 550; color: #3978b7; margin: 0 0 10px; }
 .alignment-frame-card:last-child h4 { color: #318572; }
 .alignment-image-stage { aspect-ratio: 4 / 3; overflow: hidden; background: #eee8e3; border-radius: 6px; }
 .alignment-image-stage img { display: block; width: 100%; height: 100%; object-fit: contain; }
-.alignment-frame-card p { margin-top: 8px; font-size: 15px; color: var(--muted); line-height: 1.5; font-variant-numeric: tabular-nums; }
 #alignment-frame-error { margin-block: 12px; font-size: 15px; color: var(--accent-dark); }
 #alignment-retry { margin-top: 12px; }
 @media (max-width: 480px) { .alignment-frames { gap: 10px; } .alignment-chart-row { gap: 4px; } }

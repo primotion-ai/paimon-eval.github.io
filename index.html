@@ -8,11 +8,11 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261102-semantic-alignment">
+  <link rel="stylesheet" href="styles.css?v=20261102-alignment-events">
   <script src="script.js?v=20261101-explorer-images" defer></script>
   <script src="dataset-explorer.js?v=20261029-inspect" defer></script>
   <script src="benchmark-comparison.js?v=20261101-opacity" defer></script>
-  <script src="semantic-alignment.js?v=20261102" defer></script>
+  <script src="semantic-alignment.js?v=20261102-events" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -146,10 +146,11 @@
               </div>
               <svg id="alignment-chart" role="img" aria-labelledby="alignment-chart-title alignment-chart-description"><title id="alignment-chart-title">Progress alignment across two trajectories</title><desc id="alignment-chart-description">A horizontal dashed line marks the target progress. Images show the nearest progress in each trajectory.</desc></svg>
             </div>
+            <p class="alignment-event" aria-live="polite" aria-atomic="true"><strong id="alignment-event-text">Progress 0%: The robot arm starts moving.</strong></p>
             <p class="alignment-instruction">Adjust progress in 5% steps to compare matching frames.</p>
             <div class="alignment-frames" id="alignment-frames" aria-busy="true">
-              <div class="alignment-frame-card"><h4>Trajectory 1</h4><div class="alignment-image-stage"><img id="alignment-image-0" width="320" height="240" alt="" hidden></div><p id="alignment-frame-label-0">Loading frame…</p></div>
-              <div class="alignment-frame-card"><h4>Trajectory 2</h4><div class="alignment-image-stage"><img id="alignment-image-1" width="320" height="240" alt="" hidden></div><p id="alignment-frame-label-1">Loading frame…</p></div>
+              <div class="alignment-frame-card"><h4>Trajectory 1</h4><div class="alignment-image-stage"><img id="alignment-image-0" width="320" height="240" alt="" hidden></div></div>
+              <div class="alignment-frame-card"><h4>Trajectory 2</h4><div class="alignment-image-stage"><img id="alignment-image-1" width="320" height="240" alt="" hidden></div></div>
             </div>
             <p id="alignment-frame-error" role="status" hidden>Frames could not be loaded.</p>
             <button id="alignment-frame-retry" class="dataset-button" type="button" hidden>Retry frames</button>
