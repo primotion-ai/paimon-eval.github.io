@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="158.4pt" height="90pt" viewBox="0 0 158.4 90" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <title>Yuheng 27B predicted progress: Collect the fork to the yellow box.</title>
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>Yuheng 27B predicted progress: Collect the fork to the yellow box.</dc:title>
+    <dc:description>32 unmodified model predictions; frame position increases left to right, progress increases upward.</dc:description>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 90 
+L 158.4 90 
+L 158.4 0 
+L 0 0 
+L 0 90 
+z
+" style="fill: none; opacity: 0"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 5.544 82.8 
+L 152.856 82.8 
+L 152.856 7.2 
+L 5.544 7.2 
+L 5.544 82.8 
+z
+" style="fill: none"/>
+   </g>
+   <g id="line2d_1">
+    <path d="M 5.544 80.327103 
+L 152.856 80.327103 
+" clip-path="url(#pbbd5cab042)" style="fill: none; stroke: #e7ddd7; stroke-width: 0.8; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_2">
+    <path d="M 5.544 45 
+L 152.856 45 
+" clip-path="url(#pbbd5cab042)" style="fill: none; stroke: #e7ddd7; stroke-width: 0.8; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_3">
+    <path d="M 5.544 9.672897 
+L 152.856 9.672897 
+" clip-path="url(#pbbd5cab042)" style="fill: none; stroke: #e7ddd7; stroke-width: 0.8; stroke-linecap: square"/>
+   </g>
+   <g id="matplotlib.axis_1"/>
+   <g id="matplotlib.axis_2"/>
+   <g id="one-shot-progress-3">
+    <path d="M 7.84575 80.293188 
+L 12.44925 80.242935 
+L 17.05275 80.279502 
+L 21.65625 80.268893 
+L 26.25975 80.269845 
+L 30.86325 79.824687 
+L 35.46675 70.67826 
+L 40.07025 69.264835 
+L 44.67375 63.122285 
+L 49.27725 65.081135 
+L 53.88075 62.97745 
+L 58.48425 63.962287 
+L 63.08775 60.841922 
+L 67.69125 61.921184 
+L 72.29475 61.718226 
+L 76.89825 61.82328 
+L 81.50175 62.198365 
+L 86.10525 61.688602 
+L 90.70875 62.886401 
+L 95.31225 46.137511 
+L 99.91575 39.703829 
+L 104.51925 38.276314 
+L 109.12275 28.626919 
+L 113.72625 27.040456 
+L 118.32975 10.656775 
+L 122.93325 10.937501 
+L 127.53675 10.096059 
+L 132.14025 9.937945 
+L 136.74375 9.967054 
+L 141.34725 9.94558 
+L 145.95075 9.872253 
+L 150.55425 9.814861 
+" clip-path="url(#pbbd5cab042)" style="fill: none; stroke: #c6533b; stroke-width: 2.2; stroke-linecap: round"/>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pbbd5cab042">
+   <rect x="5.544" y="7.2" width="147.312" height="75.6"/>
+  </clipPath>
+ </defs>
+</svg>

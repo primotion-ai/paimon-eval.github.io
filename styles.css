@@ -2068,3 +2068,18 @@ display:none}
   .dataset-frame-pair { gap: 10px; }
   .dataset-frame-card figcaption { flex-direction: column; align-items: flex-start; }
 }
+
+/* One-shot generalization: aligned first frames, last frames, and separate curves. */
+.one-shot-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 12px; }
+.one-shot-task { min-width: 0; display: grid; grid-template-rows: subgrid; grid-row: span 6; text-align: center; }
+.one-shot-task h4 { margin: 0 0 4px; font-size: 15px; line-height: 1.45; font-weight: 550; overflow-wrap: break-word; }
+.one-shot-frame { min-width: 0; }
+.one-shot-frame span, .one-shot-progress-label { display: block; font-size: 14px; line-height: 1.4; color: var(--muted); }
+.one-shot-frame span { margin-bottom: 7px; }
+.one-shot-frame img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: contain; border-radius: 5px; }
+.one-shot-arrow { display: grid; place-items: center; color: var(--accent); }
+.one-shot-arrow svg { width: 20px; height: 27px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.one-shot-progress-label { margin-top: 8px; }
+.one-shot-plot { display: block; width: 100%; height: auto; }
+.one-shot-demo > figcaption { font-size: 15px; line-height: 1.5; margin-top: 18px; }
+@media (max-width: 480px) { .one-shot-grid { column-gap: 8px; } }

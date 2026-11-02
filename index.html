@@ -8,7 +8,7 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261102-reference">
+  <link rel="stylesheet" href="styles.css?v=20261103-one-shot">
   <script src="script.js?v=20261101-explorer-images" defer></script>
   <script src="dataset-explorer.js?v=20261102-reference" defer></script>
   <script src="benchmark-comparison.js?v=20261102-ground-truth" defer></script>
@@ -98,9 +98,34 @@
           <p>For each new task, provide its instruction and one successful reference trajectory. Yuheng uses that context to evaluate progress on unseen tasks and objects without task-specific fine-tuning.</p>
           <p>It reasons about the relationship between the reference keyframes and the current frame, allowing the same model to work across different tasks.</p>
         </div>
-        <figure class="capability-media" aria-label="Placeholder for one-shot generalization demonstrations">
-          <div class="capability-placeholder"><span aria-hidden="true">↗</span><strong>Unseen tasks &amp; objects</strong><p>One reference per task, multiple query trajectories</p></div>
-          <figcaption>Multi-task demonstration videos coming soon</figcaption>
+        <figure class="capability-media one-shot-demo" aria-label="First frames, last frames, and predicted progress for three tasks">
+          <div class="one-shot-grid">
+            <div class="one-shot-task">
+              <h4>Open the red drawer</h4>
+              <div class="one-shot-frame"><span>First frame</span><img src="assets/capabilities/one-shot-multi-task/task-1-first.png" width="320" height="240" loading="lazy" alt="Open the red drawer: first trajectory frame"></div>
+              <span class="one-shot-arrow" aria-hidden="true"><svg viewBox="0 0 24 32"><path d="M12 3v24m-6-6 6 6 6-6"/></svg></span>
+              <div class="one-shot-frame"><span>Last frame</span><img src="assets/capabilities/one-shot-multi-task/task-1-last.png" width="320" height="240" loading="lazy" alt="Open the red drawer: last trajectory frame"></div>
+              <span class="one-shot-progress-label">Progress</span>
+              <img class="one-shot-plot" src="assets/capabilities/one-shot-multi-task/task-1-progress.svg" width="220" height="125" loading="lazy" alt="Yuheng 27B predicted progress for open the red drawer; time increases left to right and progress increases upward">
+            </div>
+            <div class="one-shot-task">
+              <h4>Put the eggplant in the black bowl</h4>
+              <div class="one-shot-frame"><span>First frame</span><img src="assets/capabilities/one-shot-multi-task/task-2-first.png" width="320" height="240" loading="lazy" alt="Put the eggplant in the black bowl: first trajectory frame"></div>
+              <span class="one-shot-arrow" aria-hidden="true"><svg viewBox="0 0 24 32"><path d="M12 3v24m-6-6 6 6 6-6"/></svg></span>
+              <div class="one-shot-frame"><span>Last frame</span><img src="assets/capabilities/one-shot-multi-task/task-2-last.png" width="320" height="240" loading="lazy" alt="Put the eggplant in the black bowl: last trajectory frame"></div>
+              <span class="one-shot-progress-label">Progress</span>
+              <img class="one-shot-plot" src="assets/capabilities/one-shot-multi-task/task-2-progress.svg" width="220" height="125" loading="lazy" alt="Yuheng 27B predicted progress for put the eggplant in the black bowl; time increases left to right and progress increases upward">
+            </div>
+            <div class="one-shot-task">
+              <h4>Collect the fork to the yellow box</h4>
+              <div class="one-shot-frame"><span>First frame</span><img src="assets/capabilities/one-shot-multi-task/task-3-first.png" width="320" height="240" loading="lazy" alt="Collect the fork to the yellow box: first trajectory frame"></div>
+              <span class="one-shot-arrow" aria-hidden="true"><svg viewBox="0 0 24 32"><path d="M12 3v24m-6-6 6 6 6-6"/></svg></span>
+              <div class="one-shot-frame"><span>Last frame</span><img src="assets/capabilities/one-shot-multi-task/task-3-last.png" width="320" height="240" loading="lazy" alt="Collect the fork to the yellow box: last trajectory frame"></div>
+              <span class="one-shot-progress-label">Progress</span>
+              <img class="one-shot-plot" src="assets/capabilities/one-shot-multi-task/task-3-progress.svg" width="220" height="125" loading="lazy" alt="Yuheng 27B predicted progress for collect the fork to the yellow box; time increases left to right and progress increases upward">
+            </div>
+          </div>
+          <figcaption>Yuheng 27B · Predicted progress across three tasks</figcaption>
         </figure>
       </section>
       <section class="capability-row" id="user-defined-scales" aria-labelledby="scales-title">

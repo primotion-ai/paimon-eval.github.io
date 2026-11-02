@@ -26,3 +26,5 @@ test-results/
 /capabilities/semantic_progress_alignment/
 
 /capabilities/cross_embodiment_transfer/
+
+/capabilities/one_shot_multi_task/
