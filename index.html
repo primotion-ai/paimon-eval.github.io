@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="styles.css?v=20261102-reference">
   <script src="script.js?v=20261101-explorer-images" defer></script>
   <script src="dataset-explorer.js?v=20261102-reference" defer></script>
-  <script src="benchmark-comparison.js?v=20261102-reference" defer></script>
+  <script src="benchmark-comparison.js?v=20261102-ground-truth" defer></script>
   <script src="semantic-alignment.js?v=20261102-events-95" defer></script>
   <script src="cross-embodiment.js?v=20261102-reference" defer></script>
 </head>
@@ -298,7 +298,7 @@
       <section class="annotation-examples" id="method-comparison" aria-labelledby="comparison-title">
         <div class="comparison-heading">
           <h4 id="comparison-title">Progress curves across methods</h4>
-          <p>Follow the same trajectory through AstraLabel ground truth and eight progress models. Play or drag the timeline to compare their predictions.</p>
+          <p>Compare progress ground truth with predictions from eight models on the same trajectory. Play or drag the timeline to compare their predictions.</p>
         </div>
         <div id="compare-loading" class="dataset-loading" role="status">Loading method comparisons…</div>
         <button id="compare-retry" class="dataset-button" type="button" hidden>Retry loading comparison</button>
@@ -330,9 +330,9 @@
               <button id="compare-frame-retry" class="dataset-button" type="button" hidden>Retry frame</button>
             </div>
             <div class="dataset-progress-panel">
-              <div class="dataset-panel-heading"><h4>Progress</h4><output id="compare-progress" for="compare-timeline" aria-label="AstraLabel ground-truth progress">0%</output></div>
+              <div class="dataset-panel-heading"><h4>Progress</h4><output id="compare-progress" for="compare-timeline" aria-label="Progress ground truth">0%</output></div>
               <div class="dataset-trajectory-meta"><span id="compare-outcome" class="dataset-outcome"></span><span id="compare-reference" hidden>reference</span></div>
-              <svg id="compare-chart" role="img" aria-labelledby="compare-chart-title compare-chart-description"><title id="compare-chart-title">Progress predictions and AstraLabel ground truth</title><desc id="compare-chart-description">All curves are continuous lines. Frames up to the playback position are fully opaque; future frames are faded.</desc></svg>
+              <svg id="compare-chart" role="img" aria-labelledby="compare-chart-title compare-chart-description"><title id="compare-chart-title">Progress predictions and ground truth</title><desc id="compare-chart-description">All curves are continuous lines. Frames up to the playback position are fully opaque; future frames are faded.</desc></svg>
               <div class="comparison-line-key"><span><i aria-hidden="true"></i>Up to current frame</span><span><i aria-hidden="true"></i>Future frames</span></div>
             </div>
           </div>

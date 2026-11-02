@@ -57,7 +57,7 @@
     futureClip.setAttribute('x', x);
     futureClip.setAttribute('width', currentFrame === trajectory.frames.length - 1 ? 0 : plot.right - x + 3);
     data.models.forEach(model => { legendValues.get(model.id).textContent = percent(trajectory.curves[model.id][currentFrame]); });
-    get('chart-description').textContent = `AstraLabel ground truth and eight models for trajectory ${Number(trajectorySelect.value) + 1}. Frame ${currentFrame + 1} of ${trajectory.frames.length}. All curves are continuous lines. Frames up to the cursor are fully opaque; future frames are faded. Ground truth is black, ${percent(trajectory.frames[currentFrame].progress)}.`;
+    get('chart-description').textContent = `Progress ground truth and eight models for trajectory ${Number(trajectorySelect.value) + 1}. Frame ${currentFrame + 1} of ${trajectory.frames.length}. All curves are continuous lines. Frames up to the cursor are fully opaque; future frames are faded. Ground truth is black, ${percent(trajectory.frames[currentFrame].progress)}.`;
   }
 
   async function showFrame(index) {
@@ -239,7 +239,7 @@
     get('retry').hidden = true;
     get('loading').textContent = 'Loading method comparisons…';
     try {
-      const response = await fetch(new URL('assets/benchmark-comparison/index.json', document.baseURI));
+      const response = await fetch(new URL('assets/benchmark-comparison/index.json?v=20261102-ground-truth', document.baseURI));
       if (!response.ok) throw new Error('Dataset unavailable');
       data = await response.json();
       if (!data.tasks?.length || data.tasks.some(item => !item.trajectories?.length || item.trajectories.some(t => !t.frames?.length))) throw new Error('Empty dataset');

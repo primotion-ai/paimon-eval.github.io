@@ -45,11 +45,11 @@ for item in source['trajectories']:
 assert len(trajectories) == 6
 public = {
     'schema_version': 1,
-    'models': [{'id': 'ground-truth', 'name': 'AstraLabel · ground truth', 'color': '#171717'}] + [
+    'models': [{'id': 'ground-truth', 'name': 'Progress ground truth', 'color': '#171717'}] + [
         {'id': key, 'name': name, 'color': color} for _, key, name, color in selected],
     'tasks': [{'id': task['id'], 'instruction': task['instruction'], 'trajectories': trajectories}],
 }
 dest = ROOT / 'assets/benchmark-comparison'
 dest.mkdir(exist_ok=True)
 (dest / 'index.json').write_text(json.dumps(public, ensure_ascii=False, separators=(',', ':')) + '\n')
-print('Exported 6 trajectories × 32 frames, AstraLabel + 8 models; existing PNGs reused unchanged.')
+print('Exported 6 trajectories × 32 frames, progress ground truth + 8 models; existing PNGs reused unchanged.')
