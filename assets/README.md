@@ -7,7 +7,6 @@ Current media placeholders are in `index.html`:
 - `.reference-frames`: four successful-reference keyframes.
 - `.teaser`: overview figure or trajectory demonstration.
 - `#one-shot-generalization .capability-media`: unseen-task and object demonstrations, with one reference per task.
-- `#cross-embodiment .embodiment-example`: human-to-robot or other cross-effector demonstrations.
 - `.application-card`: add downstream example figures here when available.
 
 Replace placeholder contents with images that have descriptive `alt` text. Do not present the current schematic values as experimental predictions.
@@ -27,3 +26,5 @@ Replace placeholder contents with images that have descriptive `alt` text. Do no
 `capabilities/different-progress-scale/` contains three ICL reference images, full-precision predictions under two label scales, and responsive Matplotlib SVG figures. Regenerate with `scripts/prepare-scale-comparison.py`. Curve markers identify reference frame indices 0, 17 and 31 at their actual predicted progress values.
 
 `capabilities/semantic-alignment/index.json` contains two shared-reference progress predictions and paths to checksum-identical existing annotation PNGs. Regenerate with `scripts/prepare-semantic-alignment.py`; nearest-frame matching uses unmodified predicted progress, not the annotation viewer’s labels.
+
+`capabilities/cross-embodiment/` contains the four 32-frame image sequences and curated predictions used by `cross-embodiment.js`. Regenerate with `scripts/prepare-cross-embodiment.py`; it validates source checksums and CSV values. Shared playback follows sampled frame position, not synchronized real timestamps.

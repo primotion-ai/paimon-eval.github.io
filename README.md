@@ -99,3 +99,9 @@ UV_CACHE_DIR=/tmp/yuheng-uv-cache uv run --no-project --with matplotlib==3.11.2 
 运行 `python3 scripts/prepare-semantic-alignment.py` 从本地 `capabilities/semantic_progress_alignment/` 导出精简数据到 `assets/capabilities/semantic-alignment/index.json`。脚本核对 CSV/JSON 进度和图片校验值，64 张图片全部复用 `assets/annotation-examples/`，不重复上传。网页直接使用动态帧图，不额外生成视频文件。
 
 语义对齐图下方的粗体描述按 0%、25%、50%、75%、95% 五个阶段更新，中间档位显示前一阶段描述；向下调整也重新按目标进度计算。图片下方不显示帧号或百分比，图片替代文本仍包含匹配信息以便无障碍访问。
+
+## Cross-embodiment transfer 交互
+
+`#cross-embodiment` 展示轨迹 1（人手 ICL 参考）、3（YAM 机械臂）、5（Wuji 手成功）和 7（Wuji 手失败）。曲线下方的左右按钮逐帧同步四组画面，也支持播放、暂停和重播；手动调整会暂停播放并优先跳转。当前帧左侧曲线不透明，未来部分为 24% 不透明度，全部为连续实线。四组画面在曲线和控制按钮下方以 2×2 排列。
+
+同步轴是四段视频分别均匀采样后的帧位置，不是共同物理时间。公开素材共 128 张原始 320×256 PNG，来自本地 `capabilities/cross_embodiment_transfer/`；运行 `python3 scripts/prepare-cross-embodiment.py` 校验 CSV、JSON 和图片哈希，再导出到 `assets/capabilities/cross-embodiment/`。原始推理配置和提示词不公开。

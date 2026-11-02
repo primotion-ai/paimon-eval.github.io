@@ -24,3 +24,5 @@ test-results/
 /capabilities/different_progress_scale/
 
 /capabilities/semantic_progress_alignment/
+
+/capabilities/cross_embodiment_transfer/

@@ -2015,3 +2015,28 @@ display:none}
 #alignment-frame-error { margin-block: 12px; font-size: 15px; color: var(--accent-dark); }
 #alignment-retry { margin-top: 12px; }
 @media (max-width: 480px) { .alignment-frames { gap: 10px; } .alignment-chart-row { gap: 4px; } }
+
+/* Cross-embodiment transfer: a shared frame cursor and four synchronized image sequences. */
+.transfer-demo [hidden] { display: none !important; }
+.transfer-legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; margin-bottom: 22px; font-size: 15px; line-height: 1.5; }
+.transfer-legend > span { display: flex; align-items: center; gap: 8px; }
+.transfer-legend i { flex: 0 0 20px; height: 3px; }
+#transfer-chart { display: block; width: 100%; height: 290px; overflow: visible; }
+.transfer-gridline { stroke: #e8ddd8; stroke-width: 1; }
+.transfer-axis-label { fill: var(--muted); font: 14px var(--sans); }
+.transfer-curve { fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.transfer-future { stroke-opacity: .24; }
+.transfer-cursor { stroke: #665b56; stroke-width: 1.5; stroke-dasharray: 5 5; }
+.transfer-transport { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; margin: 8px 0 24px; }
+.transfer-transport svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+#transfer-play { min-width: 80px; }
+#transfer-frame-counter { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.transfer-frames { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 14px; }
+.transfer-frame-card { min-width: 0; }
+.transfer-frame-card h4 { font-size: 17px; font-weight: 550; margin: 0; line-height: 1.4; }
+.transfer-role { display: block; margin: 3px 0 10px; font-size: 15px; color: var(--muted); }
+.transfer-image-stage { aspect-ratio: 5 / 4; background: #eee8e3; border-radius: 6px; overflow: hidden; }
+.transfer-image-stage img { display: block; width: 100%; height: 100%; object-fit: contain; }
+#transfer-retry, #transfer-frame-error, #transfer-frame-retry { margin-top: 12px; }
+#transfer-frame-error { color: var(--accent-dark); font-size: 15px; }
+@media (max-width: 480px) { .transfer-legend { gap: 10px; } .transfer-frames { gap: 18px 10px; } }
