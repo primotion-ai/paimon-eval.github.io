@@ -2040,3 +2040,5 @@ display:none}
 #transfer-retry, #transfer-frame-error, #transfer-frame-retry { margin-top: 12px; }
 #transfer-frame-error { color: var(--accent-dark); font-size: 15px; }
 @media (max-width: 480px) { .transfer-legend { gap: 10px; } .transfer-frames { gap: 18px 10px; } }
+
+.project-date { margin-top: 10px; font-size: 16px; line-height: 1.6; color: var(--muted); }
