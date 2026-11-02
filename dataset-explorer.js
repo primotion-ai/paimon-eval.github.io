@@ -7,7 +7,13 @@
   const taskSelect = get('task');
   const trajectorySelect = get('trajectory');
   const timeline = get('timeline');
-  const image = get('image');
+  const trajectorySelects = [trajectorySelect, get('trajectory-2')];
+  const slots = ['', '-2'].map(suffix => ({
+    image: get(`image${suffix}`), stage: get(`image-stage${suffix}`), message: get(`image-message${suffix}`),
+    card: get(`card${suffix}`), title: get(`frame-title${suffix}`), meta: get(`frame-meta${suffix}`), progress: get(`progress${suffix}`),
+  }));
+  let selectedIndices = [0, 1];
+  const selectedTrajectories = () => selectedIndices.map(index => task.trajectories[index]);
   const chart = get('chart');
   const bubble = get('event-bubble');
   const chartWrap = get('chart-wrap');
@@ -23,13 +29,13 @@
   const percent = value => `${new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(value * 100)}%`;
   let data, task, trajectory, currentFrame = 0, requestedFrame = 0;
   let playing = false, timer, selection = 0, frameRequest = 0, initialized = false;
-  let cursor, dot, plot;
+  let cursor, dots = [], plot;
   const imageCache = new Map();
 
   function pause() {
     if (playing) {
       frameRequest += 1;
-      get('image-stage').setAttribute('aria-busy', 'false');
+      slots.forEach(slot => slot.stage.setAttribute('aria-busy', 'false'));
     }
     playing = false;
     clearTimeout(timer);
@@ -55,14 +61,15 @@
   }
 
   function updateCursor() {
-    if (!plot || !cursor || !dot) return;
+    if (!plot || !cursor || dots.length !== 2) return;
     const x = plot.x(currentFrame);
-    const y = plot.y(trajectory.frames[currentFrame].progress);
     cursor.setAttribute('x1', x);
     cursor.setAttribute('x2', x);
-    dot.setAttribute('cx', x);
-    dot.setAttribute('cy', y);
-    get('chart-description').textContent = `${visibleIndices.length} trajectories are compared. Trajectory ${Number(trajectorySelect.value) + 1} is highlighted. Frame ${currentFrame + 1} of ${trajectory.frames.length}, annotated progress ${percent(trajectory.frames[currentFrame].progress)}. The dashed line marks the displayed frame.`;
+    selectedTrajectories().forEach((item, slot) => {
+      dots[slot].setAttribute('cx', x);
+      dots[slot].setAttribute('cy', plot.y(item.frames[currentFrame].progress));
+    });
+    get('chart-description').textContent = `${visibleIndices.length} trajectories are compared. Trajectories ${selectedIndices.map(index => index + 1).join(' and ')} are highlighted. Frame ${currentFrame + 1} of ${trajectory.frames.length}; their progress is ${selectedTrajectories().map(item => percent(item.frames[currentFrame].progress)).join(' and ')}. The dashed line marks the shared frame position.`;
   }
 
   async function showFrame(index) {
@@ -70,23 +77,28 @@
     const version = selection;
     requestedFrame = Math.max(0, Math.min(trajectory.frames.length - 1, index));
     const target = requestedFrame;
-    get('image-stage').setAttribute('aria-busy', 'true');
+    slots.forEach(slot => slot.stage.setAttribute('aria-busy', 'true'));
     get('frame-error').hidden = true;
     get('frame-retry').hidden = true;
     try {
-      const loaded = await loadImage(trajectory.frames[target]);
+      const items = selectedTrajectories();
+      const loaded = await Promise.all(items.map(item => loadImage(item.frames[target])));
       if (request !== frameRequest || version !== selection) return false;
       currentFrame = target;
-      image.src = loaded.src;
-      image.alt = `${task.instruction} — frame ${target + 1} of ${trajectory.frames.length}`;
-      image.hidden = false;
-      get('image-message').hidden = true;
-      get('image-stage').setAttribute('aria-busy', 'false');
+      // Commit both images, progress values, and cursor together after both have decoded.
+      slots.forEach((slot, index) => {
+        slot.image.src = loaded[index].src;
+        slot.image.alt = `${task.instruction} — trajectory ${selectedIndices[index] + 1}, frame ${target + 1}`;
+        slot.image.dataset.frame = target;
+        slot.image.hidden = false;
+        slot.message.hidden = true;
+        slot.stage.setAttribute('aria-busy', 'false');
+        slot.progress.value = percent(items[index].frames[target].progress);
+      });
       get('frame-counter').textContent = `Frame ${target + 1} / ${trajectory.frames.length}`;
-      get('progress').value = percent(trajectory.frames[target].progress);
       timeline.value = target;
       timeline.style.setProperty('--frame-position', `${target / Math.max(1, trajectory.frames.length - 1) * 100}%`);
-      timeline.setAttribute('aria-valuetext', `Frame ${target + 1} of ${trajectory.frames.length}, progress ${percent(trajectory.frames[target].progress)}`);
+      timeline.setAttribute('aria-valuetext', `Frame ${target + 1} of ${trajectory.frames.length}, progress ${items.map(item => percent(item.frames[target].progress)).join(' and ')}`);
       timeline.disabled = false;
       get('play').disabled = false;
       get('previous').disabled = target === 0;
@@ -94,14 +106,14 @@
       if (!playing) get('play-label').textContent = target === trajectory.frames.length - 1 ? 'Replay' : 'Play';
       updateCursor();
       // Keep a small buffer ahead; other trajectories are fetched only when selected.
-      trajectory.frames.slice(target + 1, target + 6).forEach(frame => { loadImage(frame).catch(() => {}); });
+      items.forEach(item => item.frames.slice(target + 1, target + 6).forEach(frame => { loadImage(frame).catch(() => {}); }));
       return true;
     } catch {
       if (request !== frameRequest || version !== selection) return false;
       pause();
-      get('image-stage').setAttribute('aria-busy', 'false');
-      get('image-message').hidden = true;
-      get('frame-error').textContent = `Frame ${target + 1} could not be loaded. Please retry.`;
+      slots.forEach(slot => slot.stage.setAttribute('aria-busy', 'false'));
+      slots.forEach(slot => { slot.message.hidden = true; });
+      get('frame-error').textContent = `Both trajectories could not be loaded at frame ${target + 1}. Please retry.`;
       get('frame-error').hidden = false;
       get('frame-retry').hidden = false;
       timeline.value = currentFrame;
@@ -138,45 +150,41 @@
       chart.append(svgElement('text', { x: plot.x(index), y: bottom + 25, 'text-anchor': 'middle', class: 'dataset-axis-label' }, index + 1));
     });
     chart.append(svgElement('text', { x: (left + right) / 2, y: height - 4, 'text-anchor': 'middle', class: 'dataset-axis-label' }, 'Frame'));
-    const selectedIndex = Number(trajectorySelect.value);
-    // Draw the selected trajectory last so it stays visible at crossings.
-    const drawOrder = [...visibleIndices.filter(index => index !== selectedIndex), selectedIndex];
+    // Draw both selected trajectories last so they stay visible at crossings.
+    const drawOrder = [...visibleIndices.filter(index => !selectedIndices.includes(index)), ...selectedIndices];
     drawOrder.forEach(index => {
       const points = task.trajectories[index].frames.map((frame, frameIndex) => `${plot.x(frameIndex)},${plot.y(frame.progress)}`);
       chart.append(svgElement('polyline', {
         points: points.join(' '),
-        class: `dataset-chart-line${index === selectedIndex ? ' is-active' : ''}`,
+        class: `dataset-chart-line${selectedIndices.includes(index) ? ' is-active' : ''}`,
         'data-trajectory': index,
         style: `--trajectory-color: ${trajectoryColors[index]}`,
       }));
     });
     cursor = svgElement('line', { y1: top, y2: bottom, class: 'dataset-chart-cursor' });
-    dot = svgElement('circle', { r: 5.5, class: 'dataset-chart-dot' });
-    chart.append(cursor, dot);
+    dots = selectedIndices.map(index => svgElement('circle', { r: 5.5, class: 'dataset-chart-dot', style: `--selected-trajectory-color: ${trajectoryColors[index]}` }));
+    chart.append(cursor, ...dots);
     updateCursor();
     positionEventBubble();
   }
 
   function updateComparison() {
-    const selectedIndex = Number(trajectorySelect.value);
     visibleIndices = task.trajectories.map((_, index) => index);
-    root.querySelector('.dataset-progress-panel').style.setProperty('--selected-trajectory-color', trajectoryColors[selectedIndex]);
     get('chart-count').textContent = `${visibleIndices.length} trajectories`;
     get('legend').replaceChildren(...visibleIndices.map(index => {
       const item = task.trajectories[index];
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'dataset-legend-button';
-      button.dataset.trajectory = index;
-      button.style.setProperty('--trajectory-color', trajectoryColors[index]);
-      button.setAttribute('aria-pressed', String(index === selectedIndex));
-      button.setAttribute('aria-label', `Select trajectory ${index + 1}, ${outcomes[item.outcome]}${item.is_reference ? ', ICL reference' : ''}`);
+      const entry = document.createElement('div');
+      const selected = selectedIndices.includes(index);
+      entry.className = `dataset-legend-button${selected ? ' is-selected' : ''}`;
+      entry.setAttribute('role', 'listitem');
+      entry.setAttribute('aria-label', `Trajectory ${index + 1}, ${outcomes[item.outcome]}${selected ? ', highlighted' : ''}`);
+      entry.style.setProperty('--trajectory-color', trajectoryColors[index]);
       const swatch = document.createElement('i');
       swatch.setAttribute('aria-hidden', 'true');
       const label = document.createElement('span');
       label.textContent = `${String(index + 1).padStart(2, '0')} · ${outcomes[item.outcome]}`;
-      button.append(swatch, label);
-      return button;
+      entry.append(swatch, label);
+      return entry;
     }));
   }
 
@@ -184,26 +192,31 @@
     closeEventBubble();
     pause();
     selection += 1;
-    currentFrame = 0;
-    requestedFrame = 0;
     imageCache.clear();
-    trajectory = task.trajectories[Number(trajectorySelect.value)];
+    selectedIndices = trajectorySelects.map(select => Number(select.value));
+    trajectory = selectedTrajectories()[0];
+    currentFrame = Math.min(currentFrame, trajectory.frames.length - 1);
+    requestedFrame = currentFrame;
     timeline.max = trajectory.frames.length - 1;
-    timeline.value = 0;
-    timeline.style.setProperty('--frame-position', '0%');
+    timeline.value = currentFrame;
+    timeline.style.setProperty('--frame-position', `${currentFrame / Math.max(1, trajectory.frames.length - 1) * 100}%`);
     [timeline, get('play'), get('previous'), get('next')].forEach(control => { control.disabled = true; });
-    image.hidden = true;
-    image.removeAttribute('src');
-    get('image-message').textContent = 'Loading frame…';
-    get('image-message').hidden = false;
-    get('frame-counter').textContent = `Frame 1 / ${trajectory.frames.length}`;
-    get('progress').value = percent(trajectory.frames[0].progress);
-    get('outcome').textContent = `Trajectory ${String(Number(trajectorySelect.value) + 1).padStart(2, '0')} · ${outcomes[trajectory.outcome]}`;
-    get('outcome').dataset.outcome = trajectory.outcome;
-    get('reference').hidden = !trajectory.is_reference;
+    slots.forEach((slot, index) => {
+      const item = selectedTrajectories()[index];
+      slot.image.hidden = true;
+      slot.image.removeAttribute('src');
+      delete slot.image.dataset.frame;
+      slot.message.textContent = 'Loading frame…';
+      slot.message.hidden = false;
+      slot.title.textContent = `Trajectory ${String(selectedIndices[index] + 1).padStart(2, '0')}`;
+      slot.meta.textContent = `${outcomes[item.outcome]}${item.is_reference ? ' · ICL reference' : ''}`;
+      slot.card.style.setProperty('--selected-trajectory-color', trajectoryColors[selectedIndices[index]]);
+      slot.progress.value = '—';
+    });
+    get('frame-counter').textContent = `Frame ${currentFrame + 1} / ${trajectory.frames.length}`;
     updateComparison();
     drawChart();
-    showFrame(0);
+    showFrame(currentFrame);
   }
 
   function chooseTask() {
@@ -213,9 +226,13 @@
       const palette = palettes[item.outcome];
       return palette[counts[item.outcome]++ % palette.length];
     });
-    trajectorySelect.replaceChildren(...task.trajectories.map((item, index) => new Option(
-      `${String(index + 1).padStart(2, '0')} · ${outcomes[item.outcome]}${item.is_reference ? ' · ICL reference' : ''}`, index,
-    )));
+    trajectorySelects.forEach((select, slot) => {
+      select.replaceChildren(...task.trajectories.map((item, index) => new Option(
+        `${String(index + 1).padStart(2, '0')} · ${outcomes[item.outcome]}${item.is_reference ? ' · ICL reference' : ''}`, index,
+      )));
+      select.value = slot;
+    });
+    currentFrame = 0;
     chooseTrajectory();
   }
 
@@ -242,14 +259,11 @@
   get('next').addEventListener('click', () => { pause(); showFrame(currentFrame + 1); });
   get('frame-retry').addEventListener('click', () => { pause(); showFrame(requestedFrame); });
   taskSelect.addEventListener('change', chooseTask);
-  trajectorySelect.addEventListener('change', chooseTrajectory);
-  get('legend').addEventListener('click', event => {
-    const button = event.target.closest('button[data-trajectory]');
-    if (!button) return;
-    trajectorySelect.value = button.dataset.trajectory;
+  trajectorySelects.forEach((select, slot) => select.addEventListener('change', () => {
+    // Keep two distinct trajectories: choosing the other slot's trajectory swaps them.
+    if (select.value === trajectorySelects[1 - slot].value) trajectorySelects[1 - slot].value = selectedIndices[slot];
     chooseTrajectory();
-    get('legend').querySelector('[aria-pressed="true"]').focus({ preventScroll: true });
-  });
+  }));
   function closeEventBubble(restoreFocus = false) {
     const hadFocus = bubble.contains(document.activeElement);
     bubble.hidden = true;
@@ -339,7 +353,7 @@
       const response = await fetch(new URL('index.json', assets));
       if (!response.ok) throw new Error('Dataset unavailable');
       data = await response.json();
-      if (!data.tasks?.length || data.tasks.some(item => !item.trajectories?.length || item.trajectories.some(t => !t.frames?.length))) throw new Error('Empty dataset');
+      if (!data.tasks?.length || data.tasks.some(item => !(item.trajectories?.length >= 2) || item.trajectories.some(t => !t.frames?.length))) throw new Error('Empty dataset');
       taskSelect.replaceChildren(...data.tasks.map((item, index) => new Option(item.instruction, index)));
       browser.hidden = false;
       get('loading').hidden = true;

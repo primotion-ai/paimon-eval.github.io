@@ -2042,3 +2042,28 @@ display:none}
 @media (max-width: 480px) { .transfer-legend { gap: 10px; } .transfer-frames { gap: 18px 10px; } }
 
 .project-date { margin-top: 10px; font-size: 16px; line-height: 1.6; color: var(--muted); }
+
+/* Paired annotation frames share one timeline and two highlighted curves. */
+#annotation-examples .dataset-selectors { grid-template-columns: 1.3fr 1fr 1fr; }
+#annotation-examples .dataset-panels { align-items: start; }
+.dataset-frame-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.dataset-frame-card { min-width: 0; margin: 0; }
+.dataset-frame-card figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 8px; padding-bottom: 10px; font-size: 16px; font-weight: 550; color: var(--selected-trajectory-color); }
+.dataset-frame-card output, .dataset-frame-card #dataset-progress { font-size: 20px; line-height: 1.3; font-weight: 600; font-variant-numeric: tabular-nums; }
+.dataset-frame-card .dataset-image-stage { width: 100%; border-top: 3px solid var(--selected-trajectory-color); }
+.dataset-frame-card .dataset-image-message { padding: 8px; font-size: 15px; }
+.dataset-frame-meta { margin: 10px 0 0; font-size: 15px; line-height: 1.5; color: var(--muted); }
+.dataset-comparison-hint { font-size: 15px; color: var(--muted); }
+#dataset-legend .dataset-legend-button { cursor: default; }
+#dataset-legend .dataset-legend-button:hover { background: transparent; }
+#dataset-legend .is-selected { border-color: var(--trajectory-color); background: #fff; color: var(--ink); font-weight: 550; }
+#dataset-legend .is-selected i { opacity: 1; height: 4px; }
+@media (max-width: 1000px) {
+  #annotation-examples .dataset-selectors { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #annotation-examples .dataset-selectors label:first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 480px) {
+  #annotation-examples .dataset-selectors { grid-template-columns: 1fr; }
+  .dataset-frame-pair { gap: 10px; }
+  .dataset-frame-card figcaption { flex-direction: column; align-items: flex-start; }
+}

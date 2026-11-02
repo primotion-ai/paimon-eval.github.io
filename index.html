@@ -8,9 +8,9 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261102-project-date">
+  <link rel="stylesheet" href="styles.css?v=20261102-dual-trajectories">
   <script src="script.js?v=20261101-explorer-images" defer></script>
-  <script src="dataset-explorer.js?v=20261029-inspect" defer></script>
+  <script src="dataset-explorer.js?v=20261102-dual-trajectories" defer></script>
   <script src="benchmark-comparison.js?v=20261101-opacity" defer></script>
   <script src="semantic-alignment.js?v=20261102-events-95" defer></script>
   <script src="cross-embodiment.js?v=20261102" defer></script>
@@ -192,7 +192,7 @@
       <section class="annotation-examples" id="annotation-examples" aria-labelledby="annotation-title">
         <div class="annotation-heading">
           <div><span class="small-label">DATASET ANNOTATION EXAMPLES</span><h3 id="annotation-title">Inspect the labels.<br>Follow the trajectory.</h3></div>
-          <p>Choose a task and a trajectory. Compare their progress curves, then play or scrub through the highlighted trajectory frame by frame.</p>
+          <p>Choose a task and two trajectories. Play or scrub through both at the same frame position to see why one trajectory is further along than the other.</p>
         </div>
         <div id="dataset-loading" class="dataset-loading" role="status">Loading trajectory examples…</div>
         <button id="dataset-retry" class="dataset-button" type="button" hidden>Retry loading examples</button>
@@ -200,14 +200,29 @@
         <div id="dataset-browser" hidden>
           <div class="dataset-selectors">
             <label for="dataset-task"><span class="small-label">TASK INSTRUCTION</span><select id="dataset-task"></select></label>
-            <label for="dataset-trajectory"><span class="small-label">TRAJECTORY</span><select id="dataset-trajectory"></select></label>
+            <label for="dataset-trajectory"><span class="small-label">TRAJECTORY 1</span><select id="dataset-trajectory"></select></label>
+            <label for="dataset-trajectory-2"><span class="small-label">TRAJECTORY 2</span><select id="dataset-trajectory-2"></select></label>
           </div>
           <div class="dataset-panels">
             <div class="dataset-frame-panel">
               <div class="dataset-panel-heading"><h4>Trajectory frames</h4><span id="dataset-frame-counter">Frame 1 / 32</span></div>
-              <div class="dataset-image-stage" id="dataset-image-stage" aria-busy="true">
-                <img id="dataset-image" width="320" height="240" alt="" decoding="async" hidden>
-                <div class="dataset-image-message" id="dataset-image-message">Loading frame…</div>
+              <div class="dataset-frame-pair">
+                <figure class="dataset-frame-card" id="dataset-card">
+                  <figcaption><span id="dataset-frame-title"></span><output id="dataset-progress" for="dataset-timeline"></output></figcaption>
+                  <div class="dataset-image-stage" id="dataset-image-stage" aria-busy="true">
+                    <img id="dataset-image" width="320" height="240" alt="" decoding="async" hidden>
+                    <div class="dataset-image-message" id="dataset-image-message">Loading frame…</div>
+                  </div>
+                  <p class="dataset-frame-meta" id="dataset-frame-meta"></p>
+                </figure>
+                <figure class="dataset-frame-card" id="dataset-card-2">
+                  <figcaption><span id="dataset-frame-title-2"></span><output id="dataset-progress-2" for="dataset-timeline"></output></figcaption>
+                  <div class="dataset-image-stage" id="dataset-image-stage-2" aria-busy="true">
+                    <img id="dataset-image-2" width="320" height="240" alt="" decoding="async" hidden>
+                    <div class="dataset-image-message" id="dataset-image-message-2">Loading frame…</div>
+                  </div>
+                  <p class="dataset-frame-meta" id="dataset-frame-meta-2"></p>
+                </figure>
               </div>
               <div class="dataset-playback">
                 <div class="dataset-transport">
@@ -224,11 +239,10 @@
               <button id="dataset-frame-retry" class="dataset-button" type="button" hidden>Retry frame</button>
             </div>
             <div class="dataset-progress-panel">
-              <div class="dataset-panel-heading"><h4>Annotated progress</h4><output id="dataset-progress" for="dataset-timeline">0%</output></div>
-              <div class="dataset-trajectory-meta"><span id="dataset-outcome" class="dataset-outcome"></span><span id="dataset-reference" hidden>ICL reference</span></div>
+              <div class="dataset-panel-heading"><h4>Annotated progress</h4><span class="dataset-comparison-hint">Two trajectories highlighted</span></div>
               <div id="dataset-chart-wrap" class="dataset-chart-wrap">
               <button id="dataset-chart-button" class="dataset-chart-button" type="button" aria-label="View event for the entire trajectory" aria-expanded="false" aria-controls="dataset-event-bubble">
-                <svg id="dataset-chart" role="img" aria-labelledby="dataset-chart-title dataset-chart-description"><title id="dataset-chart-title">Progress comparison across trajectories</title><desc id="dataset-chart-description">A dashed line marks the frame shown on the left.</desc></svg>
+                <svg id="dataset-chart" role="img" aria-labelledby="dataset-chart-title dataset-chart-description"><title id="dataset-chart-title">Progress comparison across trajectories</title><desc id="dataset-chart-description">A dashed line marks the shared frame position of the two trajectories shown on the left.</desc></svg>
                 <span class="dataset-chart-caption"><span id="dataset-chart-count"></span><span>View trajectory event <span aria-hidden="true">↗</span></span></span>
               </button>
               <aside id="dataset-event-bubble" class="dataset-event-bubble" role="note" aria-labelledby="dataset-event-title" hidden>
@@ -239,7 +253,7 @@
                 <p id="dataset-event-description">Event description coming soon.</p>
               </aside>
               </div>
-              <div id="dataset-legend" class="dataset-legend" role="group" aria-label="Select a trajectory to highlight"></div>
+              <div id="dataset-legend" class="dataset-legend" role="list" aria-label="Trajectory colors and highlighted selections"></div>
             </div>
           </div>
         </div>
