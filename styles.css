@@ -2032,9 +2032,10 @@ display:none}
 #transfer-play { min-width: 80px; }
 #transfer-frame-counter { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .transfer-frames { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 14px; }
-.transfer-frame-card { min-width: 0; }
+.transfer-frame-card { min-width: 0; display: grid; grid-template-rows: 1fr auto; }
 .transfer-frame-card h4 { font-size: 17px; font-weight: 550; margin: 0; line-height: 1.4; }
-.transfer-role { display: block; margin: 3px 0 10px; font-size: 15px; color: var(--muted); }
+.transfer-frame-heading { display: flex; align-items: baseline; align-content: start; flex-wrap: wrap; gap: 2px 10px; margin-bottom: 8px; }
+.transfer-role { font-size: 15px; line-height: 1.4; color: var(--muted); }
 .transfer-image-stage { aspect-ratio: 5 / 4; background: #eee8e3; border-radius: 6px; overflow: hidden; }
 .transfer-image-stage img { display: block; width: 100%; height: 100%; object-fit: contain; }
 #transfer-retry, #transfer-frame-error, #transfer-frame-retry { margin-top: 12px; }

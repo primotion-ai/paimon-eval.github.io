@@ -43,7 +43,7 @@
     pastClip.setAttribute('width', currentFrame === 0 ? 0 : x - plot.left + 3);
     futureClip.setAttribute('x', x);
     futureClip.setAttribute('width', currentFrame === lastFrame() ? 0 : plot.right - x + 3);
-    get('chart-description').textContent = `Frame ${currentFrame + 1} of ${lastFrame() + 1}. Human hand ICL reference, YAM arm, successful Wuji hand and failed Wuji hand trajectories. All curves are continuous; frames up to the cursor are fully opaque and future frames are faded.`;
+    get('chart-description').textContent = `Frame ${currentFrame + 1} of ${lastFrame() + 1}. Human hand reference, YAM arm, successful Wuji hand and failed Wuji hand trajectories. All curves are continuous; frames up to the cursor are fully opaque and future frames are faded.`;
   }
   async function showFrame(index) {
     const version = ++request;
@@ -120,11 +120,12 @@
       const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.background=t.color;swatch.setAttribute('aria-hidden','true');
       item.append(swatch,document.createTextNode(`${t.name} · ${t.role}`));get('legend').append(item);
       const card=document.createElement('div');card.className='transfer-frame-card';
+      const heading=document.createElement('div');heading.className='transfer-frame-heading';
       const label=document.createElement('h4');label.textContent=t.name;label.style.color=t.color;
       const role=document.createElement('span');role.className='transfer-role';role.textContent=t.role;
       const stage=document.createElement('div');stage.className='transfer-image-stage';
       const image=document.createElement('img');image.width=320;image.height=256;image.alt='';image.hidden=true;
-      images.push(image);stage.append(image);card.append(label,role,stage);get('frames').append(card);
+      images.push(image);stage.append(image);heading.append(label,role);card.append(heading,stage);get('frames').append(card);
     });
   }
   async function tick() {
@@ -149,7 +150,7 @@
   async function initialize() {
     if(initialized)return;initialized=true;get('retry').hidden=true;get('loading').textContent='Loading cross-embodiment trajectories…';
     try {
-      const response=await fetch(new URL('assets/capabilities/cross-embodiment/index.json',document.baseURI));
+      const response=await fetch(new URL('assets/capabilities/cross-embodiment/index.json?v=20261102-reference',document.baseURI));
       if(!response.ok)throw new Error('Data unavailable');data=await response.json();
       if(data.trajectories?.length!==4||data.trajectories.some(t=>t.frames?.length!==32||t.frames.some((f,i)=>f.frame_index!==i||!Number.isFinite(f.progress)||f.progress<0||f.progress>1)))throw new Error('Invalid trajectories');
       makeCards();browser.hidden=false;get('loading').hidden=true;drawChart();showFrame(0);

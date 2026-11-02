@@ -8,12 +8,12 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261102-dual-trajectories">
+  <link rel="stylesheet" href="styles.css?v=20261102-reference">
   <script src="script.js?v=20261101-explorer-images" defer></script>
-  <script src="dataset-explorer.js?v=20261102-dual-trajectories" defer></script>
-  <script src="benchmark-comparison.js?v=20261101-opacity" defer></script>
+  <script src="dataset-explorer.js?v=20261102-reference" defer></script>
+  <script src="benchmark-comparison.js?v=20261102-reference" defer></script>
   <script src="semantic-alignment.js?v=20261102-events-95" defer></script>
-  <script src="cross-embodiment.js?v=20261102" defer></script>
+  <script src="cross-embodiment.js?v=20261102-reference" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -111,7 +111,7 @@
           <p>Different assignments can place different emphasis on the same semantic milestones. The model’s estimates follow the reference scale provided in context.</p>
         </div>
         <figure class="capability-media scale-comparison" aria-label="Progress-scale comparison using the same three reference keyframes">
-          <div class="scale-reference-frames" aria-label="ICL reference keyframes">
+          <div class="scale-reference-frames" aria-label="reference keyframes">
             <div><img src="assets/capabilities/different-progress-scale/icl_frame_0000.png" width="320" height="240" loading="lazy" alt="Keyframe 1: drawer open"><span>Keyframe 1</span></div>
             <div><img src="assets/capabilities/different-progress-scale/icl_frame_0017.png" width="320" height="240" loading="lazy" alt="Keyframe 2: drawer partly closed"><span>Keyframe 2</span></div>
             <div><img src="assets/capabilities/different-progress-scale/icl_frame_0031.png" width="320" height="240" loading="lazy" alt="Keyframe 3: drawer closed"><span>Keyframe 3</span></div>
@@ -288,7 +288,7 @@
 <tr class="ours-4b" data-model="Yuheng 4B"><th scope="row">Yuheng 4B <span class="result-ours">Ours</span></th><td class="result-number result-average" data-metric="average">71.5</td><td class="result-number" data-metric="within_success">77.4</td><td class="result-number" data-metric="within_non_success"><strong title="Best in this column">69.1</strong></td><td class="result-number" data-metric="within_overall">73.4</td><td class="result-number" data-metric="cross_success_success">71.9</td><td class="result-number" data-metric="cross_non_success_non_success"><strong title="Best in this column">71.2</strong></td><td class="result-number" data-metric="cross_success_non_success">76.4</td><td class="result-number" data-metric="cross_overall">73.7</td><td class="result-number" data-metric="terminal_agreement">67.3</td><td class="result-number" data-metric="mae_success">12.1</td><td class="result-number" data-metric="mae_non_success">11.9</td><td class="result-number" data-metric="mae_overall">12.0</td></tr>
 <tr class="ours-27b" data-model="Yuheng 27B"><th scope="row">Yuheng 27B <span class="result-ours">Ours</span></th><td class="result-number result-average" data-metric="average"><strong title="Best in this column">73.3</strong></td><td class="result-number" data-metric="within_success"><strong title="Best in this column">80.4</strong></td><td class="result-number" data-metric="within_non_success">67.3</td><td class="result-number" data-metric="within_overall"><strong title="Best in this column">74.1</strong></td><td class="result-number" data-metric="cross_success_success">76.2</td><td class="result-number" data-metric="cross_non_success_non_success">70.0</td><td class="result-number" data-metric="cross_success_non_success"><strong title="Best in this column">77.1</strong></td><td class="result-number" data-metric="cross_overall"><strong title="Best in this column">74.6</strong></td><td class="result-number" data-metric="terminal_agreement"><strong title="Best in this column">71.3</strong></td><td class="result-number" data-metric="mae_success"><strong title="Best in this column">10.4</strong></td><td class="result-number" data-metric="mae_non_success"><strong title="Best in this column">10.9</strong></td><td class="result-number" data-metric="mae_overall"><strong title="Best in this column">10.6</strong></td></tr></tbody>
   </table></div>
-  <div class="results-protocol-notes" id="results-protocol-note"><p><strong>S</strong> = success; <strong>N</strong> = non-success (suboptimal + failure). The evaluation includes 259 successful and 243 non-successful trajectories, including ICL references. Overall pair scores are weighted by pair counts, not by averaging subgroup scores.</p><p><strong>* RynnValue:</strong> pair comparisons use negative remaining seconds with a 0.1-second tie threshold; GPT labels use a 0.1-progress threshold. Terminal agreement, MAE, and Average score are not applicable. Missing values are never treated as zero.</p><p><strong>Evaluation settings:</strong> Robometer uses 8 frames interpolated to 32; Flora Rewarder assumes 1 FPS.</p></div>
+  <div class="results-protocol-notes" id="results-protocol-note"><p><strong>S</strong> = success; <strong>N</strong> = non-success (suboptimal + failure). The evaluation includes 259 successful and 243 non-successful trajectories, including references. Overall pair scores are weighted by pair counts, not by averaging subgroup scores.</p><p><strong>* RynnValue:</strong> pair comparisons use negative remaining seconds with a 0.1-second tie threshold; GPT labels use a 0.1-progress threshold. Terminal agreement, MAE, and Average score are not applicable. Missing values are never treated as zero.</p><p><strong>Evaluation settings:</strong> Robometer uses 8 frames interpolated to 32; Flora Rewarder assumes 1 FPS.</p></div>
   <div class="results-metrics"><h4>What each metric measures</h4><div class="results-metric-grid">
     <article><h5>Within-trajectory agreement</h5><p>For fixed pairs of frames from one trajectory, we compare the model’s progress ordering (&lt;, ≈, &gt;) with the GPT labels. A difference of at most 0.1 is a tie. The score is the percentage of correctly matched relations.</p></article>
     <article><h5>Cross-trajectory agreement</h5><p>The same relation test is applied to pairs of frames from different trajectories, checking whether progress is comparable across executions. Results cover S ↔ S, N ↔ N, and S ↔ N pairs.</p></article>
@@ -331,7 +331,7 @@
             </div>
             <div class="dataset-progress-panel">
               <div class="dataset-panel-heading"><h4>Progress</h4><output id="compare-progress" for="compare-timeline" aria-label="AstraLabel ground-truth progress">0%</output></div>
-              <div class="dataset-trajectory-meta"><span id="compare-outcome" class="dataset-outcome"></span><span id="compare-reference" hidden>ICL reference</span></div>
+              <div class="dataset-trajectory-meta"><span id="compare-outcome" class="dataset-outcome"></span><span id="compare-reference" hidden>reference</span></div>
               <svg id="compare-chart" role="img" aria-labelledby="compare-chart-title compare-chart-description"><title id="compare-chart-title">Progress predictions and AstraLabel ground truth</title><desc id="compare-chart-description">All curves are continuous lines. Frames up to the playback position are fully opaque; future frames are faded.</desc></svg>
               <div class="comparison-line-key"><span><i aria-hidden="true"></i>Up to current frame</span><span><i aria-hidden="true"></i>Future frames</span></div>
             </div>

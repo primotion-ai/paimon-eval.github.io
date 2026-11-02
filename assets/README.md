@@ -23,7 +23,7 @@ Replace placeholder contents with images that have descriptive `alt` text. Do no
 
 `scale-explorer/` contains four unmodified 320×240 PNGs from the local `explore_the_idea_example/` folder: frames 0000, 0015, 0023 and 0030 map to Start, Grasp, Move and Finish(Place). `script.js` switches these images and plots the same four reference-scale values used by the progress output. Horizontal positions are equally spaced semantic stages, not the original frame indices.
 
-`capabilities/different-progress-scale/` contains three ICL reference images, full-precision predictions under two label scales, and responsive Matplotlib SVG figures. Regenerate with `scripts/prepare-scale-comparison.py`. Curve markers identify reference frame indices 0, 17 and 31 at their actual predicted progress values.
+`capabilities/different-progress-scale/` contains three reference images, full-precision predictions under two label scales, and responsive Matplotlib SVG figures. Regenerate with `scripts/prepare-scale-comparison.py`. Curve markers identify reference frame indices 0, 17 and 31 at their actual predicted progress values.
 
 `capabilities/semantic-alignment/index.json` contains two shared-reference progress predictions and paths to checksum-identical existing annotation PNGs. Regenerate with `scripts/prepare-semantic-alignment.py`; nearest-frame matching uses unmodified predicted progress, not the annotation viewer’s labels.
 

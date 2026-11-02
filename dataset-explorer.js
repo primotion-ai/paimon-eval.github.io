@@ -209,7 +209,7 @@
       slot.message.textContent = 'Loading frame…';
       slot.message.hidden = false;
       slot.title.textContent = `Trajectory ${String(selectedIndices[index] + 1).padStart(2, '0')}`;
-      slot.meta.textContent = `${outcomes[item.outcome]}${item.is_reference ? ' · ICL reference' : ''}`;
+      slot.meta.textContent = `${outcomes[item.outcome]}${item.is_reference ? ' · reference' : ''}`;
       slot.card.style.setProperty('--selected-trajectory-color', trajectoryColors[selectedIndices[index]]);
       slot.progress.value = '—';
     });
@@ -228,7 +228,7 @@
     });
     trajectorySelects.forEach((select, slot) => {
       select.replaceChildren(...task.trajectories.map((item, index) => new Option(
-        `${String(index + 1).padStart(2, '0')} · ${outcomes[item.outcome]}${item.is_reference ? ' · ICL reference' : ''}`, index,
+        `${String(index + 1).padStart(2, '0')} · ${outcomes[item.outcome]}${item.is_reference ? ' · reference' : ''}`, index,
       )));
       select.value = slot;
     });

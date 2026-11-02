@@ -200,7 +200,7 @@
   function chooseTask() {
     task = data.tasks[Number(taskSelect.value)];
     trajectorySelect.replaceChildren(...task.trajectories.map((item, index) => new Option(
-      `${String(index + 1).padStart(2, '0')} · ${outcomes[item.outcome]}${item.is_reference ? ' · ICL reference' : ''}`, index,
+      `${String(index + 1).padStart(2, '0')} · ${outcomes[item.outcome]}${item.is_reference ? ' · reference' : ''}`, index,
     )));
     chooseTrajectory();
   }

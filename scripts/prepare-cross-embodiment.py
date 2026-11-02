@@ -21,7 +21,7 @@ assert predictions['reference_trajectory_id'] == index['icl_reference']['traject
 assert predictions['reference_frame_indices'] == index['icl_reference']['frame_indices']
 assert predictions['reference_progress'] == index['icl_reference']['progress']
 assert [t['trajectory_id'] for t in index['trajectories']] == ['1','3','5','7']
-labels = [('Human hand', 'ICL reference', '#d48a24'), ('YAM arm', 'Success', '#3978b7'),
+labels = [('Human hand', 'reference', '#d48a24'), ('YAM arm', 'Success', '#3978b7'),
           ('Wuji hand', 'Success', '#318572'), ('Wuji hand', 'Failure', '#cd555b')]
 trajectories = []
 for source, (name, role, color) in zip(index['trajectories'], labels):
