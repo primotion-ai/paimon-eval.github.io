@@ -2101,23 +2101,29 @@ display:none}
 .scale-animation-keyframe.is-visible { opacity: 1; transform: translateY(0); }
 .scale-animation-keyframe img { display: block; width: 100%; height: auto; border-radius: 6px; }
 .scale-animation-keyframe-label { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; font-size: 15px; }
-.scale-animation-badge { color: var(--scale-color); font-size: 18px; font-weight: 650; opacity: 0; transition: opacity .35s ease; }
-.scale-animation.labels-visible .scale-animation-badge { opacity: 1; }
+.scale-animation-badges { display: inline-flex; flex-wrap: wrap; gap: 8px; opacity: 0; transform: translateY(4px); transition: opacity .65s ease, transform .65s ease; }
+.scale-animation.labels-visible .scale-animation-badges { opacity: 1; transform: translateY(0); }
+.scale-animation-badge { font-size: 18px; font-weight: 650; color: #c6533b; opacity: .24; transition: opacity .65s ease; }
+.scale-animation-badge[data-condition="1"] { color: #3978b7; }
+.scale-animation-badge.is-active { opacity: 1; }
 .scale-animation-panel-heading { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
 #scale-animation-frame { font-size: 15px; color: var(--muted); }
 .scale-animation-image { aspect-ratio: 4 / 3; overflow: hidden; border-radius: 8px; background: #eee8e3; }
 .scale-animation-image img { width: 100%; height: 100%; display: block; object-fit: contain; }
 .scale-animation-query > p { margin-top: 12px; color: var(--muted); font-size: 16px; text-align: center; }
-#scale-animation-progress { color: var(--scale-color); font-size: 23px; font-weight: 600; font-variant-numeric: tabular-nums; }
+#scale-animation-progress { color: var(--scale-color); font-size: 23px; font-weight: 600; font-variant-numeric: tabular-nums; opacity: 0; transition: opacity .65s ease; }
+.scale-animation.progress-visible #scale-animation-progress { opacity: 1; }
 .scale-animation-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 10px; font-size: 15px; }
-.scale-animation-legend span { display: flex; align-items: center; gap: 7px; opacity: .25; transition: opacity .35s ease; }
+.scale-animation-legend span { display: flex; align-items: center; gap: 7px; opacity: .24; transition: opacity .65s ease; }
 .scale-animation-legend span.is-active { opacity: 1; }
 .scale-animation-legend i { width: 20px; height: 3px; background: #c6533b; }
 .scale-animation-legend [data-scale="1"] i { background: #3978b7; }
 #scale-animation-chart { display: block; width: 100%; height: 300px; overflow: visible; }
 .scale-animation-gridline { stroke: #e7ddd7; stroke-width: 1; }
 .scale-animation-axis { fill: var(--muted); font: 14px var(--sans); }
-.scale-animation-curve { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.scale-animation-curve { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; transition: opacity .65s ease; }
+.scale-animation-markers, .scale-animation-marker { transition: opacity .65s ease; }
+.scale-animation-marker { fill: #fcf9f7; stroke-width: 2; }
 .scale-animation-cursor { stroke: #665b56; stroke-width: 1.3; stroke-dasharray: 5 5; }
 .scale-animation-dot { stroke: #fff; stroke-width: 2; }
 .scale-animation-fallback { width: 100%; height: auto; }
@@ -2139,5 +2145,21 @@ display:none}
   .scale-animation-toolbar { margin-bottom: 22px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .scale-animation-keyframe, .scale-animation-badge, .scale-animation-legend span { transition: none; }
+  .scale-animation-keyframe, .scale-animation-badges, .scale-animation-badge, .scale-animation-legend span, .scale-animation-curve, .scale-animation-markers, .scale-animation-marker, #scale-animation-progress { transition: none; }
 }
+
+/* Section labels carry the hierarchy; the short statements support them. */
+.section-heading > .eyebrow, .resources-section > div > .eyebrow {
+  font-size: clamp(25px, 2.4vw, 32px); font-weight: 650; line-height: 1.35; letter-spacing: .5px;
+}
+.section-heading > h2, .resources-section h2 {
+  font-size: clamp(22px, 2vw, 27px); line-height: 1.4; letter-spacing: -.25px;
+}
+.capability-copy > .small-label, .annotation-heading > div > .small-label,
+.results-heading > div > .small-label, .explorer-copy > .small-label {
+  display: block; font-size: clamp(23px, 2vw, 28px); font-weight: 650; line-height: 1.4; letter-spacing: .35px;
+}
+.capability-copy h3, .annotation-heading h3, .results-heading h3, .explorer-copy h3 {
+  font-size: clamp(21px, 1.8vw, 25px); line-height: 1.4; letter-spacing: -.2px;
+}
+.principles h3 { font-size: 23px; line-height: 1.4; }

@@ -21,7 +21,7 @@
   const cycle = stages.reduce((sum, stage) => sum + stage.duration, 0);
   let data, loadedFrames, initialized = false, ready = false, inView = false;
   let paused = reducedMotion.matches, elapsed = 0, lastTime = null, animationId = null;
-  let lastRender = '', plot, cursor, dot, curves = [], clips = [];
+  let lastRender = '', plot, cursor, dot, curves = [], clips = [], markers = [];
   const percent = value => `${Math.round(value * 100)}%`;
 
   function stateAt(time) {
@@ -56,7 +56,7 @@
     chart.append(svg('text', { x: left, y: bottom + 25, class: 'scale-animation-axis' }, 'Start'));
     chart.append(svg('text', { x: right, y: bottom + 25, 'text-anchor': 'end', class: 'scale-animation-axis' }, 'End'));
     const defs = svg('defs', {});
-    curves = []; clips = [];
+    curves = []; clips = []; markers = [];
     data.curves.forEach((curve, index) => {
       const clip = svg('clipPath', { id: `scale-animation-clip-${index}`, clipPathUnits: 'userSpaceOnUse' });
       const rect = svg('rect', { x: left - 3, y: 0, width: 0, height });
@@ -64,10 +64,21 @@
       const line = svg('polyline', { points: curve.progress.map((value, frame) => `${plot.x(frame)},${plot.y(value)}`).join(' '),
         class: 'scale-animation-curve', stroke: colors[index], 'clip-path': `url(#scale-animation-clip-${index})` });
       curves.push(line);
+      const group = svg('g', { class: 'scale-animation-markers', stroke: colors[index], 'data-condition': index });
+      data.reference_frame_indices.forEach((frame, keyframe) => {
+        const x = plot.x(frame), y = plot.y(curve.progress[frame]);
+        const marker = index === 0
+          ? svg('circle', { cx: x, cy: y, r: 6, class: 'scale-animation-marker' })
+          : svg('path', { d: `M${x} ${y - 4.5}l4.5 4.5-4.5 4.5-4.5-4.5Z`, class: 'scale-animation-marker' });
+        marker.dataset.keyframe = keyframe;
+        marker.append(svg('title', {}, `Keyframe ${keyframe + 1}: reference ${percent(curve.reference_progress[keyframe])}, predicted progress ${(curve.progress[frame] * 100).toFixed(1)}%`));
+        group.append(marker);
+      });
+      markers.push(group);
     });
     cursor = svg('line', { y1: top, y2: bottom, class: 'scale-animation-cursor' });
     dot = svg('circle', { r: 5, class: 'scale-animation-dot' });
-    chart.append(defs, ...curves, cursor, dot);
+    chart.append(defs, ...curves, ...markers, cursor, dot);
     render(true);
   }
 
@@ -84,8 +95,12 @@
     keyframes.forEach((card, index) => {
       card.classList.toggle('is-visible', index < revealed);
       card.setAttribute('aria-hidden', String(index >= revealed));
-      const badge = card.querySelector('.scale-animation-badge');
-      badge.textContent = phase === 'reveal' ? '' : percent(data.curves[condition].reference_progress[index]);
+      card.querySelectorAll('.scale-animation-badge').forEach((badge, scale) => {
+        // Keep the text mounted so both sets of values can fade instead of popping in.
+        badge.textContent = percent(data.curves[scale].reference_progress[index]);
+        badge.classList.toggle('is-active', scale === condition);
+        badge.setAttribute('aria-label', `${scale === 0 ? 'First' : 'Second'} scale: ${badge.textContent}`);
+      });
     });
     legends.forEach((legend, index) => legend.classList.toggle('is-active', phase !== 'reveal' && index === condition));
     if (get('status').textContent !== state.text) get('status').textContent = state.text;
@@ -99,17 +114,22 @@
     get('frame').textContent = `Frame ${frame + 1} / 32`;
     const showingProgress = phase === 'play' || phase === 'hold';
     const value = data.curves[condition].progress[frame];
-    get('progress').value = showingProgress ? percent(value) : '—';
+    root.classList.toggle('progress-visible', showingProgress);
+    get('progress').value = percent(value);
     curves.forEach((line, index) => {
       const previous = condition === 1 && index === 0;
       const active = showingProgress && index === condition;
-      line.style.opacity = previous ? (phase === 'hold' ? '.55' : '.24') : active ? '1' : '0';
+      line.style.opacity = previous ? '.24' : active ? '1' : '0';
       clips[index].setAttribute('width', previous ? plot.right - plot.left + 6 : active ? plot.x(frame) - plot.left + 3 : 0);
+    });
+    markers.forEach((group, scale) => {
+      group.style.opacity = phase !== 'reveal' && scale === condition ? '1' : '.24';
+      [...group.children].forEach((marker, index) => { marker.style.opacity = index < revealed ? '1' : '0'; });
     });
     cursor.style.opacity = dot.style.opacity = showingProgress ? '1' : '0';
     cursor.setAttribute('x1', plot.x(frame)); cursor.setAttribute('x2', plot.x(frame));
     dot.setAttribute('cx', plot.x(frame)); dot.setAttribute('cy', plot.y(value)); dot.setAttribute('fill', colors[condition]);
-    get('chart-description').textContent = `Reference labels ${data.curves[condition].reference_progress.map(percent).join(', ')}. Frame ${frame + 1} of 32${showingProgress ? `, predicted progress ${percent(value)}` : ''}. The curve is revealed together with the trajectory frames.`;
+    get('chart-description').textContent = `Reference labels ${data.curves[condition].reference_progress.map(percent).join(', ')}. Frame ${frame + 1} of 32${showingProgress ? `, predicted progress ${percent(value)}` : ''}. Markers show model predictions at the three reference keyframes; red circles use the first scale and blue diamonds use the second. The curve is revealed together with the trajectory frames.`;
   }
 
   function canPlay() { return ready && inView && !paused && !document.hidden; }

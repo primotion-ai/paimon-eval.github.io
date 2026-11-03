@@ -8,11 +8,11 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261103-capability-animation">
+  <link rel="stylesheet" href="styles.css?v=20261104-hierarchy">
   <script src="script.js?v=20261101-explorer-images" defer></script>
   <script src="dataset-explorer.js?v=20261102-reference" defer></script>
   <script src="benchmark-comparison.js?v=20261102-ground-truth" defer></script>
-  <script src="scale-animation.js?v=20261103" defer></script>
+  <script src="scale-animation.js?v=20261104-dual-labels" defer></script>
   <script src="semantic-alignment.js?v=20261102-events-95" defer></script>
   <script src="cross-embodiment.js?v=20261102-reference" defer></script>
 </head>
@@ -109,9 +109,9 @@
           <div class="scale-animation-layout" id="scale-animation-content" hidden>
             <div class="scale-animation-reference" aria-label="Reference keyframes with assigned progress">
               <h4>Reference keyframes</h4>
-              <div class="scale-animation-keyframe" data-keyframe="0"><div class="scale-animation-keyframe-label"><span>Keyframe 1</span><span class="scale-animation-badge"></span></div><img src="assets/capabilities/different-progress-scale/icl_frame_0000.png" width="320" height="240" loading="lazy" alt="Reference keyframe 1: drawer open"></div>
-              <div class="scale-animation-keyframe" data-keyframe="1"><div class="scale-animation-keyframe-label"><span>Keyframe 2</span><span class="scale-animation-badge"></span></div><img src="assets/capabilities/different-progress-scale/icl_frame_0017.png" width="320" height="240" loading="lazy" alt="Reference keyframe 2: drawer partly closed"></div>
-              <div class="scale-animation-keyframe" data-keyframe="2"><div class="scale-animation-keyframe-label"><span>Keyframe 3</span><span class="scale-animation-badge"></span></div><img src="assets/capabilities/different-progress-scale/icl_frame_0031.png" width="320" height="240" loading="lazy" alt="Reference keyframe 3: drawer closed"></div>
+              <div class="scale-animation-keyframe" data-keyframe="0"><div class="scale-animation-keyframe-label"><span>Keyframe 1</span><span class="scale-animation-badges"><span class="scale-animation-badge" data-condition="0"></span><span class="scale-animation-badge" data-condition="1"></span></span></div><img src="assets/capabilities/different-progress-scale/icl_frame_0000.png" width="320" height="240" loading="lazy" alt="Reference keyframe 1: drawer open"></div>
+              <div class="scale-animation-keyframe" data-keyframe="1"><div class="scale-animation-keyframe-label"><span>Keyframe 2</span><span class="scale-animation-badges"><span class="scale-animation-badge" data-condition="0"></span><span class="scale-animation-badge" data-condition="1"></span></span></div><img src="assets/capabilities/different-progress-scale/icl_frame_0017.png" width="320" height="240" loading="lazy" alt="Reference keyframe 2: drawer partly closed"></div>
+              <div class="scale-animation-keyframe" data-keyframe="2"><div class="scale-animation-keyframe-label"><span>Keyframe 3</span><span class="scale-animation-badges"><span class="scale-animation-badge" data-condition="0"></span><span class="scale-animation-badge" data-condition="1"></span></span></div><img src="assets/capabilities/different-progress-scale/icl_frame_0031.png" width="320" height="240" loading="lazy" alt="Reference keyframe 3: drawer closed"></div>
             </div>
             <div class="scale-animation-query">
               <div class="scale-animation-panel-heading"><h4>Query trajectory</h4><span id="scale-animation-frame">Frame 1 / 32</span></div>
