@@ -8,10 +8,11 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261103-second-best">
+  <link rel="stylesheet" href="styles.css?v=20261103-capability-animation">
   <script src="script.js?v=20261101-explorer-images" defer></script>
   <script src="dataset-explorer.js?v=20261102-reference" defer></script>
   <script src="benchmark-comparison.js?v=20261102-ground-truth" defer></script>
+  <script src="scale-animation.js?v=20261103" defer></script>
   <script src="semantic-alignment.js?v=20261102-events-95" defer></script>
   <script src="cross-embodiment.js?v=20261102-reference" defer></script>
 </head>
@@ -91,10 +92,105 @@
         <h2 id="capabilities-title">Four capabilities.<br><em>A clearer picture of progress.</em></h2>
         <p>From choosing the progress scale to transferring it across tasks and effectors.</p>
       </div>
+      <section class="capability-row" id="user-defined-scales" aria-labelledby="scales-title">
+        <div class="capability-copy">
+          <span class="small-label">01 / USER-DEFINED PROGRESS SCALES</span>
+          <h3 id="scales-title">Your milestones. Your measure of progress.</h3>
+          <p>Assign progress values to keyframes from a successful trajectory. These annotations define the scale that Yuheng uses to evaluate other trajectories of the same task.</p>
+          <p>Different assignments can place different emphasis on the same semantic milestones. The model’s estimates follow the reference scale provided in context.</p>
+        </div>
+        <figure class="capability-media scale-animation" id="scale-animation" aria-label="Animated comparison of two user-defined progress scales">
+          <div class="scale-animation-toolbar">
+            <div><span class="small-label">SAME TRAJECTORY · TWO PROGRESS SCALES</span><p id="scale-animation-status" role="status">Loading the trajectory…</p></div>
+            <div class="scale-animation-controls"><button id="scale-animation-toggle" class="dataset-button" type="button" disabled>Pause</button><button id="scale-animation-restart" class="dataset-icon-button" type="button" aria-label="Restart scale animation" disabled>↺</button></div>
+          </div>
+          <p id="scale-animation-error" role="status" hidden>Could not load the trajectory. Please retry.</p>
+          <button id="scale-animation-retry" class="dataset-button" type="button" hidden>Retry</button>
+          <div class="scale-animation-layout" id="scale-animation-content" hidden>
+            <div class="scale-animation-reference" aria-label="Reference keyframes with assigned progress">
+              <h4>Reference keyframes</h4>
+              <div class="scale-animation-keyframe" data-keyframe="0"><div class="scale-animation-keyframe-label"><span>Keyframe 1</span><span class="scale-animation-badge"></span></div><img src="assets/capabilities/different-progress-scale/icl_frame_0000.png" width="320" height="240" loading="lazy" alt="Reference keyframe 1: drawer open"></div>
+              <div class="scale-animation-keyframe" data-keyframe="1"><div class="scale-animation-keyframe-label"><span>Keyframe 2</span><span class="scale-animation-badge"></span></div><img src="assets/capabilities/different-progress-scale/icl_frame_0017.png" width="320" height="240" loading="lazy" alt="Reference keyframe 2: drawer partly closed"></div>
+              <div class="scale-animation-keyframe" data-keyframe="2"><div class="scale-animation-keyframe-label"><span>Keyframe 3</span><span class="scale-animation-badge"></span></div><img src="assets/capabilities/different-progress-scale/icl_frame_0031.png" width="320" height="240" loading="lazy" alt="Reference keyframe 3: drawer closed"></div>
+            </div>
+            <div class="scale-animation-query">
+              <div class="scale-animation-panel-heading"><h4>Query trajectory</h4><span id="scale-animation-frame">Frame 1 / 32</span></div>
+              <div class="scale-animation-image"><img id="scale-animation-image" width="320" height="240" alt="" hidden></div>
+              <p>Close the drawer</p>
+            </div>
+            <div class="scale-animation-chart-panel">
+              <div class="scale-animation-panel-heading"><h4>Predicted progress</h4><output id="scale-animation-progress">—</output></div>
+              <div class="scale-animation-legend" aria-label="Keyframe progress scales"><span data-scale="0"><i aria-hidden="true"></i>0% · 20% · 100%</span><span data-scale="1"><i aria-hidden="true"></i>0% · 60% · 100%</span></div>
+              <svg id="scale-animation-chart" role="img" aria-labelledby="scale-animation-chart-title scale-animation-chart-description"><title id="scale-animation-chart-title">Yuheng predictions under two reference scales</title><desc id="scale-animation-chart-description">Progress is revealed in sync with the displayed trajectory frame.</desc></svg>
+            </div>
+          </div>
+          <noscript><p>Enable JavaScript to play the reference-scale animation.</p><img class="scale-animation-fallback" src="assets/capabilities/different-progress-scale/progress.svg" alt="Progress predictions under reference labels 0%, 20%, 100% and 0%, 60%, 100%."></noscript>
+          <figcaption>Yuheng 27B · Close the drawer</figcaption>
+        </figure>
+      </section>
+      <section class="capability-row" id="semantic-alignment" aria-labelledby="alignment-title">
+        <div class="capability-copy">
+          <span class="small-label">02 / SEMANTIC PROGRESS ALIGNMENT</span>
+          <h3 id="alignment-title">Different trajectories. Matching semantic milestones.</h3>
+          <p>Frames at the same semantic stage receive similar progress values on the reference scale, even when trajectories differ in execution speed, motion, or outcome.</p>
+          <p>This alignment makes progress comparable across successful, suboptimal, and failed executions, and helps retrieve corresponding keyframes from different trajectories.</p>
+        </div>
+        <figure class="capability-media alignment-demo" id="alignment-demo" aria-label="Match two trajectories by progress">
+          <p id="alignment-loading" role="status">Loading progress alignment…</p>
+          <button id="alignment-retry" class="dataset-button" type="button" hidden>Retry</button>
+          <noscript><p>Enable JavaScript to match trajectory frames by progress.</p></noscript>
+          <div id="alignment-browser" hidden>
+            <div class="alignment-legend"><span><i aria-hidden="true"></i>Trajectory 1</span><span><i aria-hidden="true"></i>Trajectory 2</span></div>
+            <div class="alignment-chart-row">
+              <div class="alignment-controls" role="group" aria-label="Adjust target progress in 5 percent steps">
+                <button id="alignment-up" type="button" aria-label="Increase target progress by 5 percent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+                <output id="alignment-target" aria-label="Target progress" aria-live="polite">0%</output>
+                <button id="alignment-down" type="button" aria-label="Decrease target progress by 5 percent" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 10 6 6 6-6"/></svg></button>
+              </div>
+              <svg id="alignment-chart" role="img" aria-labelledby="alignment-chart-title alignment-chart-description"><title id="alignment-chart-title">Progress alignment across two trajectories</title><desc id="alignment-chart-description">A horizontal dashed line marks the target progress. Images show the nearest progress in each trajectory.</desc></svg>
+            </div>
+            <p class="alignment-event" aria-live="polite" aria-atomic="true"><strong id="alignment-event-text">Progress 0%: The robot arm starts moving.</strong></p>
+            <p class="alignment-instruction">Adjust progress in 5% steps to compare matching frames.</p>
+            <div class="alignment-frames" id="alignment-frames" aria-busy="true">
+              <div class="alignment-frame-card"><h4>Trajectory 1</h4><div class="alignment-image-stage"><img id="alignment-image-0" width="320" height="240" alt="" hidden></div></div>
+              <div class="alignment-frame-card"><h4>Trajectory 2</h4><div class="alignment-image-stage"><img id="alignment-image-1" width="320" height="240" alt="" hidden></div></div>
+            </div>
+            <p id="alignment-frame-error" role="status" hidden>Frames could not be loaded.</p>
+            <button id="alignment-frame-retry" class="dataset-button" type="button" hidden>Retry frames</button>
+          </div>
+        </figure>
+      </section>
+      <section class="capability-row" id="cross-embodiment" aria-labelledby="embodiment-title">
+        <div class="capability-copy">
+          <span class="small-label">03 / CROSS-EMBODIMENT TRANSFER</span>
+          <h3 id="embodiment-title">Different effectors. A shared measure of progress.</h3>
+          <p>Provide a successful reference trajectory from a gripper, dexterous hand, or human hand, and label its keyframes with progress values. Yuheng uses this context to evaluate the same task performed by a different effector.</p>
+          <p>The reference and query can come from different embodiments, while the task and its semantic progress scale stay shared.</p>
+          <ul class="embodiment-types" aria-label="Supported embodiments"><li>Grippers</li><li>Dexterous hands</li><li>Human hands</li></ul>
+        </div>
+        <figure class="capability-media transfer-demo" id="transfer-demo" aria-label="Human-reference progress across four embodiments and executions">
+          <p id="transfer-loading" role="status">Loading cross-embodiment trajectories…</p>
+          <button id="transfer-retry" class="dataset-button" type="button" hidden>Retry</button>
+          <noscript><p>Enable JavaScript to view synchronized cross-embodiment trajectories.</p></noscript>
+          <div id="transfer-browser" hidden>
+            <div id="transfer-legend" class="transfer-legend" aria-label="Trajectory colors"></div>
+            <svg id="transfer-chart" role="img" aria-labelledby="transfer-chart-title transfer-chart-description"><title id="transfer-chart-title">Cross-embodiment progress curves</title><desc id="transfer-chart-description">Four trajectories share a frame cursor. Past progress is opaque and future progress is faded.</desc></svg>
+            <div class="transfer-transport" role="group" aria-label="Synchronized trajectory playback">
+              <button id="transfer-previous" class="dataset-icon-button" type="button" aria-label="Previous frame in all four trajectories" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button>
+              <button id="transfer-play" class="dataset-button" type="button" disabled>Play</button>
+              <button id="transfer-next" class="dataset-icon-button" type="button" aria-label="Next frame in all four trajectories" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg></button>
+              <span id="transfer-frame-counter">Frame 1 / 32</span>
+            </div>
+            <div id="transfer-frames" class="transfer-frames" aria-busy="true"></div>
+            <p id="transfer-frame-error" role="status" hidden>Frames could not be loaded.</p>
+            <button id="transfer-frame-retry" class="dataset-button" type="button" hidden>Retry frames</button>
+          </div>
+        </figure>
+      </section>
       <section class="capability-row" id="one-shot-generalization" aria-labelledby="generalization-title">
         <div class="capability-copy">
-          <span class="small-label">01 / ONE-SHOT MULTI-TASK GENERALIZATION</span>
-          <h3 id="generalization-title">A new task.<br>One successful reference.</h3>
+          <span class="small-label">04 / ONE-SHOT MULTI-TASK GENERALIZATION</span>
+          <h3 id="generalization-title">A new task. One successful reference.</h3>
           <p>For each new task, provide its instruction and one successful reference trajectory. Yuheng uses that context to evaluate progress on unseen tasks and objects without task-specific fine-tuning.</p>
           <p>It reasons about the relationship between the reference keyframes and the current frame, allowing the same model to work across different tasks.</p>
         </div>
@@ -126,89 +222,6 @@
             </div>
           </div>
           <figcaption>Yuheng 27B · Predicted progress across three unseen tasks</figcaption>
-        </figure>
-      </section>
-      <section class="capability-row" id="user-defined-scales" aria-labelledby="scales-title">
-        <div class="capability-copy">
-          <span class="small-label">02 / USER-DEFINED PROGRESS SCALES</span>
-          <h3 id="scales-title">Your milestones.<br>Your measure of progress.</h3>
-          <p>Assign progress values to keyframes from a successful trajectory. These annotations define the scale that Yuheng uses to evaluate other trajectories of the same task.</p>
-          <p>Different assignments can place different emphasis on the same semantic milestones. The model’s estimates follow the reference scale provided in context.</p>
-        </div>
-        <figure class="capability-media scale-comparison" aria-label="Progress-scale comparison using the same three reference keyframes">
-          <div class="scale-reference-frames" aria-label="reference keyframes">
-            <div><img src="assets/capabilities/different-progress-scale/icl_frame_0000.png" width="320" height="240" loading="lazy" alt="Keyframe 1: drawer open"><span>Keyframe 1</span></div>
-            <div><img src="assets/capabilities/different-progress-scale/icl_frame_0017.png" width="320" height="240" loading="lazy" alt="Keyframe 2: drawer partly closed"><span>Keyframe 2</span></div>
-            <div><img src="assets/capabilities/different-progress-scale/icl_frame_0031.png" width="320" height="240" loading="lazy" alt="Keyframe 3: drawer closed"><span>Keyframe 3</span></div>
-          </div>
-          <div class="scale-comparison-legend" aria-label="Progress labels assigned to the three reference frames">
-            <span><i class="scale-key-20" aria-hidden="true"></i><span>Keyframe progress: <span class="scale-key-values">0% · 20% · 100%</span></span></span>
-            <span><i class="scale-key-60" aria-hidden="true"></i><span>Keyframe progress: <span class="scale-key-values">0% · 60% · 100%</span></span></span>
-          </div>
-          <picture class="scale-comparison-plot">
-            <source media="(max-width: 480px), (min-width: 761px) and (max-width: 1100px)" srcset="assets/capabilities/different-progress-scale/progress-compact.svg">
-            <img src="assets/capabilities/different-progress-scale/progress.svg" width="660" height="410" loading="lazy" alt="Yuheng 27B progress predictions for Close the drawer under two reference scales. Changing the middle reference label from 20% to 60% shifts the predicted progress. Markers indicate predictions at reference frames 0, 17 and 31.">
-          </picture>
-          <figcaption>Yuheng 27B · Close the drawer<br>Markers indicate the three reference frames.</figcaption>
-        </figure>
-      </section>
-      <section class="capability-row" id="semantic-alignment" aria-labelledby="alignment-title">
-        <div class="capability-copy">
-          <span class="small-label">03 / SEMANTIC PROGRESS ALIGNMENT</span>
-          <h3 id="alignment-title">Different trajectories.<br>Matching semantic milestones.</h3>
-          <p>Frames at the same semantic stage receive similar progress values on the reference scale, even when trajectories differ in execution speed, motion, or outcome.</p>
-          <p>This alignment makes progress comparable across successful, suboptimal, and failed executions, and helps retrieve corresponding keyframes from different trajectories.</p>
-        </div>
-        <figure class="capability-media alignment-demo" id="alignment-demo" aria-label="Match two trajectories by progress">
-          <p id="alignment-loading" role="status">Loading progress alignment…</p>
-          <button id="alignment-retry" class="dataset-button" type="button" hidden>Retry</button>
-          <noscript><p>Enable JavaScript to match trajectory frames by progress.</p></noscript>
-          <div id="alignment-browser" hidden>
-            <div class="alignment-legend"><span><i aria-hidden="true"></i>Trajectory 1</span><span><i aria-hidden="true"></i>Trajectory 2</span></div>
-            <div class="alignment-chart-row">
-              <div class="alignment-controls" role="group" aria-label="Adjust target progress in 5 percent steps">
-                <button id="alignment-up" type="button" aria-label="Increase target progress by 5 percent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
-                <output id="alignment-target" aria-label="Target progress" aria-live="polite">0%</output>
-                <button id="alignment-down" type="button" aria-label="Decrease target progress by 5 percent" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 10 6 6 6-6"/></svg></button>
-              </div>
-              <svg id="alignment-chart" role="img" aria-labelledby="alignment-chart-title alignment-chart-description"><title id="alignment-chart-title">Progress alignment across two trajectories</title><desc id="alignment-chart-description">A horizontal dashed line marks the target progress. Images show the nearest progress in each trajectory.</desc></svg>
-            </div>
-            <p class="alignment-event" aria-live="polite" aria-atomic="true"><strong id="alignment-event-text">Progress 0%: The robot arm starts moving.</strong></p>
-            <p class="alignment-instruction">Adjust progress in 5% steps to compare matching frames.</p>
-            <div class="alignment-frames" id="alignment-frames" aria-busy="true">
-              <div class="alignment-frame-card"><h4>Trajectory 1</h4><div class="alignment-image-stage"><img id="alignment-image-0" width="320" height="240" alt="" hidden></div></div>
-              <div class="alignment-frame-card"><h4>Trajectory 2</h4><div class="alignment-image-stage"><img id="alignment-image-1" width="320" height="240" alt="" hidden></div></div>
-            </div>
-            <p id="alignment-frame-error" role="status" hidden>Frames could not be loaded.</p>
-            <button id="alignment-frame-retry" class="dataset-button" type="button" hidden>Retry frames</button>
-          </div>
-        </figure>
-      </section>
-      <section class="capability-row" id="cross-embodiment" aria-labelledby="embodiment-title">
-        <div class="capability-copy">
-          <span class="small-label">04 / CROSS-EMBODIMENT TRANSFER</span>
-          <h3 id="embodiment-title">A human demonstration.<br>A robot’s progress.</h3>
-          <p>Record one successful human-hand trajectory and label its keyframes with progress values. Use it as in-context reference to evaluate other trajectories of the same task executed by a robot arm or dexterous robot hand.</p>
-          <p>The reference and query can come from different embodiments, while the task and its semantic progress scale stay shared.</p>
-          <ul class="embodiment-types" aria-label="Supported embodiments"><li>Grippers</li><li>Dexterous hands</li><li>Human hands</li></ul>
-        </div>
-        <figure class="capability-media transfer-demo" id="transfer-demo" aria-label="Human-reference progress across four embodiments and executions">
-          <p id="transfer-loading" role="status">Loading cross-embodiment trajectories…</p>
-          <button id="transfer-retry" class="dataset-button" type="button" hidden>Retry</button>
-          <noscript><p>Enable JavaScript to view synchronized cross-embodiment trajectories.</p></noscript>
-          <div id="transfer-browser" hidden>
-            <div id="transfer-legend" class="transfer-legend" aria-label="Trajectory colors"></div>
-            <svg id="transfer-chart" role="img" aria-labelledby="transfer-chart-title transfer-chart-description"><title id="transfer-chart-title">Cross-embodiment progress curves</title><desc id="transfer-chart-description">Four trajectories share a frame cursor. Past progress is opaque and future progress is faded.</desc></svg>
-            <div class="transfer-transport" role="group" aria-label="Synchronized trajectory playback">
-              <button id="transfer-previous" class="dataset-icon-button" type="button" aria-label="Previous frame in all four trajectories" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button>
-              <button id="transfer-play" class="dataset-button" type="button" disabled>Play</button>
-              <button id="transfer-next" class="dataset-icon-button" type="button" aria-label="Next frame in all four trajectories" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg></button>
-              <span id="transfer-frame-counter">Frame 1 / 32</span>
-            </div>
-            <div id="transfer-frames" class="transfer-frames" aria-busy="true"></div>
-            <p id="transfer-frame-error" role="status" hidden>Frames could not be loaded.</p>
-            <button id="transfer-frame-retry" class="dataset-button" type="button" hidden>Retry frames</button>
-          </div>
         </figure>
       </section>
     </section>

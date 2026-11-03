@@ -72,7 +72,25 @@ for compact in [False, True]:
         'Title': 'Yuheng 27B progress under two reference scales',
         'Description': 'Close the drawer. Reference labels: 0%, 20%, 100% and 0%, 60%, 100%. Markers show model predictions at reference frame indices 0, 17, 31.'})
     plt.close(fig)
+# Match the query sequence by identity, not the viewer's displayed ordinal.
+annotations = json.loads((ROOT / 'assets/annotation-examples/index.json').read_text())
+trajectory = next(t for task in annotations['tasks'] for t in task['trajectories']
+                  if t['id'] == metadata['trajectory_id'])
+assert [f['frame_index'] for f in trajectory['frames']] == metadata['query_frame_indices']
+(DEST / 'trajectory').mkdir(exist_ok=True)
+(SOURCE / 'trajectory').mkdir(exist_ok=True)
+frames = []
+for frame in trajectory['frames']:
+    original = ROOT / 'assets/annotation-examples' / frame['image_path']
+    filename = f"{frame['frame_index']:04d}.png"
+    shutil.copyfile(original, SOURCE / 'trajectory' / filename)
+    shutil.copyfile(original, DEST / 'trajectory' / filename)
+    frames.append({'frame_index': frame['frame_index'], 'image_path': f'trajectory/{filename}'})
+for reference in metadata['reference_images']:
+    image = DEST / frames[reference['frame_index']]['image_path']
+    assert hashlib.sha256(image.read_bytes()).hexdigest() == reference['sha256']
 public = {'task': metadata['task'], 'model': 'Yuheng 27B', 'frame_indices': list(range(32)),
+          'trajectory_id': metadata['trajectory_id'], 'frames': frames,
           'reference_frame_indices': [0,17,31], 'curves': [{k:v for k,v in c.items() if k not in ['color','marker']} for c in curves]}
 (DEST / 'results.json').write_text(json.dumps(public, indent=2)+'\n')
-print('Verified 64 predictions against CSV, copied 3 checksum-verified images, generated desktop/mobile SVG plots and curated data.')
+print('Verified 64 predictions against CSV, copied 3 checksum-verified images, copied the matching 32-frame query sequence, generated SVG plots and curated data.')

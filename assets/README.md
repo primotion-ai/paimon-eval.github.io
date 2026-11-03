@@ -30,3 +30,5 @@ Replace placeholder contents with images that have descriptive `alt` text. Do no
 `capabilities/cross-embodiment/` contains the four 32-frame image sequences and curated predictions used by `cross-embodiment.js`. Regenerate with `scripts/prepare-cross-embodiment.py`; it validates source checksums and CSV values. Shared playback follows sampled frame position, not synchronized real timestamps.
 
 `capabilities/one-shot-multi-task/` contains six checksum-verified first/last frames, three independent SVG curves, and unchanged Yuheng 27B predictions for three tasks. Regenerate with `scripts/prepare-one-shot.py`. Source exports remain local; published metadata excludes machine paths.
+
+The reference-scale animation loads `different-progress-scale/results.json` and its own `trajectory/` PNG sequence. The exporter matches the experiment trajectory ID and checks all three reference-image hashes before copying frames. `scale-animation.js` sequences keyframe reveals and both scales; the original static SVGs remain available as a no-JavaScript fallback.
