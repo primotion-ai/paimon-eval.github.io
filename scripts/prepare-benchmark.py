@@ -106,7 +106,11 @@ for key, title, description in CHARTS:
 ordered = sorted(models, key=lambda m: (m['average'] is not None,
                  m['average'] if m['average'] is not None else (m['within_overall']+m['cross_overall'])/2, m['model']))
 columns = ['average'] + FIELDS
-best = {key: (min if key.startswith('mae_') else max)(m[key] for m in models if m[key] is not None) for key in columns}
+# Rank distinct full-precision values; missing metrics are never ranked.
+ranked_values = {key: sorted({m[key] for m in models if m[key] is not None},
+                            reverse=not key.startswith('mae_')) for key in columns}
+best = {key: values[0] for key, values in ranked_values.items()}
+second = {key: values[1] if len(values) > 1 else None for key, values in ranked_values.items()}
 rows = []
 for model in ordered:
     label = html.escape(model['model']) + (' <span class="result-ours">Ours</span>' if model['kind'].startswith('ours') else '')
@@ -117,7 +121,12 @@ for model in ordered:
             content = '<span class="result-na" aria-label="Not applicable">—</span>'
         else:
             formatted = f'{value:.1f}'
-            content = f'<strong title="Best in this column">{formatted}</strong>' if value == best[key] else formatted
+            if value == best[key]:
+                content = f'<strong title="Best in this column">{formatted}</strong>'
+            elif value == second[key]:
+                content = f'<span class="result-second" title="Second-best in this column">{formatted}</span>'
+            else:
+                content = formatted
         extra = ' result-average' if key == 'average' else ''
         cells.append(f'<td class="result-number{extra}" data-metric="{key}">{content}</td>')
     rows.append(f'<tr class="{model["kind"]}" data-model="{html.escape(model["model"], quote=True)}"><th scope="row">{label}</th>{"".join(cells)}</tr>')

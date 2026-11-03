@@ -1901,6 +1901,7 @@ display:none}
 .results-table tbody tr:last-child th, .results-table tbody tr:last-child td { border-bottom: 0; }
 .results-table .result-average { border-right: 1px solid var(--line); }
 .results-table .result-number strong { font-weight: 750; color: #703f2e; }
+.result-second { text-decoration-line: underline; text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
 .result-ours { display: inline-block; margin-left: 5px; font-size: 14px; color: var(--accent-dark); font-weight: 450; }
 .result-na { color: #9b8f88; }
 .results-protocol-notes { margin-top: 22px; }
