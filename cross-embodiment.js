@@ -18,17 +18,16 @@
   let duration = 0;
   stages.forEach(stage => { stage.start = duration; duration += stage.duration; });
   const groups = { yam: ['3'], wuji: ['5', '7'], human: ['1'] };
-  const groupNames = { yam: 'YAM arm', wuji: 'Wuji hand · success vs. failure', human: 'Human hand' };
   const descriptions = {
-    '3': ['YAM arm · Success', 'Robot arm execution · Trajectory 3'],
-    '5': ['Wuji hand · Success', 'Completes the task · Trajectory 5'],
-    '7': ['Wuji hand · Failure', 'Incomplete task · Trajectory 7'],
-    '1': ['Human hand', 'The reference evaluated as a query · Trajectory 1'],
+    '3': ['YAM', 'Success'], '5': ['WUJI', 'Success'],
+    '7': ['WUJI', 'Failure'], '1': ['Human hand', 'Reference query'],
   };
+  const order = ['3', '5', '7', '1'];
   let data, trajectories, frames, initialized = false, ready = false, inView = false;
   let paused = reducedMotion.matches, elapsed = 0, lastTime = null, animationId = null, lastRender = '';
   const cards = {}, rows = {};
   let resizeObserver;
+  const connections = { reference: [], model: [], output: {} };
   const percent = value => `${Math.round(value * 100)}%`;
 
   function stateAt(time) {
@@ -51,17 +50,15 @@
     const { chart, ids } = row;
     const w = chart.clientWidth, h = chart.clientHeight;
     if (!w || !h) return;
-    const left = 45, right = w - 12, top = 12, bottom = h - 30;
+    const left = 34, right = w - 7, top = 8, bottom = h - 8;
     row.plot = { width: w, height: h, left, x: frame => left + (right - left) * frame / 31, y: value => bottom - (bottom - top) * value };
     const plot = row.plot;
     chart.setAttribute('viewBox', `0 0 ${w} ${h}`);
     chart.querySelectorAll(':scope > :not(title):not(desc)').forEach(node => node.remove());
-    [0, .25, .5, .75, 1].forEach(value => {
+    [0, 1].forEach(value => {
       chart.append(svg('line', { x1: left, x2: right, y1: plot.y(value), y2: plot.y(value), class: 'transfer-gridline' }));
       chart.append(svg('text', { x: left - 7, y: plot.y(value) + 4, 'text-anchor': 'end', class: 'transfer-axis-label' }, percent(value)));
     });
-    chart.append(svg('text', { x: left, y: bottom + 22, class: 'transfer-axis-label' }, 'Start'));
-    chart.append(svg('text', { x: right, y: bottom + 22, 'text-anchor': 'end', class: 'transfer-axis-label' }, 'End'));
     const defs = svg('defs', {});
     chart.append(defs);
     row.clips = {}; row.dots = {};
@@ -77,6 +74,27 @@
     row.cursor = svg('line', { y1: top, y2: bottom, class: 'transfer-cursor' });
     chart.append(row.cursor, ...Object.values(row.dots));
   }
+  function drawConnections() {
+    if (!ready) return;
+    const flow = get('flow'), layer = get('connections'), bounds = flow.getBoundingClientRect();
+    layer.setAttribute('viewBox', `0 0 ${bounds.width} ${bounds.height}`);
+    layer.replaceChildren(); connections.reference = []; connections.model = []; connections.output = {};
+    const defs = svg('defs', {}), marker = svg('marker', { id: 'transfer-arrow-tip', viewBox: '0 0 6 6', refX: 5, refY: 3, markerWidth: 5, markerHeight: 5, orient: 'auto' });
+    marker.append(svg('path', { d: 'M0 0L6 3L0 6', fill: '#bc8b76' })); defs.append(marker); layer.append(defs);
+    const box = element => { const r = element.getBoundingClientRect(); return { left: r.left - bounds.left, right: r.right - bounds.left, top: r.top - bounds.top, bottom: r.bottom - bounds.top, cy: r.top - bounds.top + r.height / 2 }; };
+    const reference = box(get('reference')), model = box(get('model'));
+    const path = d => { const node = svg('path', { d, class: 'transfer-connection', 'marker-end': 'url(#transfer-arrow-tip)' }); layer.append(node); return node; };
+    [...get('keyframes').children].forEach((card, i) => {
+      const frame = box(card), branchX = frame.left - 15;
+      connections.reference.push(path(`M${reference.left + 4},${reference.bottom + 3}H${branchX}V${frame.cy}H${frame.left - 5}`));
+      const targetY = model.cy + (i - 1.5) * 12, x1 = frame.right + 4, x2 = model.left - 5, mid = (x1 + x2) / 2;
+      connections.model.push(path(`M${x1},${frame.cy}C${mid},${frame.cy} ${mid},${targetY} ${x2},${targetY}`));
+    });
+    order.forEach((id, i) => {
+      const result = box(rows[id].section), startY = model.cy + (i - 1.5) * 12, x1 = model.right + 4, x2 = result.left - 6, mid = (x1 + x2) / 2;
+      connections.output[id] = path(`M${x1},${startY}C${mid},${startY} ${mid},${result.cy} ${x2},${result.cy}`);
+    });
+  }
   function makeCards() {
     get('keyframes').replaceChildren(); get('output').replaceChildren();
     resizeObserver?.disconnect();
@@ -84,42 +102,29 @@
       const card = document.createElement('div'); card.className = 'transfer-keyframe';
       const image = document.createElement('img'); image.src = frames['1'][frame].src; image.width = 320; image.height = 256;
       image.alt = `Human reference keyframe ${i + 1}, assigned progress ${percent(data.reference.progress[i])}`;
-      const label = document.createElement('p'); label.append('Progress: ');
+      const label = document.createElement('p'); label.append('Progress');
       const value = document.createElement('strong'); value.textContent = percent(data.reference.progress[i]); label.append(value);
       card.append(image, label); get('keyframes').append(card);
     });
-    Object.entries(groups).forEach(([group, ids]) => {
-      const section = document.createElement('section'); section.className = 'transfer-result-row'; section.dataset.group = group; section.hidden = true;
-      section.setAttribute('aria-labelledby', `transfer-title-${group}`);
-      const panel = document.createElement('div'); panel.className = 'transfer-query-panel';
-      const heading = document.createElement('div'); heading.className = 'transfer-query-heading';
-      const title = document.createElement('h4'); title.id = `transfer-title-${group}`; title.textContent = groupNames[group];
-      const counter = document.createElement('span'); counter.className = 'transfer-frame-counter';
-      heading.append(title, counter);
-      const framePanel = document.createElement('div'); framePanel.className = 'transfer-query-frames';
-      panel.append(heading, framePanel);
-      const chartPanel = document.createElement('div'); chartPanel.className = 'transfer-story-chart';
-      const legend = document.createElement('div'); legend.className = 'transfer-legend'; legend.setAttribute('aria-label', 'Trajectory colors');
-      const chart = svg('svg', { class: 'transfer-result-chart', role: 'img', 'aria-labelledby': `transfer-chart-title-${group} transfer-chart-description-${group}` });
-      chart.append(svg('title', { id: `transfer-chart-title-${group}` }, `${groupNames[group]} progress`));
-      const description = svg('desc', { id: `transfer-chart-description-${group}` }); chart.append(description);
-      chartPanel.append(legend, chart); section.append(panel, chartPanel); get('output').append(section);
-      rows[group] = { section, chart, description, counter, ids };
-      ids.forEach(id => {
-        const t = trajectories[id];
-        const card = document.createElement('div'); card.className = 'transfer-query-card'; card.dataset.trajectory = id;
-        card.classList.toggle('is-single', ids.length === 1); card.style.setProperty('--trajectory-color', t.color);
-        const cardTitle = document.createElement('h5'); cardTitle.textContent = descriptions[id][0];
-        const image = document.createElement('img'); image.width = 320; image.height = 256;
-        const caption = document.createElement('p'); caption.textContent = descriptions[id][1];
-        const output = document.createElement('output'); output.setAttribute('aria-label', `${t.name} predicted progress`);
-        card.append(cardTitle, image, caption, output); framePanel.append(card); cards[id] = { card, image, output };
-        const item = document.createElement('span');
-        const swatch = document.createElement('i'); swatch.style.background = t.color; swatch.setAttribute('aria-hidden', 'true');
-        item.append(swatch, descriptions[id][0]); legend.append(item);
-      });
+    order.forEach(id => {
+      const t = trajectories[id], group = Object.keys(groups).find(g => groups[g].includes(id));
+      const section = document.createElement('section'); section.className = 'transfer-result-row'; section.dataset.group = group; section.dataset.trajectory = id;
+      section.setAttribute('aria-labelledby', `transfer-title-${id}`); section.style.setProperty('--trajectory-color', t.color);
+      const label = document.createElement('div'); label.className = 'transfer-query-label';
+      const title = document.createElement('h4'); title.id = `transfer-title-${id}`; title.textContent = descriptions[id][0];
+      const role = document.createElement('p'); role.textContent = descriptions[id][1];
+      const output = document.createElement('output'); output.setAttribute('aria-label', `${descriptions[id].join(' ')} predicted progress`);
+      label.append(title, role, output);
+      const image = document.createElement('img'); image.className = 'transfer-query-image'; image.width = 320; image.height = 256;
+      const chart = svg('svg', { class: 'transfer-result-chart', role: 'img', 'aria-labelledby': `transfer-chart-title-${id} transfer-chart-description-${id}` });
+      chart.append(svg('title', { id: `transfer-chart-title-${id}` }, `${descriptions[id].join(' ')} progress`));
+      const description = svg('desc', { id: `transfer-chart-description-${id}` }); chart.append(description);
+      section.append(label, image, chart); get('output').append(section);
+      rows[id] = { section, chart, description, ids: [id], group };
+      cards[id] = { image, output };
       resizeObserver?.observe(chart);
     });
+    resizeObserver?.observe(get('flow'));
   }
   function showImage(image, id, frame) {
     if (image.dataset.frame === String(frame)) return;
@@ -136,40 +141,36 @@
     root.dataset.stage = state.name; root.dataset.frame = state.frame;
     if (get('status').textContent !== state.text) get('status').textContent = state.text;
     showImage(get('reference-image'), '1', state.name === 'reference' ? state.frame : 31);
-    get('arrow-keyframes').classList.toggle('is-visible', state.name !== 'reference');
     [...get('keyframes').children].forEach((card, i) => {
       card.classList.toggle('is-visible', i < state.revealed);
-      card.setAttribute('aria-hidden', String(i >= state.revealed));
+      connections.reference[i]?.classList.toggle('is-visible', i < state.revealed);
+      connections.model[i]?.classList.toggle('is-visible', state.name === 'model' || Boolean(state.group));
     });
     const modelVisible = state.name === 'model' || Boolean(state.group);
-    get('arrow-model').classList.toggle('is-visible', modelVisible);
     get('model').classList.toggle('is-visible', modelVisible);
     get('model').classList.toggle('is-evaluating', Boolean(state.group) && state.name !== 'summary');
     get('model').setAttribute('aria-hidden', String(!modelVisible));
     const activeGroup = Object.keys(groups).indexOf(state.group);
-    Object.entries(rows).forEach(([group, row], index) => {
-      const visible = index <= activeGroup;
-      row.section.hidden = !visible;
-      if (!visible) return;
-      const current = group === state.group;
-      const frame = current ? state.frame : 31;
+    order.forEach(id => {
+      const row = rows[id], index = Object.keys(groups).indexOf(row.group);
+      const visible = index <= activeGroup, current = row.group === state.group;
+      const frame = visible ? current ? state.frame : 31 : 0;
+      row.section.classList.toggle('is-visible', visible);
+      connections.output[id]?.classList.toggle('is-visible', visible);
       row.section.dataset.frame = frame;
       row.section.classList.toggle('is-playing', current && ['yam', 'wuji', 'human'].includes(state.name));
-      row.counter.textContent = `Frame ${frame + 1} / 32`;
       if (!row.plot || row.plot.width !== row.chart.clientWidth || row.plot.height !== row.chart.clientHeight) drawChart(row);
       if (!row.plot) return;
-      const { plot } = row;
-      row.ids.forEach(id => {
-        const item = cards[id];
-        showImage(item.image, id, frame);
-        item.output.value = `Progress: ${percent(trajectories[id].frames[frame].progress)}`;
-        row.clips[id].setAttribute('width', plot.x(frame) - plot.left + 3);
-        row.dots[id].setAttribute('cx', plot.x(frame));
-        row.dots[id].setAttribute('cy', plot.y(trajectories[id].frames[frame].progress));
-      });
+      const { plot } = row, item = cards[id];
+      showImage(item.image, id, frame);
+      item.output.value = `Progress: ${percent(trajectories[id].frames[frame].progress)}`;
+      row.clips[id].setAttribute('width', visible ? plot.x(frame) - plot.left + 3 : 0);
+      row.dots[id].style.opacity = visible ? '1' : '0';
+      row.dots[id].setAttribute('cx', plot.x(frame));
+      row.dots[id].setAttribute('cy', plot.y(trajectories[id].frames[frame].progress));
       row.cursor.setAttribute('x1', plot.x(frame)); row.cursor.setAttribute('x2', plot.x(frame));
       row.cursor.style.opacity = current && state.name !== 'summary' ? '1' : '0';
-      row.description.textContent = `${groupNames[group]}. Frame ${frame + 1} of 32. Progress curves are revealed with the corresponding images and remain visible after playback.`;
+      row.description.textContent = `${descriptions[id].join(' ')}. ${visible ? `Frame ${frame + 1} of 32.` : 'Waiting for playback.'} The curve follows the displayed image on the shared reference scale.`;
     });
     root.querySelectorAll('[data-stage]').forEach(button => {
       button.setAttribute('aria-pressed', String(button.dataset.stage === (state.group || 'reference')));
@@ -230,7 +231,7 @@
       makeCards(); ready = true; get('browser').hidden = false; get('loading').hidden = true;
       get('play').disabled = get('restart').disabled = false;
       if (reducedMotion.matches) elapsed = duration - 1000;
-      render(true); syncPlayback();
+      drawConnections(); render(true); syncPlayback();
     } catch {
       initialized = false; ready = false; get('browser').hidden = true;
       get('loading').textContent = 'Trajectories could not be loaded. Please retry.';
@@ -238,8 +239,9 @@
     } finally { root.setAttribute('aria-busy', 'false'); }
   }
   get('retry').addEventListener('click', initialize);
-  if ('ResizeObserver' in window) resizeObserver = new ResizeObserver(() => render(true));
-  else window.addEventListener('resize', () => render(true));
+  const resize = () => { drawConnections(); render(true); };
+  if ('ResizeObserver' in window) resizeObserver = new ResizeObserver(resize);
+  else window.addEventListener('resize', resize);
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(entries => { inView = entries.some(e => e.isIntersecting); if (inView) initialize(); syncPlayback(); }).observe(root);
   } else { inView = true; initialize(); }
