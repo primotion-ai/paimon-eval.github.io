@@ -99,6 +99,21 @@
       "mae_overall": 28.387698329186573
     },
     {
+      "model": "NimCritic",
+      "average": 57.73105494687915,
+      "within_success": 75.4584942084942,
+      "within_non_success": 55.0025720164609,
+      "within_overall": 65.55652390438247,
+      "cross_success_success": 66.29454701588665,
+      "cross_non_success_non_success": 49.611510791366904,
+      "cross_success_non_success": 57.03314470493129,
+      "cross_overall": 56.640625,
+      "terminal_agreement": 50.99601593625498,
+      "mae_success": 20.872708187819867,
+      "mae_non_success": 33.24820874535109,
+      "mae_overall": 26.863239334194546
+    },
+    {
       "model": "GRM 2.0 Preview 4B",
       "average": 59.07210690966294,
       "within_success": 68.27944015444015,

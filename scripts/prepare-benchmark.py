@@ -1,6 +1,7 @@
 """Generate static benchmark figures and table; see README for the pinned plotting command."""
 import csv
 import html
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -19,6 +20,7 @@ NAMES = {
     'icl_27b_lora_astralabel_step1500': ('Yuheng 27B', 'Yuheng\n27B', 'ours-27b'),
     'icl_4b_astralabel_step3000': ('Yuheng 4B', 'Yuheng\n4B', 'ours-4b'),
     'official_4b_uniform8_interp32': ('Robometer 4B', 'Robometer\n4B', 'baseline'),
+    'NimCritic': ('NimCritic', 'NimCritic', 'baseline'),
     'Flora-Rewarder': ('Flora Rewarder', 'Flora\nRewarder', 'baseline'),
     'RoboReward-4B': ('RoboReward 4B', 'RoboReward\n4B', 'baseline'),
     'RoboReward-8B': ('RoboReward 8B', 'RoboReward\n8B', 'baseline'),
@@ -46,7 +48,8 @@ for original in DATA['models']:
         row[key] = value
     row['average'] = sum(row[key] for key in AGREEMENTS) / 3 if all(row[key] is not None for key in AGREEMENTS) else None
     models.append(row)
-assert len(models) == len(NAMES) == 14
+assert len(models) == len(NAMES)
+assert {m['model_id'] for m in DATA['models']} == set(NAMES)
 with (SOURCE / 'complete_metrics_machine.csv').open(encoding='utf-8-sig') as file:
     csv_rows = {row['model_id']: row for row in csv.DictReader(file)}
 for original in DATA['models']:
@@ -94,12 +97,14 @@ for key, title, description in CHARTS:
         'Description': 'OOD benchmark. Scores in percent, sorted from highest to lowest. Labels show one decimal place.'})
     plt.close(fig)
     chart = output.read_text().replace('<svg ', '<svg role="img" aria-label="'+html.escape(title)+'; higher scores are better" ', 1)
+    chart = '\n'.join(line.rstrip() for line in chart.splitlines()) + '\n'
     output.write_text(chart)
+    chart_version = hashlib.sha256(chart.encode()).hexdigest()[:12]
     missing = ' RynnValue is not included because this metric is not applicable.' if key in ('average','terminal_agreement') else ''
     chart_markup.append(f'''<figure class="result-chart" aria-labelledby="chart-{key}-title">
       <figcaption><h4 id="chart-{key}-title">{title}</h4>
       <div class="results-chart-key" aria-label="Chart colors"><span><i class="key-27b" aria-hidden="true"></i>Yuheng 27B</span><span><i class="key-4b" aria-hidden="true"></i>Yuheng 4B</span><span><i class="key-baseline" aria-hidden="true"></i>Other models</span></div></figcaption>
-      <div class="result-chart-scroll" tabindex="0" role="region" aria-label="{title} chart; scroll horizontally"><img src="assets/benchmark/ood_20261031/{key}.svg" width="{chart_width}" height="304" style="min-width: {chart_width}px" loading="lazy" alt="{title}: models sorted from highest to lowest, with scores to one decimal place. Full numerical results are in the table below.{missing}"></div>
+      <div class="result-chart-scroll" tabindex="0" role="region" aria-label="{title} chart; scroll horizontally"><img src="assets/benchmark/ood_20261031/{key}.svg?v={chart_version}" width="{chart_width}" height="304" style="min-width: {chart_width}px" loading="lazy" alt="{title}: models sorted from highest to lowest, with scores to one decimal place. Full numerical results are in the table below.{missing}"></div>
     </figure>''')
 
 # N/A models are unranked at the top; comparable rows then increase in Average score.
@@ -144,7 +149,7 @@ else:
     page = page[:start] + '      ' + markup + '\n    </section>' + page[end:]
 page_path.write_text(page)
 with (DEST / 'results.csv').open('w', newline='') as file:
-    writer = csv.DictWriter(file, fieldnames=['model']+columns)
+    writer = csv.DictWriter(file, fieldnames=['model']+columns, lineterminator='\n')
     writer.writeheader()
     for model in ordered: writer.writerow({key: model[key] for key in ['model']+columns})
 public = {
