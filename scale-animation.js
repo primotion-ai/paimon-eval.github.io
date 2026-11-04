@@ -16,7 +16,7 @@
     { phase: 'hold', condition: 0, duration: 1100, text: 'Same trajectory. Now change the scale.' },
     { phase: 'labels', condition: 1, duration: 1200, text: 'Keyframe progress: 0% · 60% · 100%' },
     { phase: 'play', condition: 1, duration: 8000, text: 'Follow progress on the new reference scale.' },
-    { phase: 'hold', condition: 1, duration: 2000, text: 'Same task, different scale. Watch it again.' },
+    { phase: 'hold', condition: 1, duration: 4600, text: 'Compare both progress scales.' },
   ];
   const cycle = stages.reduce((sum, stage) => sum + stage.duration, 0);
   let data, loadedFrames, initialized = false, ready = false, inView = false;
@@ -86,6 +86,7 @@
     if (!ready || !plot) return;
     const state = stateAt(elapsed);
     const { phase, condition, frame, revealed } = state;
+    const finalComparison = phase === 'hold' && condition === 1;
     const key = `${phase}:${condition}:${frame}:${revealed}`;
     if (!force && key === lastRender) return;
     lastRender = key;
@@ -98,11 +99,11 @@
       card.querySelectorAll('.scale-animation-badge').forEach((badge, scale) => {
         // Keep the text mounted so both sets of values can fade instead of popping in.
         badge.textContent = percent(data.curves[scale].reference_progress[index]);
-        badge.classList.toggle('is-active', scale === condition);
+        badge.classList.toggle('is-active', finalComparison || scale === condition);
         badge.setAttribute('aria-label', `${scale === 0 ? 'First' : 'Second'} scale: ${badge.textContent}`);
       });
     });
-    legends.forEach((legend, index) => legend.classList.toggle('is-active', phase !== 'reveal' && index === condition));
+    legends.forEach((legend, index) => legend.classList.toggle('is-active', phase !== 'reveal' && (finalComparison || index === condition)));
     if (get('status').textContent !== state.text) get('status').textContent = state.text;
     const image = get('image');
     if (image.dataset.frame !== String(frame)) {
@@ -119,11 +120,11 @@
     curves.forEach((line, index) => {
       const previous = condition === 1 && index === 0;
       const active = showingProgress && index === condition;
-      line.style.opacity = previous ? '.24' : active ? '1' : '0';
+      line.style.opacity = finalComparison ? '1' : previous ? '.24' : active ? '1' : '0';
       clips[index].setAttribute('width', previous ? plot.right - plot.left + 6 : active ? plot.x(frame) - plot.left + 3 : 0);
     });
     markers.forEach((group, scale) => {
-      group.style.opacity = phase !== 'reveal' && scale === condition ? '1' : '.24';
+      group.style.opacity = phase !== 'reveal' && (finalComparison || scale === condition) ? '1' : '.24';
       [...group.children].forEach((marker, index) => { marker.style.opacity = index < revealed ? '1' : '0'; });
     });
     cursor.style.opacity = dot.style.opacity = showingProgress ? '1' : '0';
