@@ -2258,18 +2258,18 @@ display:none}
 #transfer-restart { font-size: 24px; }
 .transfer-flow-scroll { min-width: 0; max-width: 100%; overflow-x: auto; padding: 3px 0; }
 .transfer-flow-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.transfer-flow { position: relative; display: grid; grid-template-columns: 200px 100px minmax(0, 1fr); gap: 32px; align-items: center; width: 100%; max-width: 920px; min-width: 820px; margin-inline: auto; }
-.transfer-context, .transfer-model, .transfer-output { position: relative; z-index: 1; }
-.transfer-context { padding-left: 24px; }
-.transfer-reference { width: 140px; margin-bottom: 12px; }
-.transfer-reference > img { display: block; width: 112px; height: auto; border-radius: 5px; }
+.transfer-flow { position: relative; display: grid; grid-template-columns: 140px 150px 94px 396px; gap: 56px; align-items: center; width: 100%; max-width: 948px; min-width: 948px; margin-inline: auto; padding-top: 25px; }
+.transfer-reference, .transfer-keyframes-panel, .transfer-model, .transfer-output { position: relative; z-index: 1; }
+.transfer-reference { width: 140px; }
+.transfer-reference > img { display: block; width: 128px; height: auto; border-radius: 5px; }
 .transfer-reference p { font-size: 14px; line-height: 1.4; margin-top: 5px; white-space: nowrap; }
 .transfer-reference > span { display: block; font-size: 13px; line-height: 1.4; color: var(--muted); }
-.transfer-keyframes-panel h4 { font-size: 14px; font-weight: 550; line-height: 1.4; margin: 0 0 8px; }
-.transfer-keyframes { display: grid; gap: 7px; }
-.transfer-keyframe { width: 144px; display: grid; grid-template-columns: 65px 1fr; gap: 10px; align-items: center; min-width: 0; opacity: .16; transition: opacity .45s ease; }
+.transfer-keyframes-panel { position: relative; }
+.transfer-keyframes-panel h4 { position: absolute; top: -25px; left: 0; white-space: nowrap; font-size: 14px; font-weight: 550; line-height: 1.4; margin: 0 0 8px; }
+.transfer-keyframes { display: grid; grid-template-rows: repeat(4, 104px); gap: 8px; }
+.transfer-keyframe { width: 150px; display: grid; grid-template-columns: 88px 1fr; gap: 8px; align-items: center; min-width: 0; opacity: .16; transition: opacity .45s ease; }
 .transfer-keyframe.is-visible { opacity: 1; }
-.transfer-keyframe img { display: block; width: 65px; height: auto; border-radius: 4px; }
+.transfer-keyframe img { display: block; width: 88px; height: auto; border-radius: 4px; }
 .transfer-keyframe p { font-size: 14px; line-height: 1.4; margin: 0; }
 .transfer-keyframe strong { display: block; color: var(--accent-dark); font-size: 17px; font-weight: 600; }
 .transfer-connections { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
@@ -2284,16 +2284,18 @@ display:none}
 .transfer-stage-tabs button { min-height: 32px; padding: 4px 10px; font: inherit; font-size: 14px; background: transparent; border: 1px solid #ddcec7; border-radius: 20px; color: var(--muted); cursor: pointer; }
 .transfer-stage-tabs button[aria-pressed="true"] { background: #f6e6dd; border-color: #cf8e76; color: var(--accent-dark); }
 .transfer-stage-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.transfer-output { display: grid; grid-template-rows: repeat(4, 92px); gap: 8px; }
-.transfer-result-row { display: grid; grid-template-columns: 108px 110px minmax(130px, 180px); justify-content: space-between; gap: 12px; align-items: center; opacity: .16; transition: opacity .45s ease; }
+.transfer-output { display: grid; grid-template-rows: repeat(4, 104px); gap: 8px; }
+.transfer-result-row { display: grid; grid-template-columns: 104px 128px 144px; gap: 10px; align-items: center; opacity: .16; transition: opacity .45s ease; }
 .transfer-result-row.is-visible { opacity: 1; }
 .transfer-query-label { min-width: 0; }
 .transfer-query-label h4 { margin: 0; font-size: 16px; line-height: 1.4; font-weight: 600; color: var(--trajectory-color); }
 .transfer-query-label p { margin: 2px 0 4px; font-size: 14px; line-height: 1.4; color: var(--muted); }
 .transfer-query-label output { display: block; font-size: 14px; line-height: 1.4; font-weight: 550; white-space: nowrap; }
-.transfer-query-image { display: block; width: 110px; height: auto; border-radius: 5px; }
-.transfer-story .transfer-result-chart { display: block; width: 100%; height: 88px; overflow: visible; }
+.transfer-query-image { display: block; width: 128px; height: auto; border-radius: 5px; }
+.transfer-story .transfer-result-chart { display: block; width: 100%; height: 102.4px; overflow: visible; }
 .transfer-story .transfer-axis-label { font-size: 11px; }
+.transfer-plot-border { fill: none; stroke: #d4c5bc; stroke-width: 1; }
+#capabilities .embodiment-types .embodiment-more { border: 0; padding-inline: 3px; font-size: 24px; line-height: 1; align-self: center; color: var(--muted); }
 .transfer-story-curve { fill: none; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
 .transfer-story-dot { stroke: #fff; stroke-width: 1.5; }
 @media (max-width: 700px) {

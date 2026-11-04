@@ -8,13 +8,13 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261105-transfer-flow">
+  <link rel="stylesheet" href="styles.css?v=20261105-transfer-columns">
   <script src="script.js?v=20261104-benchmark-fold" defer></script>
   <script src="dataset-explorer.js?v=20261102-reference" defer></script>
   <script src="benchmark-comparison.js?v=20261102-ground-truth" defer></script>
   <script src="scale-animation.js?v=20261104-final-comparison" defer></script>
   <script src="semantic-alignment.js?v=20261102-events-95" defer></script>
-  <script src="cross-embodiment.js?v=20261105-flow" defer></script>
+  <script src="cross-embodiment.js?v=20261105-columns" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -28,7 +28,7 @@
     <section class="hero" aria-labelledby="hero-title">
       <h1 id="hero-title"><span class="title-brand"><img src="icon.png?v=20261031-orange" alt="" width="48" height="48">Yuheng:</span> Toward Universal Progress Modeling <span class="title-continuation">through In-Context Learning and Semantic Alignment</span></h1>
       <p class="hero-description">One demonstration. Your definition of progress.<br>A shared measure across trajectories and embodiments.</p>
-      <p class="authors">Paimon Team</p>
+      <p class="authors">Primotion Team</p>
       <p class="project-date">Project date · <time datetime="2026-10-30">October 30, 2026</time></p>
       <div class="hero-actions" aria-label="Research resources">
         <a class="button button-primary" href="#method">Explore the method <span aria-hidden="true">↗</span></a>
@@ -165,7 +165,7 @@
           <span class="small-label">3.3 / CROSS-EMBODIMENT TRANSFER</span>
           <h3 id="embodiment-title">Different embodiments. A shared measure of progress.</h3>
           <p>Label keyframes from one successful trajectory to define a progress scale. Yuheng uses this reference to evaluate the same task across human hands, grippers, and dexterous hands.</p>
-          <ul class="embodiment-types" aria-label="Supported embodiments"><li>Grippers</li><li>Dexterous hands</li><li>Human hands</li></ul>
+          <ul class="embodiment-types" aria-label="Supported embodiments"><li>Grippers</li><li>Dexterous hands</li><li>Human hands</li><li class="embodiment-more" aria-label="And more embodiments">…</li></ul>
         </div>
         <figure class="capability-media transfer-demo transfer-story" id="transfer-demo" aria-label="From a human reference to progress across embodiments">
           <div class="transfer-story-toolbar"><p id="transfer-status" role="status">Loading trajectories…</p><div class="transfer-story-controls"><button id="transfer-play" class="dataset-button" type="button" disabled>Pause</button><button id="transfer-restart" class="dataset-icon-button" type="button" disabled aria-label="Restart cross-embodiment animation">↺</button></div></div>
@@ -176,10 +176,8 @@
             <div class="transfer-flow-scroll" tabindex="0" role="region" aria-label="Reference-to-query flow; scroll horizontally on small screens">
               <div class="transfer-flow" id="transfer-flow">
                 <svg id="transfer-connections" class="transfer-connections" aria-hidden="true"></svg>
-                <div class="transfer-context">
-                  <div class="transfer-reference" id="transfer-reference"><img id="transfer-reference-image" width="320" height="256" alt="Human hand reference trajectory"><p>Reference trajectory</p><span>Human hand</span></div>
-                  <div class="transfer-keyframes-panel"><h4>Reference keyframes</h4><div id="transfer-keyframes" class="transfer-keyframes"></div></div>
-                </div>
+                <div class="transfer-reference" id="transfer-reference"><img id="transfer-reference-image" width="320" height="256" alt="Human hand reference trajectory"><p>Reference trajectory</p><span>Human hand</span></div>
+                <div class="transfer-keyframes-panel"><h4>Reference keyframes</h4><div id="transfer-keyframes" class="transfer-keyframes"></div></div>
                 <div id="transfer-model" class="transfer-model"><img src="icon.png?v=20261031-orange" width="32" height="32" alt=""><strong>Yuheng</strong><span>Progress model</span></div>
                 <div id="transfer-output" class="transfer-output" aria-label="YAM, Wuji success, Wuji failure, and human query videos and progress curves"></div>
               </div>
@@ -395,6 +393,6 @@
 
     <section class="resources-section content-width" id="resources" aria-labelledby="resources-title"><div><span class="eyebrow">06 / WHAT’S NEXT</span><h2 id="resources-title">More to come.</h2><p>Paper, models, code, dataset, and benchmark will be released progressively and linked here as they become available.</p></div><div class="resource-list"><div><span>Research paper</span><span>Coming soon</span></div><div><span>Code &amp; model weights <small>4B / 27B</small></span><span>Coming soon</span></div><div><span>Dataset</span><span>Coming soon</span></div><div><span>Progress benchmark</span><span>Coming soon</span></div></div></section>
   </main>
-  <footer class="content-width"><a class="wordmark" href="#"><img src="icon.png?v=20261031-orange" width="24" height="24" alt="">Yuheng<span class="wordmark-dot">.</span></a><p>A shared scale. A clearer sense of progress.</p><span>Paimon Team</span></footer>
+  <footer class="content-width"><a class="wordmark" href="#"><img src="icon.png?v=20261031-orange" width="24" height="24" alt="">Yuheng<span class="wordmark-dot">.</span></a><p>A shared scale. A clearer sense of progress.</p><span>Primotion Team</span></footer>
 </body>
 </html>

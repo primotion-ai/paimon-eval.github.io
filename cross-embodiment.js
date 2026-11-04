@@ -56,9 +56,9 @@
     chart.setAttribute('viewBox', `0 0 ${w} ${h}`);
     chart.querySelectorAll(':scope > :not(title):not(desc)').forEach(node => node.remove());
     [0, 1].forEach(value => {
-      chart.append(svg('line', { x1: left, x2: right, y1: plot.y(value), y2: plot.y(value), class: 'transfer-gridline' }));
       chart.append(svg('text', { x: left - 7, y: plot.y(value) + 4, 'text-anchor': 'end', class: 'transfer-axis-label' }, percent(value)));
     });
+    chart.append(svg('rect', { x: left, y: top, width: right - left, height: bottom - top, class: 'transfer-plot-border' }));
     const defs = svg('defs', {});
     chart.append(defs);
     row.clips = {}; row.dots = {};
@@ -79,22 +79,27 @@
     const flow = get('flow'), layer = get('connections'), bounds = flow.getBoundingClientRect();
     layer.setAttribute('viewBox', `0 0 ${bounds.width} ${bounds.height}`);
     layer.replaceChildren(); connections.reference = []; connections.model = []; connections.output = {};
-    const defs = svg('defs', {}), marker = svg('marker', { id: 'transfer-arrow-tip', viewBox: '0 0 6 6', refX: 5, refY: 3, markerWidth: 5, markerHeight: 5, orient: 'auto' });
+    const defs = svg('defs', {}), marker = svg('marker', { id: 'transfer-arrow-tip', viewBox: '0 0 6 6', refX: 5, refY: 3, markerWidth: 5, markerHeight: 5, orient: '0' });
     marker.append(svg('path', { d: 'M0 0L6 3L0 6', fill: '#bc8b76' })); defs.append(marker); layer.append(defs);
     const box = element => { const r = element.getBoundingClientRect(); return { left: r.left - bounds.left, right: r.right - bounds.left, top: r.top - bounds.top, bottom: r.bottom - bounds.top, cy: r.top - bounds.top + r.height / 2 }; };
     const reference = box(get('reference')), model = box(get('model'));
     const path = d => { const node = svg('path', { d, class: 'transfer-connection', 'marker-end': 'url(#transfer-arrow-tip)' }); layer.append(node); return node; };
+    // Short horizontal ends keep each arrow level; the middle bend has room to turn.
+    const connect = (x1, y1, x2, y2) => {
+      const a = x1 + 6, b = x2 - 10, bend = (b - a) * .45;
+      return path(`M${x1},${y1}H${a}C${a + bend},${y1} ${b - bend},${y2} ${b},${y2}H${x2}`);
+    };
     [...get('keyframes').children].forEach((card, i) => {
-      const frame = box(card), branchX = frame.left - 15;
-      connections.reference.push(path(`M${reference.left + 4},${reference.bottom + 3}H${branchX}V${frame.cy}H${frame.left - 5}`));
-      const targetY = model.cy + (i - 1.5) * 12, x1 = frame.right + 4, x2 = model.left - 5, mid = (x1 + x2) / 2;
-      connections.model.push(path(`M${x1},${frame.cy}C${mid},${frame.cy} ${mid},${targetY} ${x2},${targetY}`));
+      const frame = box(card), portOffset = (i - 1.5) * 12;
+      connections.reference.push(connect(reference.right + 3, reference.cy + portOffset, frame.left - 7, frame.cy));
+      connections.model.push(connect(frame.right + 3, frame.cy, model.left - 7, model.cy + portOffset));
     });
     order.forEach((id, i) => {
-      const result = box(rows[id].section), startY = model.cy + (i - 1.5) * 12, x1 = model.right + 4, x2 = result.left - 6, mid = (x1 + x2) / 2;
-      connections.output[id] = path(`M${x1},${startY}C${mid},${startY} ${mid},${result.cy} ${x2},${result.cy}`);
+      const result = box(rows[id].section);
+      connections.output[id] = connect(model.right + 3, model.cy + (i - 1.5) * 12, result.left - 7, result.cy);
     });
   }
+
   function makeCards() {
     get('keyframes').replaceChildren(); get('output').replaceChildren();
     resizeObserver?.disconnect();
