@@ -1881,7 +1881,7 @@ display:none}
 .results-table-heading p { margin-top: 8px; font-size: 16px; }
 .results-table-note { margin: 22px 0 16px; font-size: 16px; line-height: 1.8; }
 .results-table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; scrollbar-width: thin; scrollbar-color: #c5aaa1 #f6f0ec; }
-.results-table { width: 100%; min-width: 1310px; border-collapse: separate; border-spacing: 0; font-size: 16px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.results-table { width: 100%; min-width: 740px; border-collapse: separate; border-spacing: 0; font-size: 16px; line-height: 1.4; font-variant-numeric: tabular-nums; }
 .results-table th, .results-table td { padding: 13px 12px; text-align: center; border-bottom: 1px solid #eee5e0; }
 .results-table thead th { background: #f9f0eb; color: #624c43; font-weight: 550; border-right: 1px solid #e8dad3; }
 .results-table thead tr:first-child th { padding-block: 18px; }
@@ -2315,3 +2315,12 @@ display:none}
   .transfer-story-curve, .transfer-story .transfer-legend > span { transition: none; }
   .transfer-result-row { animation: none; }
 }
+
+/* Overall stays first in each benchmark group; details expand to its right. */
+.results-table [hidden] { display: none !important; }
+.results-table .result-number { min-width: 92px; }
+.results-table thead th { white-space: nowrap; }
+.result-group-toggle { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 4px 8px; border: 1px solid #d8bfb3; border-radius: 5px; background: #fffaf6; color: #624c43; font: inherit; cursor: pointer; }
+.result-group-toggle span { color: var(--accent-dark); font-size: 18px; line-height: 1; }
+.result-group-toggle:hover { background: #f3e4da; }
+.result-group-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }

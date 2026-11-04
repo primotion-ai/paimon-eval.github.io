@@ -33,9 +33,9 @@ NAMES = {
     'RynnValue-8B': ('RynnValue 8B*', 'RynnValue\n8B*', 'baseline'),
     'RynnValue-4B': ('RynnValue 4B*', 'RynnValue\n4B*', 'baseline'),
 }
-FIELDS = ['within_success', 'within_non_success', 'within_overall',
-          'cross_success_success', 'cross_non_success_non_success', 'cross_success_non_success', 'cross_overall',
-          'terminal_agreement', 'mae_success', 'mae_non_success', 'mae_overall']
+FIELDS = ['within_overall', 'within_success', 'within_non_success',
+          'cross_overall', 'cross_success_success', 'cross_non_success_non_success', 'cross_success_non_success',
+          'terminal_agreement', 'mae_overall', 'mae_success', 'mae_non_success']
 AGREEMENTS = ['within_overall', 'cross_overall', 'terminal_agreement']
 COLORS = {'ours-27b': '#ce553b', 'ours-4b': '#ed985e', 'baseline': '#a9b7c3'}
 models = []
@@ -107,9 +107,9 @@ for key, title, description in CHARTS:
       <div class="result-chart-scroll" tabindex="0" role="region" aria-label="{title} chart; scroll horizontally"><img src="assets/benchmark/ood_20261031/{key}.svg?v={chart_version}" width="{chart_width}" height="304" style="min-width: {chart_width}px" loading="lazy" alt="{title}: models sorted from highest to lowest, with scores to one decimal place. Full numerical results are in the table below.{missing}"></div>
     </figure>''')
 
-# N/A models are unranked at the top; comparable rows then increase in Average score.
+# Descending Average score, with unranked N/A models at the bottom.
 ordered = sorted(models, key=lambda m: (m['average'] is not None,
-                 m['average'] if m['average'] is not None else (m['within_overall']+m['cross_overall'])/2, m['model']))
+                 m['average'] if m['average'] is not None else (m['within_overall']+m['cross_overall'])/2, m['model']), reverse=True)
 columns = ['average'] + FIELDS
 # Rank distinct full-precision values; missing metrics are never ranked.
 ranked_values = {key: sorted({m[key] for m in models if m[key] is not None},
@@ -133,7 +133,9 @@ for model in ordered:
             else:
                 content = formatted
         extra = ' result-average' if key == 'average' else ''
-        cells.append(f'<td class="result-number{extra}" data-metric="{key}">{content}</td>')
+        group = key.split('_', 1)[0]
+        detail = f' data-result-detail="{group}"' if group in ('within', 'cross', 'mae') and not key.endswith('_overall') else ''
+        cells.append(f'<td class="result-number{extra}" data-metric="{key}"{detail}>{content}</td>')
     rows.append(f'<tr class="{model["kind"]}" data-model="{html.escape(model["model"], quote=True)}"><th scope="row">{label}</th>{"".join(cells)}</tr>')
 
 template = (ROOT / 'scripts' / 'benchmark-section.html').read_text()

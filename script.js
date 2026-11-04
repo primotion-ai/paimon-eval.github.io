@@ -100,3 +100,26 @@ if (explorer && milestone) {
   // Four small PNGs keep subsequent dragging immediate without duplicating source assets.
   stages.forEach((_, index) => { loadStageImage(index).catch(() => {}); });
 }
+
+// Keep each benchmark group's Overall score visible while revealing its breakdown to the right.
+(() => {
+  const table = document.querySelector('.results-table');
+  if (!table) return;
+  const names = { within: 'within-trajectory', cross: 'cross-trajectory', mae: 'MAE' };
+  table.querySelectorAll('[data-result-toggle]').forEach(button => {
+    const group = button.dataset.resultToggle;
+    const heading = table.querySelector(`[data-result-group="${group}"]`);
+    const details = [...table.querySelectorAll(`[data-result-detail="${group}"]`)];
+    const expandedSpan = heading.colSpan;
+    function setExpanded(expanded) {
+      details.forEach(cell => { cell.hidden = !expanded; });
+      heading.colSpan = expanded ? expandedSpan : 1;
+      button.setAttribute('aria-expanded', String(expanded));
+      button.setAttribute('aria-label', `${expanded ? 'Collapse' : 'Expand'} ${names[group]} breakdown; Overall remains visible`);
+      button.title = `${expanded ? 'Hide' : 'Show'} ${names[group]} breakdown`;
+      button.querySelector('span').textContent = expanded ? '−' : '+';
+    }
+    button.addEventListener('click', () => setExpanded(button.getAttribute('aria-expanded') !== 'true'));
+    setExpanded(false);
+  });
+})();
