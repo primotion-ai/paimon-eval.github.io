@@ -2163,3 +2163,87 @@ display:none}
   font-size: clamp(21px, 1.8vw, 25px); line-height: 1.4; letter-spacing: -.2px;
 }
 .principles h3 { font-size: 23px; line-height: 1.4; }
+
+/* Compact capability demos keep the explanation and evidence in one view. */
+#capabilities > .capability-row { padding: 26px 0; gap: 16px; }
+#capabilities .capability-copy { max-width: none; }
+#capabilities .capability-copy h3 { margin: 6px 0 10px; }
+#capabilities .capability-copy p { line-height: 1.6; }
+#capabilities .capability-media { padding: 18px; }
+#capabilities .capability-media > figcaption { margin-top: 10px; }
+.scale-animation-toolbar { margin-bottom: 16px; }
+.scale-animation-toolbar p { margin-top: 4px; font-size: 17px; }
+.scale-animation-reference { gap: 10px; }
+.scale-animation-reference h4 { font-size: 17px; }
+.scale-animation-keyframe img { max-height: 84px; width: auto; max-width: 100%; margin-inline: auto; }
+.scale-animation-keyframe-label { flex-wrap: wrap; gap: 2px 8px; margin-bottom: 5px; }
+.scale-animation-query > p { margin-top: 7px; }
+.scale-animation-panel-heading { margin-bottom: 10px; }
+#scale-animation-chart { height: 240px; }
+#alignment-browser { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 0 26px; align-items: center; }
+#alignment-frames { grid-column: 1; grid-row: 1 / span 4; grid-template-columns: 1fr; gap: 12px; }
+#alignment-browser > .alignment-legend { grid-column: 2; margin-bottom: 10px; }
+#alignment-browser > .alignment-chart-row { grid-column: 2; }
+#alignment-browser > .alignment-event { grid-column: 2; margin-top: 10px; }
+#alignment-browser > .alignment-instruction { grid-column: 2; margin: 4px 0 0; }
+#alignment-browser > .dataset-button, #alignment-frame-error { grid-column: 1 / -1; }
+.alignment-frame-card h4 { margin-bottom: 6px; }
+.alignment-image-stage { max-height: 140px; }
+#alignment-chart { height: 240px; }
+#transfer-browser { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.15fr); column-gap: 26px; align-items: center; }
+#transfer-frames { grid-column: 1; grid-row: 1 / span 3; width: 100%; max-width: 420px; justify-self: center; gap: 12px; }
+#transfer-legend { grid-column: 2; margin-bottom: 10px; }
+#transfer-chart { grid-column: 2; height: 250px; }
+.transfer-transport { grid-column: 2; margin: 8px 0 0; }
+.transfer-image-stage { aspect-ratio: auto; height: clamp(110px, 17vh, 150px); }
+#transfer-frame-error, #transfer-frame-retry { grid-column: 1 / -1; }
+#capabilities .embodiment-types { margin-top: 6px; }
+.one-shot-grid { gap: 5px 16px; }
+.one-shot-frame img { width: auto; max-width: 100%; height: clamp(80px, 12vh, 108px); margin-inline: auto; }
+.one-shot-frame span { margin-bottom: 4px; }
+.one-shot-arrow svg { height: 20px; }
+.one-shot-progress-label { margin-top: 3px; }
+.one-shot-plot { height: 82px; object-fit: contain; }
+@media (min-width: 900px) {
+  #capabilities .capability-copy { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 28px; }
+  #capabilities .capability-copy > .small-label, #capabilities .capability-copy > h3, #capabilities .embodiment-types { grid-column: 1 / -1; }
+  #capabilities .capability-copy p + p { margin-top: 0; }
+  .scale-animation-layout { grid-template-columns: 180px minmax(0, 1fr) minmax(0, 1.15fr); gap: 22px; }
+  .scale-animation-reference { grid-row: auto; }
+  .scale-animation-query { max-width: 340px; justify-self: center; }
+}
+@media (max-width: 899px) {
+  #capabilities .capability-copy p + p { margin-top: 8px; }
+  .scale-animation-layout { gap: 14px; }
+  #alignment-browser { grid-template-columns: 160px minmax(0, 1fr); gap: 0 16px; }
+  #transfer-browser { column-gap: 16px; }
+  .transfer-frame-heading { gap: 2px 6px; }
+}
+@media (max-width: 650px) {
+  #alignment-browser { grid-template-columns: minmax(0, 1fr); }
+  #alignment-frames { grid-column: 1; grid-row: 1; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 16px; }
+  #alignment-browser > .alignment-legend, #alignment-browser > .alignment-chart-row,
+  #alignment-browser > .alignment-event, #alignment-browser > .alignment-instruction { grid-column: 1; }
+  #transfer-browser { grid-template-columns: minmax(0, 1fr); }
+  #transfer-frames { grid-column: 1; grid-row: 1; margin-bottom: 16px; }
+  #transfer-legend, #transfer-chart, .transfer-transport { grid-column: 1; }
+  .transfer-image-stage { height: auto; aspect-ratio: 5 / 4; max-height: 135px; }
+  #transfer-chart { height: 220px; }
+  .one-shot-frame img { width: 100%; height: auto; max-height: 90px; }
+  .one-shot-plot { height: auto; max-height: 82px; }
+}
+@media (min-width: 900px) {
+  #capabilities > .capability-row { padding-block: 20px; gap: 12px; }
+  #capabilities .capability-copy p { line-height: 1.5; }
+  .scale-animation-layout { grid-template-columns: 230px minmax(0, 1fr) minmax(0, 1.15fr); gap: 20px; }
+  .scale-animation-keyframe { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 10px; align-items: center; }
+  .scale-animation-keyframe img { grid-column: 1; grid-row: 1; width: 96px; height: 72px; margin: 0; }
+  .scale-animation-keyframe-label { grid-column: 2; grid-row: 1; display: flex; flex-direction: column; align-items: flex-start; margin: 0; gap: 2px; }
+  .scale-animation-reference { gap: 14px; }
+  .scale-animation-query { max-width: 300px; }
+  #scale-animation-chart { height: 210px; }
+  .scale-animation-toolbar { margin-bottom: 12px; }
+  #transfer-chart { height: 230px; }
+  .one-shot-frame img { height: 80px; }
+  .one-shot-plot { height: 70px; }
+}

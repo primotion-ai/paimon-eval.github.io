@@ -8,7 +8,7 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261104-hierarchy">
+  <link rel="stylesheet" href="styles.css?v=20261104-compact-capabilities">
   <script src="script.js?v=20261101-explorer-images" defer></script>
   <script src="dataset-explorer.js?v=20261102-reference" defer></script>
   <script src="benchmark-comparison.js?v=20261102-ground-truth" defer></script>
@@ -68,7 +68,7 @@
       <article><span class="principle-number">01</span><div class="principle-icon" aria-hidden="true">↗</div><h3>One shot. New possibilities.</h3><p>Adapt to unseen tasks and objects with a single successful reference trajectory. Yuheng reasons about the relationship between reference keyframes and the frame being evaluated.</p><span class="text-tag">One-shot generalization</span></article>
       <article><span class="principle-number">02</span><div class="principle-icon" aria-hidden="true">↔</div><h3>You define the scale.</h3><p>Provide reference keyframes and assign their progress values. Yuheng measures progress relative to your milestones, making the definition of progress explicit and controllable.</p><span class="text-tag">In-context progress definition</span></article>
       <article><span class="principle-number">03</span><div class="principle-icon" aria-hidden="true">≈</div><h3>Same meaning. Same progress.</h3><p>Frames that represent the same semantic stage receive aligned progress values—even across different trajectories. Compare execution states on a common, meaningful scale.</p><span class="text-tag">Semantic progress alignment</span></article>
-      <article><span class="principle-number">04</span><div class="principle-icon" aria-hidden="true">⇄</div><h3>Different effectors. A shared scale.</h3><p>Measure progress across grippers, dexterous hands, and human hands. A successful reference from one embodiment can guide progress evaluation of another embodiment performing the same task.</p><span class="text-tag">Multi-embodiment support &amp; cross-embodiment transfer</span></article>
+      <article><span class="principle-number">04</span><div class="principle-icon" aria-hidden="true">⇄</div><h3>Different embodiments. A shared scale.</h3><p>Measure progress across grippers, dexterous hands, and human hands. A successful reference from one embodiment can guide progress evaluation of another embodiment performing the same task.</p><span class="text-tag">Multi-embodiment support &amp; cross-embodiment transfer</span></article>
     </section>
 
     <section class="section method-section" id="method" aria-labelledby="method-title"><div class="content-width">
@@ -90,7 +90,7 @@
       <div class="section-heading">
         <span class="eyebrow">03 / CAPABILITIES IN ACTION</span>
         <h2 id="capabilities-title">Four capabilities.<br><em>A clearer picture of progress.</em></h2>
-        <p>From choosing the progress scale to transferring it across tasks and effectors.</p>
+        <p>From choosing the progress scale to transferring it across tasks and embodiments.</p>
       </div>
       <section class="capability-row" id="user-defined-scales" aria-labelledby="scales-title">
         <div class="capability-copy">
@@ -163,8 +163,8 @@
       <section class="capability-row" id="cross-embodiment" aria-labelledby="embodiment-title">
         <div class="capability-copy">
           <span class="small-label">3.3 / CROSS-EMBODIMENT TRANSFER</span>
-          <h3 id="embodiment-title">Different effectors. A shared measure of progress.</h3>
-          <p>Provide a successful reference trajectory from a gripper, dexterous hand, or human hand, and label its keyframes with progress values. Yuheng uses this context to evaluate the same task performed by a different effector.</p>
+          <h3 id="embodiment-title">Different embodiments. A shared measure of progress.</h3>
+          <p>Provide a successful reference trajectory from a gripper, dexterous hand, or human hand, and label its keyframes with progress values. Yuheng uses this context to evaluate the same task performed by a different embodiment.</p>
           <p>The reference and query can come from different embodiments, while the task and its semantic progress scale stay shared.</p>
           <ul class="embodiment-types" aria-label="Supported embodiments"><li>Grippers</li><li>Dexterous hands</li><li>Human hands</li></ul>
         </div>
