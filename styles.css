@@ -2317,3 +2317,26 @@ display:none}
 .result-group-toggle span { color: var(--accent-dark); font-size: 18px; line-height: 1; }
 .result-group-toggle:hover { background: #f3e4da; }
 .result-group-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* A concise idea and four compact capability cards on desktop. */
+.principles { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 64px; }
+.principles > article:nth-child(n) { padding: 20px 18px; border: 0; }
+.principles > article:nth-child(n + 2) { border-left: 1px solid var(--line); }
+.principles .principle-number { top: 20px; right: 18px; }
+.principles .principle-icon { height: 36px; font-size: 28px; }
+.principles h3 { font-size: 18px; line-height: 1.4; min-height: 2.8em; margin-bottom: 10px; }
+.principles p { font-size: 16px; line-height: 1.6; }
+.principles .text-tag { padding-top: 14px; font-size: 14px; line-height: 1.5; }
+@media (max-width: 899px) {
+  .principles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .principles > article:nth-child(n) { border: 0; }
+  .principles > article:nth-child(even) { border-left: 1px solid var(--line); }
+  .principles > article:nth-child(n + 3) { border-top: 1px solid var(--line); }
+}
+@media (max-width: 599px) {
+  .principles { grid-template-columns: minmax(0, 1fr); margin-bottom: 48px; }
+  .principles > article:nth-child(n) { padding-inline: 0; border: 0; }
+  .principles > article:nth-child(n + 2) { border-top: 1px solid var(--line); }
+  .principles h3 { min-height: 0; }
+  .principles .principle-number { right: 0; }
+}
