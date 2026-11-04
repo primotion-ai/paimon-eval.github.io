@@ -96,8 +96,8 @@
         <div class="capability-copy">
           <span class="small-label">3.1 / USER-DEFINED PROGRESS SCALES</span>
           <h3 id="scales-title">Your milestones. Your measure of progress.</h3>
-          <p>Assign progress values to keyframes from a successful trajectory. These annotations define the scale that Yuheng uses to evaluate other trajectories of the same task.</p>
-          <p>Different assignments can place different emphasis on the same semantic milestones. The model’s estimates follow the reference scale provided in context.</p>
+          <p>Users define the progress scale by assigning values to keyframes from a successful reference trajectory. The same milestone might mean 20% progress to one user and 60% to another; without an explicit reference, these differences make progress ambiguous and lead to inconsistencies in annotation and downstream use.</p>
+          <p>Through in-context learning, Yuheng uses these labeled keyframes to make the intended scale explicit. The reference resolves ambiguity about what each progress value means, providing a shared basis for evaluating other trajectories of the same task.</p>
         </div>
         <figure class="capability-media scale-animation" id="scale-animation" aria-label="Animated comparison of two user-defined progress scales">
           <div class="scale-animation-toolbar">
