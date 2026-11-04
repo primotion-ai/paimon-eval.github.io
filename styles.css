@@ -2166,7 +2166,7 @@ display:none}
 
 /* Compact capability demos keep the explanation and evidence in one view. */
 #capabilities > .capability-row { padding: 26px 0; gap: 16px; }
-#capabilities .capability-copy { max-width: none; }
+#capabilities .capability-copy { max-width: 860px; }
 #capabilities .capability-copy h3 { margin: 6px 0 10px; }
 #capabilities .capability-copy p { line-height: 1.6; }
 #capabilities .capability-media { padding: 18px; }
@@ -2205,9 +2205,7 @@ display:none}
 .one-shot-progress-label { margin-top: 3px; }
 .one-shot-plot { height: 82px; object-fit: contain; }
 @media (min-width: 900px) {
-  #capabilities .capability-copy { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 28px; }
-  #capabilities .capability-copy > .small-label, #capabilities .capability-copy > h3, #capabilities .embodiment-types { grid-column: 1 / -1; }
-  #capabilities .capability-copy p + p { margin-top: 0; }
+  #capabilities .capability-copy p + p { margin-top: 10px; }
   .scale-animation-layout { grid-template-columns: 180px minmax(0, 1fr) minmax(0, 1.15fr); gap: 22px; }
   .scale-animation-reference { grid-row: auto; }
   .scale-animation-query { max-width: 340px; justify-self: center; }
