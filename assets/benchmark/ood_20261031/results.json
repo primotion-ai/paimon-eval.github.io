@@ -84,6 +84,21 @@
       "mae_non_success": 26.050282108735317
     },
     {
+      "model": "Robometer 4B · Dense Pred",
+      "average": 62.56454835420224,
+      "within_overall": 66.65836653386454,
+      "within_success": 74.84314671814671,
+      "within_non_success": 57.934670781893004,
+      "cross_overall": 65.45758928571429,
+      "cross_success_success": 70.84585659081151,
+      "cross_non_success_non_success": 60.28776978417266,
+      "cross_success_non_success": 66.55214227970897,
+      "terminal_agreement": 55.57768924302789,
+      "mae_overall": 25.814153919635928,
+      "mae_success": 22.096072452760875,
+      "mae_non_success": 29.77704733494719
+    },
+    {
       "model": "GRM 2.0 Preview 8B",
       "average": 62.2537627268703,
       "within_overall": 63.47111553784861,

@@ -20,6 +20,7 @@ NAMES = {
     'icl_27b_lora_astralabel_step1500': ('Yuheng 27B', 'Yuheng\n27B', 'ours-27b'),
     'icl_4b_astralabel_step3000': ('Yuheng 4B', 'Yuheng\n4B', 'ours-4b'),
     'official_4b_uniform8_interp32': ('Robometer 4B', 'Robometer\n4B', 'baseline'),
+    'official_4b_dense_pred': ('Robometer 4B · Dense Pred', 'Robometer 4B\nDense Pred', 'baseline'),
     'NimCritic': ('NimCritic', 'NimCritic', 'baseline'),
     'Flora-Rewarder': ('Flora Rewarder', 'Flora\nRewarder', 'baseline'),
     'RoboReward-4B': ('RoboReward 4B', 'RoboReward\n4B', 'baseline'),
