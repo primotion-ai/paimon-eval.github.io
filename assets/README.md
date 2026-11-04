@@ -27,7 +27,7 @@ Replace placeholder contents with images that have descriptive `alt` text. Do no
 
 `capabilities/semantic-alignment/index.json` contains two shared-reference progress predictions and paths to checksum-identical existing annotation PNGs. Regenerate with `scripts/prepare-semantic-alignment.py`; nearest-frame matching uses unmodified predicted progress, not the annotation viewer’s labels.
 
-`capabilities/cross-embodiment/` contains the four 32-frame image sequences and curated predictions used by `cross-embodiment.js`. Regenerate with `scripts/prepare-cross-embodiment.py`; it validates source checksums and CSV values. Shared playback follows sampled frame position, not synchronized real timestamps.
+`capabilities/cross-embodiment/` contains the four 32-frame image sequences and curated predictions used by `cross-embodiment.js`. Regenerate with `scripts/prepare-cross-embodiment.py`; it validates source checksums and CSV values. The animation uses the four supplied reference keyframes, then reveals persistent YAM, paired Wuji, and human result rows in order. Each row synchronizes images and predictions by sampled frame position; the Wuji pair shares that position, not real timestamps. Completed rows remain visible for comparison.
 
 `capabilities/one-shot-multi-task/` contains six checksum-verified first/last frames, three independent SVG curves, and unchanged Yuheng 27B predictions for three tasks. Regenerate with `scripts/prepare-one-shot.py`. Source exports remain local; published metadata excludes machine paths.
 

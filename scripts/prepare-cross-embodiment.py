@@ -43,5 +43,5 @@ for source, (name, role, color) in zip(index['trajectories'], labels):
         shutil.copyfile(image, output)
         frames.append({'frame_index': i, 'progress': value, 'image_path': str(output.relative_to(ROOT))})
     trajectories.append({'id': identity, 'name': name, 'role': role, 'color': color, 'frames': frames})
-(DEST / 'index.json').write_text(json.dumps({'task': index['task'], 'model': 'Yuheng 27B', 'trajectories': trajectories}, separators=(',', ':'))+'\n')
-print('Verified 128 predictions against CSV and all frame checksums; exported four trajectories without inference configuration.')
+(DEST / 'index.json').write_text(json.dumps({'task': index['task'], 'model': 'Yuheng 27B', 'reference': {key: index['icl_reference'][key] for key in ['trajectory_id', 'frame_indices', 'progress']}, 'trajectories': trajectories}, separators=(',', ':'))+'\n')
+print('Verified 128 predictions against CSV and all frame checksums; exported four trajectories with the reference keyframes and progress scale.')

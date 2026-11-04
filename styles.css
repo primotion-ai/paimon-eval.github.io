@@ -2245,3 +2245,73 @@ display:none}
   .one-shot-frame img { height: 80px; }
   .one-shot-plot { height: 70px; }
 }
+
+/* A reference-to-model story with sequential cross-embodiment evaluation. */
+.transfer-story #transfer-browser { display: block; }
+.transfer-story-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.transfer-story-toolbar p { font-size: 17px; line-height: 1.4; }
+.transfer-story-controls { display: flex; gap: 8px; flex-shrink: 0; }
+.transfer-story-controls button { min-height: 40px; height: 40px; padding-block: 6px; }
+#transfer-restart { font-size: 24px; }
+.transfer-pipeline { display: grid; grid-template-columns: 150px 28px minmax(0, 1fr) 28px 132px; align-items: center; gap: 14px; }
+.transfer-reference { text-align: center; }
+.transfer-reference > img { display: block; width: 140px; height: 90px; margin-inline: auto; object-fit: contain; border-radius: 6px; background: #eee8e3; }
+.transfer-reference p { font-size: 15px; line-height: 1.4; margin-top: 6px; }
+.transfer-reference > span { display: block; line-height: 1.4; font-size: 13px; color: var(--muted); }
+.transfer-keyframes-panel h4 { font-size: 16px; font-weight: 550; margin: 0 0 8px; }
+.transfer-keyframes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.transfer-keyframe { min-width: 0; opacity: 0; transform: translate(-14px, 6px) scale(.94); transition: opacity .45s ease, transform .45s ease; }
+.transfer-keyframe.is-visible { opacity: 1; transform: none; }
+.transfer-keyframe img { display: block; width: 100%; height: 78px; object-fit: contain; border-radius: 5px; background: #eee8e3; }
+.transfer-keyframe p { margin-top: 5px; line-height: 1.4; font-size: 14px; text-align: center; white-space: nowrap; }
+.transfer-keyframe strong { color: var(--accent-dark); font-weight: 600; }
+.transfer-flow-arrow { display: block; width: 100%; fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transform: translateX(-6px); transition: opacity .5s ease, transform .5s ease; }
+.transfer-flow-arrow.is-visible { opacity: 1; transform: none; }
+.transfer-model { line-height: 1.4; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 16px 10px; border: 1px solid #dcae9d; border-radius: 10px; background: #fff5ed; opacity: 0; transform: translateX(-8px); transition: opacity .5s ease, transform .5s ease, box-shadow .5s ease; }
+.transfer-model.is-visible { opacity: 1; transform: none; }
+.transfer-model.is-evaluating { box-shadow: 0 0 0 3px #ce553b14; }
+.transfer-model strong { font-size: 22px; color: var(--accent-dark); }
+.transfer-model span { font-size: 14px; color: var(--muted); }
+.transfer-stage-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.transfer-stage-tabs button { min-height: 34px; padding: 5px 10px; font: inherit; font-size: 14px; background: transparent; border: 1px solid #ddcec7; border-radius: 20px; color: var(--muted); cursor: pointer; }
+.transfer-stage-tabs button[aria-pressed="true"] { background: #f6e6dd; border-color: #cf8e76; color: var(--accent-dark); }
+.transfer-stage-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.transfer-output { display: grid; gap: 16px; }
+.transfer-result-row { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.2fr); gap: 22px; align-items: center; padding-top: 14px; border-top: 1px solid var(--line); animation: transfer-row-reveal .5s ease both; }
+@keyframes transfer-row-reveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.transfer-frame-counter { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.transfer-query-heading { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.transfer-query-heading h4 { font-size: 17px; font-weight: 550; margin: 0; }
+.transfer-story .transfer-query-frames { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; max-width: none; margin: 0; gap: 12px; }
+.transfer-query-card { min-width: 0; }
+.transfer-query-card.is-single { grid-column: 1 / -1; width: 100%; max-width: 270px; justify-self: center; }
+.transfer-query-card h5 { line-height: 1.4; margin: 0 0 5px; font-size: 15px; font-weight: 600; color: var(--trajectory-color); }
+.transfer-query-card img { display: block; width: 100%; height: 118px; object-fit: contain; background: #eee8e3; border-radius: 6px; }
+.transfer-query-card p { margin: 5px 0 0; font-size: 14px; line-height: 1.4; color: var(--muted); }
+.transfer-query-card output { line-height: 1.4; display: block; margin-top: 3px; color: var(--trajectory-color); font-size: 16px; font-weight: 550; }
+.transfer-story .transfer-legend { gap: 5px 14px; font-size: 14px; margin: 0 0 6px; }
+.transfer-story .transfer-legend > span { transition: opacity .4s ease; }
+.transfer-story .transfer-result-chart { display: block; width: 100%; height: 175px; overflow: visible; }
+.transfer-story-curve { fill: none; stroke-width: 2.7; stroke-linecap: round; stroke-linejoin: round; transition: opacity .4s ease; }
+.transfer-story-dot { stroke: #fff; stroke-width: 2; }
+@media (max-width: 1050px) {
+  .transfer-pipeline { grid-template-columns: 120px 20px minmax(0, 1fr) 20px 110px; gap: 8px; }
+  .transfer-reference > img { width: 120px; height: 96px; }
+  .transfer-keyframe p { white-space: normal; }
+}
+@media (max-width: 700px) {
+  .transfer-pipeline { grid-template-columns: 110px 20px minmax(0, 1fr); gap: 10px; }
+  .transfer-reference > img { width: 110px; height: 88px; }
+  .transfer-keyframes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .transfer-keyframe img { height: 65px; }
+  #transfer-arrow-model { grid-column: 2; }
+  .transfer-model { grid-column: 3; padding: 10px; flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .transfer-result-row { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .transfer-story-toolbar { flex-wrap: wrap; }
+  .transfer-story .transfer-result-chart { height: 220px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .transfer-keyframe, .transfer-flow-arrow, .transfer-model,
+  .transfer-story-curve, .transfer-story .transfer-legend > span { transition: none; }
+  .transfer-result-row { animation: none; }
+}

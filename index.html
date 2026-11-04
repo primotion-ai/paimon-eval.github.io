@@ -8,13 +8,13 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261104-left-copy">
+  <link rel="stylesheet" href="styles.css?v=20261104-transfer-rows">
   <script src="script.js?v=20261101-explorer-images" defer></script>
   <script src="dataset-explorer.js?v=20261102-reference" defer></script>
   <script src="benchmark-comparison.js?v=20261102-ground-truth" defer></script>
   <script src="scale-animation.js?v=20261104-final-comparison" defer></script>
   <script src="semantic-alignment.js?v=20261102-events-95" defer></script>
-  <script src="cross-embodiment.js?v=20261102-reference" defer></script>
+  <script src="cross-embodiment.js?v=20261104-rows" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -164,26 +164,24 @@
         <div class="capability-copy">
           <span class="small-label">3.3 / CROSS-EMBODIMENT TRANSFER</span>
           <h3 id="embodiment-title">Different embodiments. A shared measure of progress.</h3>
-          <p>Provide a successful reference trajectory from a gripper, dexterous hand, or human hand, and label its keyframes with progress values. Yuheng uses this context to evaluate the same task performed by a different embodiment.</p>
-          <p>The reference and query can come from different embodiments, while the task and its semantic progress scale stay shared.</p>
+          <p>Label keyframes from one successful trajectory to define a progress scale. Yuheng uses this reference to evaluate the same task across human hands, grippers, and dexterous hands.</p>
           <ul class="embodiment-types" aria-label="Supported embodiments"><li>Grippers</li><li>Dexterous hands</li><li>Human hands</li></ul>
         </div>
-        <figure class="capability-media transfer-demo" id="transfer-demo" aria-label="Human-reference progress across four embodiments and executions">
-          <p id="transfer-loading" role="status">Loading cross-embodiment trajectories…</p>
+        <figure class="capability-media transfer-demo transfer-story" id="transfer-demo" aria-label="From a human reference to progress across embodiments">
+          <div class="transfer-story-toolbar"><p id="transfer-status" role="status">Loading trajectories…</p><div class="transfer-story-controls"><button id="transfer-play" class="dataset-button" type="button" disabled>Pause</button><button id="transfer-restart" class="dataset-icon-button" type="button" disabled aria-label="Restart cross-embodiment animation">↺</button></div></div>
+          <p id="transfer-loading">Preparing the reference and query frames…</p>
           <button id="transfer-retry" class="dataset-button" type="button" hidden>Retry</button>
-          <noscript><p>Enable JavaScript to view synchronized cross-embodiment trajectories.</p></noscript>
+          <noscript><p>Enable JavaScript to explore the reference and cross-embodiment predictions.</p></noscript>
           <div id="transfer-browser" hidden>
-            <div id="transfer-legend" class="transfer-legend" aria-label="Trajectory colors"></div>
-            <svg id="transfer-chart" role="img" aria-labelledby="transfer-chart-title transfer-chart-description"><title id="transfer-chart-title">Cross-embodiment progress curves</title><desc id="transfer-chart-description">Four trajectories share a frame cursor. Past progress is opaque and future progress is faded.</desc></svg>
-            <div class="transfer-transport" role="group" aria-label="Synchronized trajectory playback">
-              <button id="transfer-previous" class="dataset-icon-button" type="button" aria-label="Previous frame in all four trajectories" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button>
-              <button id="transfer-play" class="dataset-button" type="button" disabled>Play</button>
-              <button id="transfer-next" class="dataset-icon-button" type="button" aria-label="Next frame in all four trajectories" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg></button>
-              <span id="transfer-frame-counter">Frame 1 / 32</span>
+            <div class="transfer-pipeline">
+              <div class="transfer-reference"><img id="transfer-reference-image" width="320" height="256" alt="Human hand reference trajectory"><p>Reference trajectory</p><span>Human hand · Trajectory 1</span></div>
+              <svg class="transfer-flow-arrow" id="transfer-arrow-keyframes" viewBox="0 0 40 24" aria-hidden="true"><path d="M2 12h34m-7-7 7 7-7 7"/></svg>
+              <div class="transfer-keyframes-panel"><h4>Reference keyframes</h4><div id="transfer-keyframes" class="transfer-keyframes"></div></div>
+              <svg class="transfer-flow-arrow" id="transfer-arrow-model" viewBox="0 0 40 24" aria-hidden="true"><path d="M2 12h34m-7-7 7 7-7 7"/></svg>
+              <div id="transfer-model" class="transfer-model"><img src="icon.png?v=20261031-orange" width="32" height="32" alt=""><strong>Yuheng</strong><span>Progress model</span></div>
             </div>
-            <div id="transfer-frames" class="transfer-frames" aria-busy="true"></div>
-            <p id="transfer-frame-error" role="status" hidden>Frames could not be loaded.</p>
-            <button id="transfer-frame-retry" class="dataset-button" type="button" hidden>Retry frames</button>
+            <div class="transfer-stage-tabs" role="group" aria-label="Animation stages"><button type="button" data-stage="reference" aria-pressed="true">Reference</button><button type="button" data-stage="yam" aria-pressed="false">YAM arm</button><button type="button" data-stage="wuji" aria-pressed="false">Wuji hand · success / failure</button><button type="button" data-stage="human" aria-pressed="false">Human hand</button></div>
+            <div id="transfer-output" class="transfer-output" aria-label="Query videos and progress curves, in playback order"></div>
           </div>
         </figure>
       </section>
