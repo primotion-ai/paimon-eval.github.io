@@ -1,4 +1,4 @@
-// Match unmodified model progress within ±10 percentage points; leave unmatched views blank.
+// Successes always show the nearest frame; other outcomes require a match within ±10 points.
 (() => {
   const root = document.querySelector('#alignment-demo');
   if (!root) return;
@@ -7,13 +7,16 @@
   const cache = new Map();
   const tolerance = .1, epsilon = 1e-10;
   let data, target = 0, initialized = false, request = 0, plot, guide;
+  let timer, playing = false, visible = false, autoplayStarted = false;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const milestones = [0, 25, 50, 100];
   const percent = value => `${new Intl.NumberFormat('en', {maximumFractionDigits: 1}).format(value * 100)}%`;
 
   function nearestFrame(trajectory, progress) {
     // Strict comparison keeps the earlier frame when distances are exactly equal.
     const nearest = trajectory.frames.reduce((best, frame) =>
       Math.abs(frame.progress - progress) < Math.abs(best.progress - progress) ? frame : best);
-    return Math.abs(nearest.progress - progress) <= tolerance + epsilon ? nearest : null;
+    return trajectory.outcome === 'success' || Math.abs(nearest.progress - progress) <= tolerance + epsilon ? nearest : null;
   }
 
   function loadImage(frame) {
@@ -72,7 +75,7 @@
       if (results[index].status === 'rejected') { failed = true; return; }
       const image = get(`image-${index}`);
       image.src = results[index].value.src;
-      image.alt = `${data.task}, ${data.trajectories[index].name}, frame ${frame.frame_index + 1}, progress ${percent(frame.progress)}, nearest within 10 percentage points of ${selectedTarget}%.`;
+      image.alt = `${data.task}, ${data.trajectories[index].name}, frame ${frame.frame_index + 1}, progress ${percent(frame.progress)}, nearest to target progress ${selectedTarget}%.`;
       image.dataset.frameIndex = frame.frame_index;
       image.hidden = false;
     });
@@ -98,7 +101,7 @@
     if (!guide || !plot) return;
     guide.setAttribute('y1', plot.y(target / 100));
     guide.setAttribute('y2', plot.y(target / 100));
-    get('chart-description').textContent = `Four full progress curves. The horizontal dashed line is at ${target}%. Each image is the nearest frame within 10 percentage points of this target; a trajectory with no such frame stays blank.`;
+    get('chart-description').textContent = `Four full progress curves. The horizontal dashed line is at ${target}%. Successful trajectories show the nearest frame. Other trajectories require a frame within 10 percentage points of the target, otherwise they stay blank.`;
   }
 
   function drawChart() {
@@ -130,11 +133,62 @@
     get('target').value = `${target}%`;
     get('up').disabled = target === 100;
     get('down').disabled = target === 0;
+    const milestone = milestones.filter(value => value <= target).at(-1);
+    get('event').querySelector('strong').textContent = `Progress ${milestone}%:`;
     updateGuide();
-    showMatches();
+    return showMatches();
   }
-  get('up').addEventListener('click', () => setTarget(target + 5));
-  get('down').addEventListener('click', () => setTarget(target - 5));
+
+  function updatePlayback() {
+    get('play').textContent = playing ? 'Pause' : target === 100 ? 'Replay' : 'Play';
+    get('play').setAttribute('aria-label', playing ? 'Pause progress animation' : target === 100 ? 'Replay progress animation' : 'Play progress animation');
+  }
+  function stopPlayback() {
+    playing = false;
+    clearTimeout(timer);
+    updatePlayback();
+  }
+  function schedulePlayback() {
+    clearTimeout(timer);
+    if (!playing || !visible || document.hidden) return;
+    timer = setTimeout(async () => {
+      await setTarget(target + 5);
+      if (target === 100) stopPlayback();
+      else schedulePlayback();
+    }, 1200);
+  }
+  function maybeAutoplay() {
+    if (!data || browser.hidden || !visible || autoplayStarted || reducedMotion.matches) return;
+    autoplayStarted = true;
+    playing = true;
+    updatePlayback();
+    schedulePlayback();
+  }
+  get('play').addEventListener('click', async () => {
+    autoplayStarted = true;
+    if (playing) { stopPlayback(); return; }
+    playing = true;
+    updatePlayback();
+    if (target === 100) await setTarget(0);
+    schedulePlayback();
+  });
+  for (const [control, delta] of [['up', 5], ['down', -5]]) {
+    get(control).addEventListener('click', () => {
+      autoplayStarted = true;
+      stopPlayback();
+      setTarget(target + delta);
+      updatePlayback();
+    });
+  }
+  document.addEventListener('visibilitychange', schedulePlayback);
+  reducedMotion.addEventListener('change', () => { if (reducedMotion.matches) stopPlayback(); });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(entries => {
+      visible = entries.some(entry => entry.isIntersecting);
+      maybeAutoplay();
+      schedulePlayback();
+    }, {threshold: .25}).observe(root);
+  } else visible = true;
   get('frame-retry').addEventListener('click', showMatches);
   if ('ResizeObserver' in window) new ResizeObserver(drawChart).observe(chart);
   else window.addEventListener('resize', drawChart);
@@ -155,7 +209,8 @@
       browser.hidden = false;
       get('loading').hidden = true;
       drawChart();
-      setTarget(0);
+      await setTarget(0);
+      maybeAutoplay();
     } catch {
       initialized = false;
       browser.hidden = true;

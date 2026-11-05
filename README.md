@@ -94,7 +94,7 @@ UV_CACHE_DIR=/tmp/yuheng-uv-cache uv run --no-project --with matplotlib==3.11.2 
 
 ## Semantic progress alignment 交互
 
-`#semantic-alignment` 展示 Open the bottle 的四条 Yuheng 27B 模型预测曲线。左侧 2×2 图片保留 4:3 原始比例，轨迹名旁按原始 source_quality_label 标记两条 Success、两条 Failure；所选四条轨迹的原始类别与 Astra outcome 一致。右侧箭头以 5% 调整水平虚线。每条轨迹独立选择最近帧，仅在绝对进度差不超过 0.10（含边界）时显示，否则保留空白画面。匹配不平滑、不单调化，相同距离取较早帧；快速操作通过请求版本检查避免旧图片覆盖新结果。
+`#semantic-alignment` 展示 Open the bottle 的四条 Yuheng 27B 模型预测曲线。左侧 2×2 图片保留 4:3 原始比例，轨迹名旁按原始 source_quality_label 标记两条 Success、两条 Failure；所选四条轨迹的原始类别与 Astra outcome 一致。右侧箭头以 5% 调整水平虚线。每条轨迹独立选择最近帧：成功轨迹始终显示最近帧；其他轨迹仅在绝对进度差不超过 0.10（含边界）时显示，否则保留空白画面。首次进入视口时自动从 0% 播放至 100%，每 1.2 秒增加 5%，图片加载完成后再计时；离开视口或切换标签页暂停计时。支持暂停、重播，手动调整会停止播放，减少动态效果偏好下不自动播放。阶段说明暂为 0%、25%、50%、100% 的 xxx 占位文案。匹配不平滑、不单调化，相同距离取较早帧；快速操作通过请求版本检查避免旧图片覆盖新结果。
 
 运行 `python3 scripts/prepare-semantic-alignment.py` 从本地 `capabilities/semantic_progress_alignment/open_the_bottle/manifest.json` 导出精简 JSON 和 128 张 PNG 到 `assets/capabilities/semantic-alignment/`。脚本核对所有源文件校验值和 CSV/JSON 中的模型预测，原始 NPZ、Astra 标注和推理配置不发布。旧香蕉示例的源数据和专用 PNG 已删除；其他展示使用的共享 PNG 保留。
 

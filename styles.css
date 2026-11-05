@@ -2369,3 +2369,11 @@ display:none}
   .alignment-demo .alignment-chart-panel { grid-column: 1; }
   .alignment-demo #alignment-chart { height: 260px; }
 }
+
+/* Compact task captions and one-pass semantic progress playback. */
+.alignment-images-panel { grid-column: 1; min-width: 0; }
+.alignment-task-instruction { margin: 12px 0 0; text-align: center; color: var(--muted); font-size: 14px; line-height: 1.5; }
+.alignment-task-instruction strong, .scale-animation-query > p strong { color: var(--ink); font-weight: 600; }
+.scale-animation-query > p { font-size: 14px; }
+.alignment-playback-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; }
+.alignment-playback-row .alignment-event { margin: 0; }

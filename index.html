@@ -8,12 +8,12 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261105-bottle-alignment">
+  <link rel="stylesheet" href="styles.css?v=20261105-alignment-playback">
   <script src="script.js?v=20261104-benchmark-fold" defer></script>
   <script src="dataset-explorer.js?v=20261102-reference" defer></script>
   <script src="benchmark-comparison.js?v=20261102-ground-truth" defer></script>
   <script src="scale-animation.js?v=20261104-final-comparison" defer></script>
-  <script src="semantic-alignment.js?v=20261105-bottle" defer></script>
+  <script src="semantic-alignment.js?v=20261105-playback" defer></script>
   <script src="cross-embodiment.js?v=20261105-keyframe-pacing" defer></script>
 </head>
 <body>
@@ -101,7 +101,7 @@
         </div>
         <figure class="capability-media scale-animation" id="scale-animation" aria-label="Animated comparison of two user-defined progress scales">
           <div class="scale-animation-toolbar">
-            <div><span class="small-label">SAME TRAJECTORY · TWO PROGRESS SCALES</span><p id="scale-animation-status" role="status">Loading the trajectory…</p></div>
+            <div><p id="scale-animation-status" role="status">Loading the trajectory…</p></div>
             <div class="scale-animation-controls"><button id="scale-animation-toggle" class="dataset-button" type="button" disabled>Pause</button><button id="scale-animation-restart" class="dataset-icon-button" type="button" aria-label="Restart scale animation" disabled>↺</button></div>
           </div>
           <p id="scale-animation-error" role="status" hidden>Could not load the trajectory. Please retry.</p>
@@ -116,7 +116,7 @@
             <div class="scale-animation-query">
               <div class="scale-animation-panel-heading"><h4>Query trajectory</h4><span id="scale-animation-frame">Frame 1 / 32</span></div>
               <div class="scale-animation-image"><img id="scale-animation-image" width="320" height="240" alt="" hidden></div>
-              <p>Close the drawer</p>
+              <p><strong>Instruction:</strong> Close the drawer</p>
             </div>
             <div class="scale-animation-chart-panel">
               <div class="scale-animation-panel-heading"><h4>Predicted progress</h4><output id="scale-animation-progress">—</output></div>
@@ -125,7 +125,6 @@
             </div>
           </div>
           <noscript><p>Enable JavaScript to play the reference-scale animation.</p><img class="scale-animation-fallback" src="assets/capabilities/different-progress-scale/progress.svg" alt="Progress predictions under reference labels 0%, 20%, 100% and 0%, 60%, 100%."></noscript>
-          <figcaption>Yuheng 27B · Close the drawer</figcaption>
         </figure>
       </section>
       <section class="capability-row" id="semantic-alignment" aria-labelledby="alignment-title">
@@ -136,12 +135,11 @@
           <p>This alignment makes progress comparable across successful, suboptimal, and failed executions, and helps retrieve corresponding keyframes from different trajectories.</p>
         </div>
         <figure class="capability-media alignment-demo" id="alignment-demo" aria-label="Match four bottle-opening trajectories by progress">
-          <div class="alignment-heading"><h4 id="alignment-task">Open the bottle</h4><span>Yuheng 27B</span></div>
           <p id="alignment-loading" role="status">Loading progress alignment…</p>
           <button id="alignment-retry" class="dataset-button" type="button" hidden>Retry</button>
           <noscript><p>Enable JavaScript to match trajectory frames by progress.</p></noscript>
           <div id="alignment-browser" hidden>
-            <div class="alignment-frames" id="alignment-frames" aria-busy="true"></div>
+            <div class="alignment-images-panel"><div class="alignment-frames" id="alignment-frames" aria-busy="true"></div><p class="alignment-task-instruction"><strong>Instruction:</strong> <span id="alignment-task">Open the bottle</span></p></div>
             <div class="alignment-chart-panel">
               <div class="alignment-legend" id="alignment-legend" aria-label="Trajectory colors"></div>
               <div class="alignment-chart-row">
@@ -150,9 +148,9 @@
                   <output id="alignment-target" aria-label="Target progress" aria-live="polite">0%</output>
                   <button id="alignment-down" type="button" aria-label="Decrease target progress by 5 percent" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 10 6 6 6-6"/></svg></button>
                 </div>
-                <svg id="alignment-chart" role="img" aria-labelledby="alignment-chart-title alignment-chart-description"><title id="alignment-chart-title">Progress alignment across four trajectories</title><desc id="alignment-chart-description">A horizontal dashed line marks the target progress. Each image shows the nearest frame within 10 percentage points; otherwise it stays blank.</desc></svg>
+                <svg id="alignment-chart" role="img" aria-labelledby="alignment-chart-title alignment-chart-description"><title id="alignment-chart-title">Progress alignment across four trajectories</title><desc id="alignment-chart-description">A horizontal dashed line marks the target progress. Successful trajectories show the nearest frame. Other trajectories stay blank when no frame is within 10 percentage points.</desc></svg>
               </div>
-              <p class="alignment-instruction">Adjust progress in 5% steps. Frames appear only within ±10 percentage points of the target.</p>
+              <div class="alignment-playback-row"><p class="alignment-event" id="alignment-event" aria-live="polite"><strong>Progress 0%:</strong> xxx</p><button id="alignment-play" class="dataset-button" type="button">Play</button></div>
             </div>
             <p id="alignment-frame-error" role="status" hidden>Some frames could not be loaded.</p>
             <button id="alignment-frame-retry" class="dataset-button" type="button" hidden>Retry frames</button>
