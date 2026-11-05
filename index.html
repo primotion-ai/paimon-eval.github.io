@@ -8,13 +8,13 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261105-idea-compact">
+  <link rel="stylesheet" href="styles.css?v=20261105-reference-instruction">
   <script src="script.js?v=20261104-benchmark-fold" defer></script>
   <script src="dataset-explorer.js?v=20261102-reference" defer></script>
   <script src="benchmark-comparison.js?v=20261102-ground-truth" defer></script>
   <script src="scale-animation.js?v=20261104-final-comparison" defer></script>
   <script src="semantic-alignment.js?v=20261102-events-95" defer></script>
-  <script src="cross-embodiment.js?v=20261105-columns" defer></script>
+  <script src="cross-embodiment.js?v=20261105-keyframe-pacing" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -176,7 +176,7 @@
             <div class="transfer-flow-scroll" tabindex="0" role="region" aria-label="Reference-to-query flow; scroll horizontally on small screens">
               <div class="transfer-flow" id="transfer-flow">
                 <svg id="transfer-connections" class="transfer-connections" aria-hidden="true"></svg>
-                <div class="transfer-reference" id="transfer-reference"><img id="transfer-reference-image" width="320" height="256" alt="Human hand reference trajectory"><p>Reference trajectory</p><span>Human hand</span></div>
+                <div class="transfer-reference" id="transfer-reference"><div class="transfer-instruction"><span>Instruction</span><p id="transfer-instruction-text">Place the cucumber in the blue crate.</p></div><img id="transfer-reference-image" width="320" height="256" alt="Human hand reference trajectory"><p>Reference trajectory</p><span>Human hand</span></div>
                 <div class="transfer-keyframes-panel"><h4>Reference keyframes</h4><div id="transfer-keyframes" class="transfer-keyframes"></div></div>
                 <div id="transfer-model" class="transfer-model"><img src="icon.png?v=20261031-orange" width="32" height="32" alt=""><strong>Yuheng</strong><span>Progress model</span></div>
                 <div id="transfer-output" class="transfer-output" aria-label="YAM, Wuji success, Wuji failure, and human query videos and progress curves"></div>

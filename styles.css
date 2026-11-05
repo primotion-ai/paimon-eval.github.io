@@ -2261,6 +2261,9 @@ display:none}
 .transfer-flow { position: relative; display: grid; grid-template-columns: 140px 150px 94px 396px; gap: 56px; align-items: center; width: 100%; max-width: 948px; min-width: 948px; margin-inline: auto; padding-top: 25px; }
 .transfer-reference, .transfer-keyframes-panel, .transfer-model, .transfer-output { position: relative; z-index: 1; }
 .transfer-reference { width: 140px; }
+.transfer-instruction { position: absolute; bottom: calc(100% + 14px); left: 0; width: 150px; }
+.transfer-instruction > span { font-size: 14px; font-weight: 600; color: var(--ink); }
+.transfer-reference .transfer-instruction p { margin: 4px 0 0; white-space: normal; font-size: 14px; line-height: 1.5; }
 .transfer-reference > img { display: block; width: 128px; height: auto; border-radius: 5px; }
 .transfer-reference p { font-size: 14px; line-height: 1.4; margin-top: 5px; white-space: nowrap; }
 .transfer-reference > span { display: block; font-size: 13px; line-height: 1.4; color: var(--muted); }

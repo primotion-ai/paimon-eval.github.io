@@ -4,16 +4,17 @@
   if (!root) return;
   const get = name => root.querySelector(`#transfer-${name}`);
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const keyframeInterval = 1200; // Allow the fade-in to finish, then hold before the next keyframe.
   const stages = [
     { name: 'reference', duration: 2560, text: 'Start with one successful human reference.' },
-    { name: 'keyframes', duration: 1500, text: 'Four keyframes define the shared progress scale.' },
+    { name: 'keyframes', duration: 4 * keyframeInterval, text: 'Four keyframes define the shared progress scale.' },
     { name: 'model', duration: 900, text: 'Yuheng reads the reference context.' },
     { name: 'yam', duration: 5760, group: 'yam', text: 'Evaluate a YAM arm using the human reference.' },
     { name: 'yam-hold', duration: 600, group: 'yam', text: 'The YAM arm completes the task.' },
     { name: 'wuji', duration: 5760, group: 'wuji', text: 'Compare successful and failed Wuji executions together.' },
     { name: 'wuji-hold', duration: 600, group: 'wuji', text: 'The shared scale distinguishes the two outcomes.' },
     { name: 'human', duration: 5760, group: 'human', text: 'Evaluate the human trajectory on the same scale.' },
-    { name: 'summary', duration: 4000, group: 'human', text: 'Different embodiments. One reference scale.' },
+    { name: 'summary', duration: 4000, group: 'human', text: '' },
   ];
   let duration = 0;
   stages.forEach(stage => { stage.start = duration; duration += stage.duration; });
@@ -37,7 +38,7 @@
     const frame = stage.name === 'reference' ? Math.min(31, Math.floor(local / 80))
       : ['yam', 'wuji', 'human'].includes(stage.name) ? Math.min(31, Math.floor(local / 180))
       : stage.group ? 31 : 0;
-    const revealed = stage.name === 'reference' ? 0 : stage.name === 'keyframes' ? Math.min(4, 1 + Math.floor(local / 300)) : 4;
+    const revealed = stage.name === 'reference' ? 0 : stage.name === 'keyframes' ? Math.min(4, 1 + Math.floor(local / keyframeInterval)) : 4;
     return { ...stage, frame, revealed };
   }
   function svg(name, attributes, text) {
@@ -229,6 +230,7 @@
       const response = await fetch(new URL('assets/capabilities/cross-embodiment/index.json?v=20261104-story', document.baseURI));
       if (!response.ok) throw new Error('Data unavailable');
       data = await response.json();
+      get('instruction-text').textContent = data.task;
       if (data.trajectories?.length !== 4 || data.reference?.trajectory_id !== '1' || data.reference.frame_indices.length !== 4 || data.reference.progress.length !== 4 || data.trajectories.some(t => t.frames.length !== 32 || t.frames.some((f, i) => f.frame_index !== i || !Number.isFinite(f.progress) || f.progress < 0 || f.progress > 1))) throw new Error('Invalid trajectories');
       trajectories = Object.fromEntries(data.trajectories.map(t => [t.id, t]));
       if (['1', '3', '5', '7'].some(id => !trajectories[id])) throw new Error('Missing trajectory');
