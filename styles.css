@@ -2343,3 +2343,29 @@ display:none}
   .principles h3 { min-height: 0; }
   .principles .principle-number { right: 0; }
 }
+
+/* Four outcome-labelled examples keep their full native aspect ratio. */
+.alignment-demo { min-width: 0; }
+.alignment-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+.alignment-heading h4 { font-size: 19px; font-weight: 550; margin: 0; }
+.alignment-heading > span { color: var(--muted); font-size: 15px; }
+.alignment-demo #alignment-browser { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 0 28px; align-items: center; }
+.alignment-demo #alignment-frames { grid-column: 1; grid-row: 1; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; margin: 0; }
+.alignment-chart-panel { grid-column: 2; min-width: 0; }
+.alignment-frame-heading { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 7px; margin-bottom: 7px; }
+.alignment-demo .alignment-frame-card h4 { margin: 0; font-size: 16px; color: var(--trajectory-color); }
+.alignment-outcome { font-size: 14px; line-height: 1.4; color: var(--muted); }
+.alignment-demo .alignment-image-stage { aspect-ratio: var(--frame-ratio, 4 / 3); height: auto; max-height: none; background: #f1ede9; }
+.alignment-demo .alignment-image-stage img { width: 100%; height: 100%; object-fit: contain; }
+.alignment-demo .alignment-legend { justify-content: flex-start; gap: 7px 18px; margin-bottom: 12px; font-size: 15px; }
+.alignment-demo #alignment-chart { height: 300px; }
+.alignment-demo .alignment-instruction { margin: 12px 0 0; font-size: 15px; line-height: 1.6; }
+@media (max-width: 899px) {
+  .alignment-demo #alignment-browser { gap: 0 18px; }
+  .alignment-demo .alignment-frame-card h4 { font-size: 15px; }
+}
+@media (max-width: 700px) {
+  .alignment-demo #alignment-browser { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .alignment-demo .alignment-chart-panel { grid-column: 1; }
+  .alignment-demo #alignment-chart { height: 260px; }
+}

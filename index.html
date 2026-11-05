@@ -8,12 +8,12 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261105-reference-instruction">
+  <link rel="stylesheet" href="styles.css?v=20261105-banana-alignment">
   <script src="script.js?v=20261104-benchmark-fold" defer></script>
   <script src="dataset-explorer.js?v=20261102-reference" defer></script>
   <script src="benchmark-comparison.js?v=20261102-ground-truth" defer></script>
   <script src="scale-animation.js?v=20261104-final-comparison" defer></script>
-  <script src="semantic-alignment.js?v=20261102-events-95" defer></script>
+  <script src="semantic-alignment.js?v=20261105-banana" defer></script>
   <script src="cross-embodiment.js?v=20261105-keyframe-pacing" defer></script>
 </head>
 <body>
@@ -135,27 +135,26 @@
           <p>Frames at the same semantic stage receive similar progress values on the reference scale, even when trajectories differ in execution speed, motion, or outcome.</p>
           <p>This alignment makes progress comparable across successful, suboptimal, and failed executions, and helps retrieve corresponding keyframes from different trajectories.</p>
         </div>
-        <figure class="capability-media alignment-demo" id="alignment-demo" aria-label="Match two trajectories by progress">
+        <figure class="capability-media alignment-demo" id="alignment-demo" aria-label="Match four banana-placement trajectories by progress">
+          <div class="alignment-heading"><h4 id="alignment-task">Put banana on plate</h4><span>Yuheng 27B</span></div>
           <p id="alignment-loading" role="status">Loading progress alignment…</p>
           <button id="alignment-retry" class="dataset-button" type="button" hidden>Retry</button>
           <noscript><p>Enable JavaScript to match trajectory frames by progress.</p></noscript>
           <div id="alignment-browser" hidden>
-            <div class="alignment-legend"><span><i aria-hidden="true"></i>Trajectory 1</span><span><i aria-hidden="true"></i>Trajectory 2</span></div>
-            <div class="alignment-chart-row">
-              <div class="alignment-controls" role="group" aria-label="Adjust target progress in 5 percent steps">
-                <button id="alignment-up" type="button" aria-label="Increase target progress by 5 percent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
-                <output id="alignment-target" aria-label="Target progress" aria-live="polite">0%</output>
-                <button id="alignment-down" type="button" aria-label="Decrease target progress by 5 percent" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 10 6 6 6-6"/></svg></button>
+            <div class="alignment-frames" id="alignment-frames" aria-busy="true"></div>
+            <div class="alignment-chart-panel">
+              <div class="alignment-legend" id="alignment-legend" aria-label="Trajectory colors"></div>
+              <div class="alignment-chart-row">
+                <div class="alignment-controls" role="group" aria-label="Adjust target progress in 5 percent steps">
+                  <button id="alignment-up" type="button" aria-label="Increase target progress by 5 percent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+                  <output id="alignment-target" aria-label="Target progress" aria-live="polite">0%</output>
+                  <button id="alignment-down" type="button" aria-label="Decrease target progress by 5 percent" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 10 6 6 6-6"/></svg></button>
+                </div>
+                <svg id="alignment-chart" role="img" aria-labelledby="alignment-chart-title alignment-chart-description"><title id="alignment-chart-title">Progress alignment across four trajectories</title><desc id="alignment-chart-description">A horizontal dashed line marks the target progress. Each image shows the nearest frame within 10 percentage points; otherwise it stays blank.</desc></svg>
               </div>
-              <svg id="alignment-chart" role="img" aria-labelledby="alignment-chart-title alignment-chart-description"><title id="alignment-chart-title">Progress alignment across two trajectories</title><desc id="alignment-chart-description">A horizontal dashed line marks the target progress. Images show the nearest progress in each trajectory.</desc></svg>
+              <p class="alignment-instruction">Adjust progress in 5% steps. Frames appear only within ±10 percentage points of the target.</p>
             </div>
-            <p class="alignment-event" aria-live="polite" aria-atomic="true"><strong id="alignment-event-text">Progress 0%: The robot arm starts moving.</strong></p>
-            <p class="alignment-instruction">Adjust progress in 5% steps to compare matching frames.</p>
-            <div class="alignment-frames" id="alignment-frames" aria-busy="true">
-              <div class="alignment-frame-card"><h4>Trajectory 1</h4><div class="alignment-image-stage"><img id="alignment-image-0" width="320" height="240" alt="" hidden></div></div>
-              <div class="alignment-frame-card"><h4>Trajectory 2</h4><div class="alignment-image-stage"><img id="alignment-image-1" width="320" height="240" alt="" hidden></div></div>
-            </div>
-            <p id="alignment-frame-error" role="status" hidden>Frames could not be loaded.</p>
+            <p id="alignment-frame-error" role="status" hidden>Some frames could not be loaded.</p>
             <button id="alignment-frame-retry" class="dataset-button" type="button" hidden>Retry frames</button>
           </div>
         </figure>

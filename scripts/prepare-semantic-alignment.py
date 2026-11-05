@@ -1,47 +1,66 @@
-"""Export shared-reference predictions while reusing checksum-identical public PNGs."""
+"""Export model progress and PNGs for four banana-placement alignment examples."""
 import csv
 import hashlib
 import json
 import math
 from pathlib import Path
+import shutil
+import struct
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'capabilities/semantic_progress_alignment'
-index = json.loads((SOURCE / 'index.json').read_text())
-predictions = json.loads((SOURCE / index['predictions_file']).read_text())
-for name, digest in index['data_sha256'].items():
-    assert hashlib.sha256((SOURCE / name).read_bytes()).hexdigest() == digest
-with (SOURCE / index['frame_values_file']).open() as file:
-    rows = list(csv.DictReader(file))
-existing = json.loads((ROOT / 'assets/annotation-examples/index.json').read_text())
-lookup = {t['id']: t for task in existing['tasks'] for t in task['trajectories']}
-assert index['model_id'] == predictions['model_id'] == 'icl_27b_lora_astralabel_step1500'
-assert index['icl_reference']['trajectory_id'] == predictions['reference_trajectory_id']
-assert index['icl_reference']['frame_indices'] == predictions['reference_frame_indices']
-assert index['icl_reference']['progress'] == predictions['reference_progress']
-assert len(index['trajectories']) == len(predictions['trajectories']) == 2
+DEST = ROOT / 'assets/capabilities/semantic-alignment'
+manifest = json.loads((SOURCE / 'manifest.json').read_text())
+assert manifest['instruction'] == 'Put banana on plate'
+assert manifest['model']['model_id'] == 'icl_27b_lora_astralabel_step1500'
+assert manifest['total_trajectories'] == len(manifest['trajectories']) == 4
+assert manifest['total_frames'] == 128
+assert [t['source_quality'] for t in manifest['trajectories']] == ['successful', 'successful', 'suboptimal', 'suboptimal']
+for line in (SOURCE / 'checksums.sha256').read_text().splitlines():
+    digest, name = line.split(maxsplit=1)
+    file = SOURCE / name
+    assert file.resolve().is_relative_to(SOURCE.resolve())
+    assert hashlib.sha256(file.read_bytes()).hexdigest() == digest, name
+with (SOURCE / 'progress.csv').open() as file:
+    csv_rows = list(csv.DictReader(file))
+lookup = {(r['trajectory_id'], int(r['frame_index'])): r for r in csv_rows}
+assert len(lookup) == len(csv_rows) == 128
+colors = ['#3978b7', '#318572', '#b48a23', '#d2ad46']
 trajectories = []
-for order, trajectory in enumerate(index['trajectories']):
-    identity = trajectory['trajectory_id']
-    predicted = next(t for t in predictions['trajectories'] if t['trajectory_id'] == identity)
-    assert predicted['reference_trajectory_id'] == predictions['reference_trajectory_id']
-    assert predicted['frame_indices'] == [f['frame_index'] for f in trajectory['frames']] == list(range(32))
-    assert len(predicted['progress']) == len(rows) == 32
+for order, source in enumerate(manifest['trajectories']):
+    identity = source['trajectory_id']
+    predicted = json.loads((SOURCE / source['model_prediction_path']).read_text())
+    progress = json.loads((SOURCE / source['progress_path']).read_text())
+    assert predicted['benchmark_id'] == manifest['benchmark_id']
+    assert predicted['trajectory_id'] == progress['trajectory_id'] == identity
+    assert progress['model_id'] == manifest['model']['model_id']
+    assert predicted['frame_indices'] == progress['frame_indices'] == [f['frame_index'] for f in source['frames']] == list(range(32))
+    assert len(predicted['progress']) == len(progress['model_progress']) == 32
     frames = []
-    for frame, value in zip(trajectory['frames'], predicted['progress']):
-        i = frame['frame_index']
+    dimensions = None
+    for i, frame in enumerate(source['frames']):
+        value = frame['model_progress']
         assert math.isfinite(value) and 0 <= value <= 1
-        assert int(rows[i]['frame_index']) == i and float(rows[i][identity + '__progress']) == value
-        assert math.isclose(predicted['progress_percent'][i], value * 100, abs_tol=1e-10)
-        assert hashlib.sha256((SOURCE / frame['image_path']).read_bytes()).hexdigest() == frame['sha256']
-        original = lookup[identity]['frames'][i]
-        image_path = 'assets/annotation-examples/' + original['image_path']
-        assert original['frame_index'] == i
-        assert hashlib.sha256((ROOT / image_path).read_bytes()).hexdigest() == frame['sha256']
-        frames.append({'frame_index': i, 'progress': value, 'image_path': image_path})
-    trajectories.append({'name': f'Trajectory {order + 1}', 'color': ['#3978b7', '#318572'][order], 'frames': frames})
-public = {'schema_version': 1, 'task': index['task'], 'model': 'Yuheng 27B', 'trajectories': trajectories}
-dest = ROOT / 'assets/capabilities/semantic-alignment'
-dest.mkdir(parents=True, exist_ok=True)
-(dest / 'index.json').write_text(json.dumps(public, separators=(',', ':'))+'\n')
-print('Verified 64 predictions and image checksums; exported 2 trajectories reusing all 64 public PNGs.')
+        assert value == predicted['progress'][i] == progress['model_progress'][i] == progress['frames'][i]['model_progress'] == float(lookup[(identity, i)]['model_progress'])
+        assert frame['image_path'] == progress['frames'][i]['image_path'] == lookup[(identity, i)]['image_path']
+        assert lookup[(identity, i)]['source_quality'] == source['source_quality']
+        image = SOURCE / frame['image_path']
+        raw = image.read_bytes()
+        assert raw[:8] == b'\x89PNG\r\n\x1a\n'
+        size = struct.unpack('>II', raw[16:24])
+        if dimensions is None:
+            dimensions = size
+        assert size == dimensions
+        output = DEST / 'images' / identity / f'{i:04d}.png'
+        output.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(image, output)
+        frames.append({'frame_index': i, 'progress': value, 'image_path': str(output.relative_to(ROOT))})
+    trajectories.append({'id': identity, 'name': f'Trajectory {order + 1}',
+        'outcome': 'success' if source['source_quality'] == 'successful' else 'suboptimal',
+        'is_reference': source['is_icl_reference'], 'color': colors[order],
+        'width': dimensions[0], 'height': dimensions[1], 'frames': frames})
+public = {'schema_version': 2, 'task': manifest['instruction'], 'model': 'Yuheng 27B',
+          'outcome_source': 'original source_quality_label', 'trajectories': trajectories}
+DEST.mkdir(parents=True, exist_ok=True)
+(DEST / 'index.json').write_text(json.dumps(public, separators=(',', ':')) + '\n')
+print('Verified all source checksums and 128 model predictions against CSV/JSON; exported four trajectories and 128 PNGs. No NPZ or annotation files exported.')

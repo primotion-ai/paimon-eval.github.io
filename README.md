@@ -94,9 +94,9 @@ UV_CACHE_DIR=/tmp/yuheng-uv-cache uv run --no-project --with matplotlib==3.11.2 
 
 ## Semantic progress alignment 交互
 
-`#semantic-alignment` 展示两条共享 ICL 参考的 Yuheng 27B 预测曲线。左侧箭头将目标进度从 0% 到 100% 按 5% 调整，水平虚线同步移动；下方两张 PNG 各自匹配绝对进度差最小的帧。匹配不限制时间方向，不平滑或单调化；若距离完全相等，取原始帧序中更早的一帧。图片加载使用请求版本检查，避免快速操作显示旧结果。
+`#semantic-alignment` 展示 Put banana on plate 的四条 Yuheng 27B 模型预测曲线。左侧 2×2 图片保留 4:3 原始比例，轨迹名旁按原始 source_quality_label 标记两条 Success、两条 Suboptimal；这些类别与 Astra outcome 独立，不能互相替换。右侧箭头以 5% 调整水平虚线。每条轨迹独立选择最近帧，仅在绝对进度差不超过 0.10（含边界）时显示，否则保留空白画面。匹配不平滑、不单调化，相同距离取较早帧；快速操作通过请求版本检查避免旧图片覆盖新结果。
 
-运行 `python3 scripts/prepare-semantic-alignment.py` 从本地 `capabilities/semantic_progress_alignment/` 导出精简数据到 `assets/capabilities/semantic-alignment/index.json`。脚本核对 CSV/JSON 进度和图片校验值，64 张图片全部复用 `assets/annotation-examples/`，不重复上传。网页直接使用动态帧图，不额外生成视频文件。
+运行 `python3 scripts/prepare-semantic-alignment.py` 从本地 `capabilities/semantic_progress_alignment/manifest.json` 导出精简 JSON 和 128 张 PNG 到 `assets/capabilities/semantic-alignment/`。脚本核对所有源文件校验值和 CSV/JSON 中的模型预测，原始 NPZ、Astra 标注和推理配置不发布。旧抽屉示例已替换，其他展示仍使用的共享 PNG 保留。
 
 语义对齐图下方的粗体描述按 0%、25%、50%、75%、95% 五个阶段更新，中间档位显示前一阶段描述；向下调整也重新按目标进度计算。图片下方不显示帧号或百分比，图片替代文本仍包含匹配信息以便无障碍访问。
 
