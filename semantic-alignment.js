@@ -39,7 +39,7 @@
       const heading = document.createElement('div'); heading.className = 'alignment-frame-heading';
       const name = document.createElement('h4'); name.textContent = trajectory.name;
       const outcome = document.createElement('span'); outcome.className = 'alignment-outcome';
-      outcome.textContent = trajectory.outcome === 'success' ? 'Success' : 'Suboptimal';
+      outcome.textContent = {success: 'Success', suboptimal: 'Suboptimal', failure: 'Failure'}[trajectory.outcome];
       outcome.title = 'Original dataset outcome'; heading.append(name, outcome);
       const stage = document.createElement('div'); stage.className = 'alignment-image-stage'; stage.id = `alignment-stage-${index}`;
       stage.style.setProperty('--frame-ratio', `${trajectory.width} / ${trajectory.height}`);
@@ -146,10 +146,10 @@
     get('loading').textContent = 'Loading progress alignment…';
     get('retry').hidden = true;
     try {
-      const response = await fetch(new URL('assets/capabilities/semantic-alignment/index.json?v=20261105-banana', document.baseURI));
+      const response = await fetch(new URL('assets/capabilities/semantic-alignment/index.json?v=20261105-bottle', document.baseURI));
       if (!response.ok) throw new Error('Progress data unavailable');
       data = await response.json();
-      if (data.trajectories?.length !== 4 || data.trajectories.some(t => !['success', 'suboptimal'].includes(t.outcome) || !Number.isFinite(t.width) || !Number.isFinite(t.height) || t.width <= 0 || t.height <= 0 || !t.frames?.length || t.frames.some(f => !Number.isFinite(f.progress) || f.progress < 0 || f.progress > 1))) throw new Error('Invalid progress data');
+      if (data.trajectories?.length !== 4 || data.trajectories.some(t => !['success', 'suboptimal', 'failure'].includes(t.outcome) || !Number.isFinite(t.width) || !Number.isFinite(t.height) || t.width <= 0 || t.height <= 0 || !t.frames?.length || t.frames.some(f => !Number.isFinite(f.progress) || f.progress < 0 || f.progress > 1))) throw new Error('Invalid progress data');
       get('task').textContent = data.task;
       makeCards();
       browser.hidden = false;

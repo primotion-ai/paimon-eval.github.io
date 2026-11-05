@@ -1,4 +1,4 @@
-"""Export model progress and PNGs for four banana-placement alignment examples."""
+"""Export model progress and PNGs for four bottle-opening alignment examples."""
 import csv
 import hashlib
 import json
@@ -8,14 +8,14 @@ import shutil
 import struct
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / 'capabilities/semantic_progress_alignment'
+SOURCE = ROOT / 'capabilities/semantic_progress_alignment/open_the_bottle'
 DEST = ROOT / 'assets/capabilities/semantic-alignment'
 manifest = json.loads((SOURCE / 'manifest.json').read_text())
-assert manifest['instruction'] == 'Put banana on plate'
+assert manifest['instruction'] == 'Open the bottle'
 assert manifest['model']['model_id'] == 'icl_27b_lora_astralabel_step1500'
 assert manifest['total_trajectories'] == len(manifest['trajectories']) == 4
 assert manifest['total_frames'] == 128
-assert [t['source_quality'] for t in manifest['trajectories']] == ['successful', 'successful', 'suboptimal', 'suboptimal']
+assert [t['source_quality'] for t in manifest['trajectories']] == ['successful', 'successful', 'failure', 'failure']
 for line in (SOURCE / 'checksums.sha256').read_text().splitlines():
     digest, name = line.split(maxsplit=1)
     file = SOURCE / name
@@ -25,7 +25,7 @@ with (SOURCE / 'progress.csv').open() as file:
     csv_rows = list(csv.DictReader(file))
 lookup = {(r['trajectory_id'], int(r['frame_index'])): r for r in csv_rows}
 assert len(lookup) == len(csv_rows) == 128
-colors = ['#3978b7', '#318572', '#b48a23', '#d2ad46']
+colors = ['#3978b7', '#318572', '#d18839', '#cd555b']
 trajectories = []
 for order, source in enumerate(manifest['trajectories']):
     identity = source['trajectory_id']
@@ -56,7 +56,7 @@ for order, source in enumerate(manifest['trajectories']):
         shutil.copyfile(image, output)
         frames.append({'frame_index': i, 'progress': value, 'image_path': str(output.relative_to(ROOT))})
     trajectories.append({'id': identity, 'name': f'Trajectory {order + 1}',
-        'outcome': 'success' if source['source_quality'] == 'successful' else 'suboptimal',
+        'outcome': {'successful': 'success', 'suboptimal': 'suboptimal', 'failure': 'failure'}[source['source_quality']],
         'is_reference': source['is_icl_reference'], 'color': colors[order],
         'width': dimensions[0], 'height': dimensions[1], 'frames': frames})
 public = {'schema_version': 2, 'task': manifest['instruction'], 'model': 'Yuheng 27B',

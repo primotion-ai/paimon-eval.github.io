@@ -94,11 +94,11 @@ UV_CACHE_DIR=/tmp/yuheng-uv-cache uv run --no-project --with matplotlib==3.11.2 
 
 ## Semantic progress alignment 交互
 
-`#semantic-alignment` 展示 Put banana on plate 的四条 Yuheng 27B 模型预测曲线。左侧 2×2 图片保留 4:3 原始比例，轨迹名旁按原始 source_quality_label 标记两条 Success、两条 Suboptimal；这些类别与 Astra outcome 独立，不能互相替换。右侧箭头以 5% 调整水平虚线。每条轨迹独立选择最近帧，仅在绝对进度差不超过 0.10（含边界）时显示，否则保留空白画面。匹配不平滑、不单调化，相同距离取较早帧；快速操作通过请求版本检查避免旧图片覆盖新结果。
+`#semantic-alignment` 展示 Open the bottle 的四条 Yuheng 27B 模型预测曲线。左侧 2×2 图片保留 4:3 原始比例，轨迹名旁按原始 source_quality_label 标记两条 Success、两条 Failure；所选四条轨迹的原始类别与 Astra outcome 一致。右侧箭头以 5% 调整水平虚线。每条轨迹独立选择最近帧，仅在绝对进度差不超过 0.10（含边界）时显示，否则保留空白画面。匹配不平滑、不单调化，相同距离取较早帧；快速操作通过请求版本检查避免旧图片覆盖新结果。
 
-运行 `python3 scripts/prepare-semantic-alignment.py` 从本地 `capabilities/semantic_progress_alignment/manifest.json` 导出精简 JSON 和 128 张 PNG 到 `assets/capabilities/semantic-alignment/`。脚本核对所有源文件校验值和 CSV/JSON 中的模型预测，原始 NPZ、Astra 标注和推理配置不发布。旧抽屉示例已替换，其他展示仍使用的共享 PNG 保留。
+运行 `python3 scripts/prepare-semantic-alignment.py` 从本地 `capabilities/semantic_progress_alignment/open_the_bottle/manifest.json` 导出精简 JSON 和 128 张 PNG 到 `assets/capabilities/semantic-alignment/`。脚本核对所有源文件校验值和 CSV/JSON 中的模型预测，原始 NPZ、Astra 标注和推理配置不发布。旧香蕉示例的源数据和专用 PNG 已删除；其他展示使用的共享 PNG 保留。
 
-语义对齐图下方的粗体描述按 0%、25%、50%、75%、95% 五个阶段更新，中间档位显示前一阶段描述；向下调整也重新按目标进度计算。图片下方不显示帧号或百分比，图片替代文本仍包含匹配信息以便无障碍访问。
+图片下方不显示帧号或百分比，图片替代文本仍包含匹配信息以便无障碍访问。
 
 ## Cross-embodiment transfer 交互
 
