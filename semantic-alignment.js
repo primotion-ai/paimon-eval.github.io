@@ -172,6 +172,14 @@
     if (target === 100) await setTarget(0);
     schedulePlayback();
   });
+  get('restart').addEventListener('click', async () => {
+    autoplayStarted = true;
+    stopPlayback();
+    playing = true;
+    updatePlayback();
+    await setTarget(0);
+    schedulePlayback();
+  });
   for (const [control, delta] of [['up', 5], ['down', -5]]) {
     get(control).addEventListener('click', () => {
       autoplayStarted = true;
@@ -205,6 +213,8 @@
       data = await response.json();
       if (data.trajectories?.length !== 4 || data.trajectories.some(t => !['success', 'suboptimal', 'failure'].includes(t.outcome) || !Number.isFinite(t.width) || !Number.isFinite(t.height) || t.width <= 0 || t.height <= 0 || !t.frames?.length || t.frames.some(f => !Number.isFinite(f.progress) || f.progress < 0 || f.progress > 1))) throw new Error('Invalid progress data');
       get('task').textContent = data.task;
+      get('play').disabled = false;
+      get('restart').disabled = false;
       makeCards();
       browser.hidden = false;
       get('loading').hidden = true;

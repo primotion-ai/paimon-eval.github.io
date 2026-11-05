@@ -8,12 +8,13 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261105-alignment-playback">
+  <link rel="stylesheet" href="styles.css?v=20261105-radial">
   <script src="script.js?v=20261104-benchmark-fold" defer></script>
   <script src="dataset-explorer.js?v=20261102-reference" defer></script>
   <script src="benchmark-comparison.js?v=20261102-ground-truth" defer></script>
   <script src="scale-animation.js?v=20261104-final-comparison" defer></script>
-  <script src="semantic-alignment.js?v=20261105-playback" defer></script>
+  <script src="semantic-alignment.js?v=20261105-controls" defer></script>
+  <script src="one-shot-animation.js?v=20261105-radial" defer></script>
   <script src="cross-embodiment.js?v=20261105-keyframe-pacing" defer></script>
 </head>
 <body>
@@ -135,6 +136,7 @@
           <p>This alignment makes progress comparable across successful, suboptimal, and failed executions, and helps retrieve corresponding keyframes from different trajectories.</p>
         </div>
         <figure class="capability-media alignment-demo" id="alignment-demo" aria-label="Match four bottle-opening trajectories by progress">
+          <div class="alignment-toolbar"><button id="alignment-play" class="dataset-button" type="button" disabled>Pause</button><button id="alignment-restart" class="dataset-icon-button" type="button" aria-label="Restart progress animation" disabled>↺</button></div>
           <p id="alignment-loading" role="status">Loading progress alignment…</p>
           <button id="alignment-retry" class="dataset-button" type="button" hidden>Retry</button>
           <noscript><p>Enable JavaScript to match trajectory frames by progress.</p></noscript>
@@ -150,7 +152,7 @@
                 </div>
                 <svg id="alignment-chart" role="img" aria-labelledby="alignment-chart-title alignment-chart-description"><title id="alignment-chart-title">Progress alignment across four trajectories</title><desc id="alignment-chart-description">A horizontal dashed line marks the target progress. Successful trajectories show the nearest frame. Other trajectories stay blank when no frame is within 10 percentage points.</desc></svg>
               </div>
-              <div class="alignment-playback-row"><p class="alignment-event" id="alignment-event" aria-live="polite"><strong>Progress 0%:</strong> xxx</p><button id="alignment-play" class="dataset-button" type="button">Play</button></div>
+              <div class="alignment-playback-row"><p class="alignment-event" id="alignment-event" aria-live="polite"><strong>Progress 0%:</strong> xxx</p></div>
             </div>
             <p id="alignment-frame-error" role="status" hidden>Some frames could not be loaded.</p>
             <button id="alignment-frame-retry" class="dataset-button" type="button" hidden>Retry frames</button>
@@ -190,34 +192,11 @@
           <p>For each new task, provide its instruction and one successful reference trajectory. Yuheng uses that context to evaluate progress on unseen tasks and objects without task-specific fine-tuning.</p>
           <p>It reasons about the relationship between the reference keyframes and the current frame, allowing the same model to work across different tasks.</p>
         </div>
-        <figure class="capability-media one-shot-demo" aria-label="First frames, last frames, and predicted progress for three tasks">
-          <div class="one-shot-grid">
-            <div class="one-shot-task">
-              <h4>Open the red drawer</h4>
-              <div class="one-shot-frame"><span>First frame</span><img src="assets/capabilities/one-shot-multi-task/task-1-first.png" width="320" height="240" loading="lazy" alt="Open the red drawer: first trajectory frame"></div>
-              <span class="one-shot-arrow" aria-hidden="true"><svg viewBox="0 0 24 32"><path d="M12 3v24m-6-6 6 6 6-6"/></svg></span>
-              <div class="one-shot-frame"><span>Last frame</span><img src="assets/capabilities/one-shot-multi-task/task-1-last.png" width="320" height="240" loading="lazy" alt="Open the red drawer: last trajectory frame"></div>
-              <span class="one-shot-progress-label">Progress</span>
-              <img class="one-shot-plot" src="assets/capabilities/one-shot-multi-task/task-1-progress.svg" width="220" height="125" loading="lazy" alt="Yuheng 27B predicted progress for open the red drawer; time increases left to right and progress increases upward">
-            </div>
-            <div class="one-shot-task">
-              <h4>Put the eggplant in the black bowl</h4>
-              <div class="one-shot-frame"><span>First frame</span><img src="assets/capabilities/one-shot-multi-task/task-2-first.png" width="320" height="240" loading="lazy" alt="Put the eggplant in the black bowl: first trajectory frame"></div>
-              <span class="one-shot-arrow" aria-hidden="true"><svg viewBox="0 0 24 32"><path d="M12 3v24m-6-6 6 6 6-6"/></svg></span>
-              <div class="one-shot-frame"><span>Last frame</span><img src="assets/capabilities/one-shot-multi-task/task-2-last.png" width="320" height="240" loading="lazy" alt="Put the eggplant in the black bowl: last trajectory frame"></div>
-              <span class="one-shot-progress-label">Progress</span>
-              <img class="one-shot-plot" src="assets/capabilities/one-shot-multi-task/task-2-progress.svg" width="220" height="125" loading="lazy" alt="Yuheng 27B predicted progress for put the eggplant in the black bowl; time increases left to right and progress increases upward">
-            </div>
-            <div class="one-shot-task">
-              <h4>Collect the fork to the yellow box</h4>
-              <div class="one-shot-frame"><span>First frame</span><img src="assets/capabilities/one-shot-multi-task/task-3-first.png" width="320" height="240" loading="lazy" alt="Collect the fork to the yellow box: first trajectory frame"></div>
-              <span class="one-shot-arrow" aria-hidden="true"><svg viewBox="0 0 24 32"><path d="M12 3v24m-6-6 6 6 6-6"/></svg></span>
-              <div class="one-shot-frame"><span>Last frame</span><img src="assets/capabilities/one-shot-multi-task/task-3-last.png" width="320" height="240" loading="lazy" alt="Collect the fork to the yellow box: last trajectory frame"></div>
-              <span class="one-shot-progress-label">Progress</span>
-              <img class="one-shot-plot" src="assets/capabilities/one-shot-multi-task/task-3-progress.svg" width="220" height="125" loading="lazy" alt="Yuheng 27B predicted progress for collect the fork to the yellow box; time increases left to right and progress increases upward">
-            </div>
-          </div>
-          <figcaption>Yuheng 27B · Predicted progress across three unseen tasks</figcaption>
+        <figure class="capability-media one-shot-demo" id="one-shot-demo" aria-label="25 trajectory videos with synchronized progress curves, expanding from the center">
+          <div class="one-shot-toolbar"><p id="one-shot-status" role="status">Loading trajectories…</p><div class="one-shot-controls"><button id="one-shot-play" class="dataset-button" type="button" disabled>Pause</button><button id="one-shot-restart" class="dataset-icon-button" type="button" disabled aria-label="Restart multi-task animation">↺</button></div></div>
+          <button id="one-shot-retry" class="dataset-button" type="button" hidden>Retry</button>
+          <div class="one-shot-scroll" tabindex="0" role="region" aria-label="5 by 5 trajectory grid; scroll horizontally on small screens" hidden><div id="one-shot-grid" class="one-shot-radial-grid"></div></div>
+          <noscript><p>Enable JavaScript to view the trajectory videos and progress curves.</p></noscript>
         </figure>
       </section>
     </section>

@@ -1,59 +1,60 @@
-"""Publish first/last frames and unmodified one-shot model prediction curves."""
+"""Export 25 PNG sequences and their unchanged model progress for the radial demo."""
+import csv
 import hashlib
 import json
 import math
 from pathlib import Path
 import shutil
-
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
+import struct
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / 'capabilities/one_shot_multi_task'
+SOURCE = ROOT / 'one_shot_multi_task'
 DEST = ROOT / 'assets/capabilities/one-shot-multi-task'
-data = json.loads((SOURCE / 'progress.json').read_text())
-assert data['model_id'] == 'icl_27b_lora_astralabel_step1500'
-assert 'model predictions' in data['progress_source']
-assert len(data['trajectories']) == 3
-DEST.mkdir(parents=True, exist_ok=True)
-plt.rcParams.update({'svg.fonttype': 'path', 'svg.hashsalt': 'yuheng-one-shot'})
-public = {'model': 'Yuheng 27B', 'progress_source': 'Model predictions', 'trajectories': []}
-for number, item in enumerate(data['trajectories'], 1):
-    indices, values = item['frame_indices'], item['progress']
-    assert indices == list(range(32)) and len(values) == 32
-    assert all(math.isfinite(value) and 0 <= value <= 1 for value in values)
-    images = {}
-    for key, frame_index in [('first_frame', 0), ('last_frame', 31)]:
-        frame = item[key]
-        assert frame['frame_index'] == frame_index and frame['progress'] == values[frame_index]
-        source = SOURCE / frame['image_path']
-        assert source.parent == SOURCE and source.suffix == '.png'
-        assert hashlib.sha256(source.read_bytes()).hexdigest() == frame['sha256']
-        name = f'task-{number}-{key.replace("_frame", "")}.png'
-        shutil.copyfile(source, DEST / name)
-        images[key] = name
-    fig, ax = plt.subplots(figsize=(2.2, 1.25), dpi=120)
-    fig.patch.set_alpha(0)
-    ax.set_facecolor('none')
-    fig.subplots_adjust(left=.035, right=.965, bottom=.08, top=.92)
-    ax.set_xlim(-.5, 31.5)
-    ax.set_ylim(-.035, 1.035)
-    ax.set_xticks([])
-    ax.set_yticks([])
-    for spine in ax.spines.values():
-        spine.set_visible(False)
-    for value in [0, .5, 1]:
-        ax.axhline(value, color='#e7ddd7', linewidth=.8, zorder=1)
-    line, = ax.plot(indices, values, color='#c6533b', linewidth=2.2, solid_capstyle='round', zorder=2)
-    line.set_gid(f'one-shot-progress-{number}')
-    filename = f'task-{number}-progress.svg'
-    fig.savefig(DEST / filename, transparent=True, metadata={'Date': None,
-        'Title': f'Yuheng 27B predicted progress: {item["task"]}',
-        'Description': '32 unmodified model predictions; frame position increases left to right, progress increases upward.'})
-    plt.close(fig)
-    public['trajectories'].append({'task': item['task'], 'trajectory_id': item['trajectory_id'],
-        'is_reference': item['is_benchmark_icl_reference'], 'frame_indices': indices,
-        'progress': values, **images, 'plot': filename})
-(DEST / 'results.json').write_text(json.dumps(public, indent=2) + '\n')
-print('Published 6 checksum-verified frames and 3 independent curves from 96 unchanged model predictions.')
+manifest = json.loads((SOURCE / 'manifest.json').read_text())
+assert manifest['model']['model_id'] == 'icl_27b_lora_astralabel_step1500'
+assert manifest['total_trajectories'] == len(manifest['samples']) == 25
+assert manifest['total_query_frames'] == 800
+for line in (SOURCE / 'checksums.sha256').read_text().splitlines():
+    digest, name = line.split(maxsplit=1)
+    file = SOURCE / name
+    assert file.resolve().is_relative_to(SOURCE.resolve())
+    assert hashlib.sha256(file.read_bytes()).hexdigest() == digest, name
+with (SOURCE / 'progress.csv').open() as file:
+    rows = list(csv.DictReader(file))
+lookup = {(r['trajectory_id'], int(r['frame_index'])): r for r in rows}
+assert len(rows) == len(lookup) == 800
+public = {'schema_version': 2, 'model': 'Yuheng 27B', 'progress_source': 'Model predictions',
+          'task_count': manifest['total_tasks'], 'trajectories': []}
+for number, sample in enumerate(manifest['samples'], 1):
+    identity = sample['trajectory_id']
+    assert sample['astra_outcome'] in ['success', 'failure']
+    assert sample['category'] == ('success' if sample['astra_outcome'] == 'success' else 'non_success')
+    progress = json.loads((SOURCE / sample['progress_path']).read_text())
+    predicted = json.loads((SOURCE / sample['model_prediction_path']).read_text())
+    assert predicted['trajectory_id'] == progress['trajectory_id'] == identity
+    assert predicted['benchmark_id'] == manifest['benchmark_id']
+    assert progress['model_id'] == manifest['model']['model_id']
+    assert progress['frame_indices'] == predicted['frame_indices'] == list(range(32))
+    assert len(sample['frames']) == sample['num_frames'] == 32
+    frames = []
+    for index, frame in enumerate(sample['frames']):
+        row = lookup[identity, index]
+        value = frame['model_progress']
+        assert frame['frame_index'] == index
+        assert value == predicted['progress'][index] == progress['model_progress'][index] == progress['frames'][index]['model_progress'] == float(row['model_progress'])
+        assert math.isfinite(value) and 0 <= value <= 1
+        assert frame['image_path'] == progress['frames'][index]['image_path'] == row['image_path']
+        image = SOURCE / frame['image_path']
+        assert image.resolve().is_relative_to(SOURCE.resolve())
+        content = image.read_bytes()
+        assert content[:8] == b'\x89PNG\r\n\x1a\n'
+        assert struct.unpack('>II', content[16:24]) == (frame['width'], frame['height']) == (160, 120)
+        output = DEST / 'images' / f'{number:02d}' / f'{index:04d}.png'
+        output.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(image, output)
+        frames.append({'frame_index': index, 'progress': value, 'image_path': str(output.relative_to(ROOT))})
+    public['trajectories'].append({'id': identity, 'task': sample['instruction'], 'task_id': sample['task_id'],
+        'width': 160, 'height': 120, 'outcome': sample['astra_outcome'], 'is_reference': sample['is_icl_reference'], 'frames': frames})
+assert len({t['task_id'] for t in public['trajectories']}) == public['task_count']
+(DEST / 'index.json').write_text(json.dumps(public, separators=(',', ':')) + '\n')
+print('Verified source checksums and 800 predictions against CSV/JSON; exported 25 PNG sequences.')

@@ -2072,20 +2072,6 @@ display:none}
   .dataset-frame-card figcaption { flex-direction: column; align-items: flex-start; }
 }
 
-/* One-shot generalization: aligned first frames, last frames, and separate curves. */
-.one-shot-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 12px; }
-.one-shot-task { min-width: 0; display: grid; grid-template-rows: subgrid; grid-row: span 6; text-align: center; }
-.one-shot-task h4 { margin: 0 0 4px; font-size: 15px; line-height: 1.45; font-weight: 550; overflow-wrap: break-word; }
-.one-shot-frame { min-width: 0; }
-.one-shot-frame span, .one-shot-progress-label { display: block; font-size: 14px; line-height: 1.4; color: var(--muted); }
-.one-shot-frame span { margin-bottom: 7px; }
-.one-shot-frame img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: contain; border-radius: 5px; }
-.one-shot-arrow { display: grid; place-items: center; color: var(--accent); }
-.one-shot-arrow svg { width: 20px; height: 27px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.one-shot-progress-label { margin-top: 8px; }
-.one-shot-plot { display: block; width: 100%; height: auto; }
-.one-shot-demo > figcaption { font-size: 15px; line-height: 1.5; margin-top: 18px; }
-@media (max-width: 480px) { .one-shot-grid { column-gap: 8px; } }
 
 /* Full-width capability sections and the timed reference-scale demonstration. */
 .capability-row > .capability-copy { max-width: 900px; }
@@ -2200,12 +2186,6 @@ display:none}
 .transfer-image-stage { aspect-ratio: auto; height: clamp(110px, 17vh, 150px); }
 #transfer-frame-error, #transfer-frame-retry { grid-column: 1 / -1; }
 #capabilities .embodiment-types { margin-top: 6px; }
-.one-shot-grid { gap: 5px 16px; }
-.one-shot-frame img { width: auto; max-width: 100%; height: clamp(80px, 12vh, 108px); margin-inline: auto; }
-.one-shot-frame span { margin-bottom: 4px; }
-.one-shot-arrow svg { height: 20px; }
-.one-shot-progress-label { margin-top: 3px; }
-.one-shot-plot { height: 82px; object-fit: contain; }
 @media (min-width: 900px) {
   #capabilities .capability-copy p + p { margin-top: 10px; }
   .scale-animation-layout { grid-template-columns: 180px minmax(0, 1fr) minmax(0, 1.15fr); gap: 22px; }
@@ -2229,8 +2209,6 @@ display:none}
   #transfer-legend, #transfer-chart, .transfer-transport { grid-column: 1; }
   .transfer-image-stage { height: auto; aspect-ratio: 5 / 4; max-height: 135px; }
   #transfer-chart { height: 220px; }
-  .one-shot-frame img { width: 100%; height: auto; max-height: 90px; }
-  .one-shot-plot { height: auto; max-height: 82px; }
 }
 @media (min-width: 900px) {
   #capabilities > .capability-row { padding-block: 20px; gap: 12px; }
@@ -2244,8 +2222,6 @@ display:none}
   #scale-animation-chart { height: 210px; }
   .scale-animation-toolbar { margin-bottom: 12px; }
   #transfer-chart { height: 230px; }
-  .one-shot-frame img { height: 80px; }
-  .one-shot-plot { height: 70px; }
 }
 
 /* Fixed-size reference-to-model flow with four persistent query rows. */
@@ -2377,3 +2353,26 @@ display:none}
 .scale-animation-query > p { font-size: 14px; }
 .alignment-playback-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; }
 .alignment-playback-row .alignment-event { margin: 0; }
+
+/* Unified controls and a fixed 5×5 center-out trajectory wall. */
+.alignment-toolbar, .one-shot-controls { display: flex; justify-content: flex-end; gap: 8px; }
+.alignment-toolbar { margin-bottom: 14px; }
+.one-shot-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 16px; }
+.one-shot-toolbar p { margin: 0; color: var(--muted); font-size: 15px; }
+.one-shot-scroll { overflow-x: auto; padding: 3px; }
+.one-shot-radial-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; min-width: 850px; }
+.one-shot-cell { min-width: 0; display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); align-items: center; gap: 6px; padding: 6px; border: 1px solid #e7dcd7; border-radius: 7px; background: #fffdfa; opacity: .27; transition: opacity .5s, border-color .5s, box-shadow .5s; }
+.one-shot-cell img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: contain; border-radius: 3px; }
+.one-shot-cell svg { display: block; width: 100%; height: auto; overflow: visible; }
+.one-shot-cell[data-state="active"] { opacity: 1; border-color: #c47762; box-shadow: 0 0 0 2px #c4776214; }
+.one-shot-cell[data-state="complete"] { opacity: .78; }
+.one-shot-demo[data-complete="true"] .one-shot-cell { opacity: 1; }
+.one-shot-gridline { stroke: #e8e0da; stroke-width: 1; }
+.one-shot-curve { stroke: var(--curve-color); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.one-shot-dot { fill: var(--curve-color); }
+@media (prefers-reduced-motion: reduce) { .one-shot-cell { transition: none; } }
+.one-shot-demo [hidden] { display: none !important; }
+#one-shot-restart, #alignment-restart { font-size: 25px; }
+
+.one-shot-demo { min-width: 0; max-width: 100%; }
+.one-shot-plot-border { fill: none; stroke: #d4c5bc; stroke-width: 1; }

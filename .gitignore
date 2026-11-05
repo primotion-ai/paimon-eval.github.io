@@ -28,3 +28,6 @@ test-results/
 /capabilities/cross_embodiment_transfer/
 
 /capabilities/one_shot_multi_task/
+
+# Local source bundle for the 25-trajectory radial demonstration.
+/one_shot_multi_task/

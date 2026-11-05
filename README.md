@@ -105,3 +105,9 @@ UV_CACHE_DIR=/tmp/yuheng-uv-cache uv run --no-project --with matplotlib==3.11.2 
 `#cross-embodiment` 展示轨迹 1（人手 ICL 参考）、3（YAM 机械臂）、5（Wuji 手成功）和 7（Wuji 手失败）。曲线下方的左右按钮逐帧同步四组画面，也支持播放、暂停和重播；手动调整会暂停播放并优先跳转。当前帧左侧曲线不透明，未来部分为 24% 不透明度，全部为连续实线。四组画面在曲线和控制按钮下方以 2×2 排列。
 
 同步轴是四段视频分别均匀采样后的帧位置，不是共同物理时间。公开素材共 128 张原始 320×256 PNG，来自本地 `capabilities/cross_embodiment_transfer/`；运行 `python3 scripts/prepare-cross-embodiment.py` 校验 CSV、JSON 和图片哈希，再导出到 `assets/capabilities/cross-embodiment/`。原始推理配置和提示词不公开。
+
+## One-shot multi-task 扩散展示
+
+`#one-shot-generalization` 使用 `one-shot-animation.js` 将 25 条轨迹（21 个任务）排列为 5×5 网格。按距中心的曼哈顿距离依次播放 1、4、8、8、4 个格子；同一圈同步推进采样帧，每个视频右侧的独立曲线用闭合框围起，只绘制到当前帧；按提供的 Astra outcome，13 条成功为绿色，12 条失败为红色。未播放的格子淡化，已完成的格子保留最终画面。每帧至少停留 170ms，圈间停留 500ms，完整播放一次后停止。右上角支持暂停和重新播放，离开视口或切换标签页暂停计时，减少动态效果偏好下不自动播放。手机保留 5×5 排列并在展示框内横向滚动。
+
+`python3 scripts/prepare-one-shot.py` 从本地 `one_shot_multi_task/` 导出网页所需的 800 张 PNG 与精简 `index.json`，核对校验值和所有 CSV/JSON 模型预测。已有 PNG 在推理之后缩小至 160×120，导出时原样复制，不改动预测；原始 NPZ、标注、reference 文件和路径留在本地。旧的三轨迹源数据和专用网页素材已删除。
