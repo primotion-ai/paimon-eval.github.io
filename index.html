@@ -8,12 +8,13 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261106-training-card">
+  <link rel="stylesheet" href="styles.css?v=20261106-concept">
   <script src="script.js?v=20261104-benchmark-fold" defer></script>
   <script src="dataset-explorer.js?v=20261102-reference" defer></script>
   <script src="benchmark-comparison.js?v=20261102-ground-truth" defer></script>
   <script src="scale-animation.js?v=20261106-once" defer></script>
   <script src="semantic-alignment.js?v=20261105-controls" defer></script>
+  <script src="concept-overview.js?v=20261106" defer></script>
   <script src="one-shot-animation.js?v=20261105-radial" defer></script>
   <script src="cross-embodiment.js?v=20261105-keyframe-pacing" defer></script>
 </head>
@@ -27,7 +28,7 @@
 
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
-      <h1 id="hero-title"><span class="title-brand"><img src="icon.png?v=20261031-orange" alt="" width="48" height="48">Yuheng:</span> Toward Universal Progress Modeling <span class="title-continuation">through In-Context Learning and Semantic Alignment</span></h1>
+      <h1 id="hero-title"><span class="title-brand"><img src="icon.png?v=20261031-orange" alt="" width="48" height="48"><span class="title-yuheng">Yuheng</span>:</span> Toward Universal Progress Modeling <span class="title-continuation">through In-Context Learning and Semantic Alignment</span></h1>
       <p class="hero-description">One demonstration. Your definition of progress.<br>A shared measure across trajectories and embodiments.</p>
       <p class="authors">Primotion Team</p>
       <p class="project-date">Project date · <time datetime="2026-10-30">October 30, 2026</time></p>
@@ -40,24 +41,32 @@
       <div class="hero-tags"><span>One-shot generalization</span><span>In-context learning</span><span>Cross-embodiment transfer</span><span>4B &amp; 27B</span></div>
     </section>
 
-    <section class="teaser content-width" aria-labelledby="teaser-title">
-      <div class="figure-topline"><h2 id="teaser-title">One reference. A common scale.</h2><span class="small-label">CONCEPTUAL OVERVIEW</span></div>
-      <div class="teaser-layout">
-        <div class="reference-side">
-          <div class="diagram-label"><span class="step-dot">01</span> Define your reference scale</div>
-          <div class="reference-frames">
-            <div class="reference-frame"><div class="frame-placeholder"><svg width="20" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><rect x="2" y="2" width="20" height="16" rx="2"/><circle cx="8" cy="7" r="1.5"/><path d="m3 16 6-6 4 4 3-3 5 5"/></svg><small>Frame 01</small></div><span class="frame-score" data-score="0">0%</span></div>
-            <div class="reference-frame"><div class="frame-placeholder"><svg width="20" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><rect x="2" y="2" width="20" height="16" rx="2"/><circle cx="8" cy="7" r="1.5"/><path d="m3 16 6-6 4 4 3-3 5 5"/></svg><small>Frame 02</small></div><span class="frame-score" data-score="1">30%</span></div>
-            <div class="reference-frame"><div class="frame-placeholder"><svg width="20" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><rect x="2" y="2" width="20" height="16" rx="2"/><circle cx="8" cy="7" r="1.5"/><path d="m3 16 6-6 4 4 3-3 5 5"/></svg><small>Frame 03</small></div><span class="frame-score" data-score="2">70%</span></div>
-            <div class="reference-frame"><div class="frame-placeholder"><svg width="20" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><rect x="2" y="2" width="20" height="16" rx="2"/><circle cx="8" cy="7" r="1.5"/><path d="m3 16 6-6 4 4 3-3 5 5"/></svg><small>Frame 04</small></div><span class="frame-score" data-score="3">100%</span></div>
+    <section class="teaser content-width concept-demo" id="concept-overview" aria-labelledby="teaser-title">
+      <div class="concept-heading"><h2 id="teaser-title">CONCEPTUAL OVERVIEW</h2><p>One reference. A common scale.</p><div class="concept-controls"><button id="concept-play" class="dataset-button" type="button" disabled>Pause</button><button id="concept-restart" class="dataset-icon-button" type="button" disabled aria-label="Restart conceptual overview">↺</button></div></div>
+      <p id="concept-status" class="visually-hidden" role="status">Loading the reference and query frames…</p><button id="concept-retry" class="dataset-button" type="button" hidden>Retry</button>
+      <div class="concept-layout">
+        <div class="concept-inputs">
+          <div class="concept-reference" id="concept-reference">
+            <div class="diagram-label"><span class="step-dot">01</span> Define your reference scale</div>
+            <div class="concept-keyframes" id="concept-keyframes"></div>
           </div>
-          <div class="reference-baseline"><span>Start</span><span>Semantic milestones</span><span>Success</span></div>
+          <div class="concept-query" id="concept-query">
+            <div class="diagram-label"><span class="step-dot">02</span> Query current frame</div>
+            <img id="concept-query-image" width="320" height="256" alt="Human hand query trajectory" hidden>
+          </div>
         </div>
-        <div class="diagram-connector" aria-hidden="true">→</div>
-        <div class="model-symbol"><img src="icon.png?v=20261031-orange" alt="" width="40" height="40"><strong>Yuheng</strong><span>Progress model</span><div>4B <span>·</span> 27B</div></div>
-        <div class="diagram-connector" aria-hidden="true">→</div>
-        <div class="output-side"><div class="diagram-label"><span class="step-dot">02</span> Evaluate any trajectory</div><div class="trajectory-row"><span class="trajectory-marker complete"></span><span>Successful</span><span class="mini-track"><i style="width:90%"></i></span></div><div class="trajectory-row"><span class="trajectory-marker suboptimal"></span><span>Suboptimal</span><span class="mini-track"><i style="width:62%"></i></span></div><div class="trajectory-row"><span class="trajectory-marker failed"></span><span>Failed</span><span class="mini-track"><i style="width:27%"></i></span></div><p>Current frame + reference → progress</p></div>
+        <div class="concept-arrow" id="concept-input-arrow" aria-hidden="true">→</div>
+        <div class="model-symbol concept-model" id="concept-model"><img src="icon.png?v=20261031-orange" alt="" width="40" height="40"><strong>Yuheng</strong><span>Progress model</span><div>4B <span>·</span> 27B</div></div>
+        <div class="concept-arrow" id="concept-output-arrow" aria-hidden="true">→</div>
+        <div class="concept-output" id="concept-output">
+          <div class="diagram-label"><span class="step-dot">03</span> Evaluate any trajectory</div>
+          <div class="concept-result" data-target="90" style="--result-color:#318572"><span class="concept-result-label">Successful</span><span class="concept-track"><i></i></span></div>
+          <div class="concept-result" data-target="62" style="--result-color:#c29a45"><span class="concept-result-label">Suboptimal</span><span class="concept-track"><i></i></span></div>
+          <div class="concept-result" data-target="27" style="--result-color:#cd555b"><span class="concept-result-label">Failed</span><span class="concept-track"><i></i></span></div>
+          <p>Current frame + reference → progress</p>
+        </div>
       </div>
+      <noscript><p>Provide reference keyframes and a current frame to evaluate progress on your chosen scale.</p></noscript>
     </section>
 
     <section class="intro section content-width" id="overview" aria-labelledby="intro-title">
@@ -86,8 +95,7 @@
           <div class="milestone-control"><label for="milestone">Query frame’s semantic stage</label><output id="milestone-name" for="milestone">Grasp</output></div><input id="milestone" type="range" min="0" max="3" step="1" value="1" aria-describedby="explorer-note"><div class="range-labels"><span>Start</span><span>Grasp</span><span>Move</span><span>Finish(Place)</span></div><div class="aligned-output"><span>Matching reference progress <small id="explorer-note">Same semantic stage → same target value</small></span><output id="aligned-progress" for="milestone">33%</output></div></div></div>
       <div class="data-note" id="training-data">
         <div class="training-composition" aria-labelledby="training-composition-title">
-          <h3 id="training-composition-title">A stronger data foundation</h3>
-          <p class="training-tldr">Diverse trajectories. More precise progress labels.</p>
+          <div class="explorer-copy training-copy"><span class="small-label" id="training-composition-title">A STRONGER DATA FOUNDATION</span><h3>Diverse trajectories. More precise progress labels.</h3></div>
           <p class="training-description">Yuheng is trained on data selected and filtered from <strong>Robometer</strong>, with progress labels annotated using <strong>GPT 6 Astra</strong> and <strong>GPT 6 Sol</strong>. These eight sources bring together diverse tasks, environments, and embodiments, providing a broad foundation for learning semantically aligned progress.</p>
           <div class="training-composition-layout">
             <figure class="training-pie"><img src="assets/training-data/composition.svg" width="360" height="360" loading="lazy" alt="Training data shares. Galaxea Open World Dataset and RH20T are the largest sources; the adjacent legend lists all eight percentages."><figcaption><strong>~16k</strong><span>training trajectories</span></figcaption></figure>
@@ -105,6 +113,7 @@
             </ul>
           </div>
         </div>
+        <p class="training-efficiency">Combining precise annotations with a one-shot design built for generalization, Yuheng achieves <a href="#benchmark">strong progress-modeling performance</a> with approximately <strong>16k training trajectories</strong>—far fewer than <a href="https://robometer.github.io/" target="_blank" rel="noopener noreferrer">Robometer (~1M)</a> or <a href="https://arxiv.org/html/2610.32776v1" target="_blank" rel="noopener noreferrer">NimCritic (~250k)</a>.</p>
       </div>
     </div></section>
 
