@@ -120,4 +120,4 @@ UV_CACHE_DIR=/tmp/yuheng-uv-cache uv run --no-project --with matplotlib==3.11.2 
 
 `concept-overview.js` 直接复用 `assets/capabilities/cross-embodiment/index.json` 的四个 reference 索引（0、14、18、29，标尺 0%、33%、66%、100%）与 Human hand 的 32 张 PNG。动画按 01 标签、四个关键帧依次出现、02 查询序列、03 输出说明与进度条的顺序播放；总时长 15 秒，结束后保留全图，可手动重播。三条概念进度条保留原示意图的 90%、62%、27%，并非新运行的模型预测。支持暂停、离开视口暂停及减少动态效果设置。
 
-训练数据标题直接复用 `.explorer-copy > .small-label`；卡片下方的数据规模对比使用 Robometer 官方项目页和 NimCritic 论文公开规模（约 1M 与约 250k），性能链接指向本站 benchmark。
+训练数据标题直接复用 `.explorer-copy > .small-label`；卡片内部底部的数据规模对比使用 Robometer 官方项目页和 NimCritic 论文公开规模（约 1M 与约 250k），性能链接指向本站 benchmark。

@@ -2434,7 +2434,7 @@ display:none}
   .title-yuheng { background: linear-gradient(115deg, #8d3d43 5%, #c66b43 48%, #a34843 90%); background-clip: text; -webkit-background-clip: text; color: transparent; }
 }
 .data-note .training-copy h3 { font-family: var(--serif); font-size: clamp(21px, 1.8vw, 25px); font-weight: 400; line-height: 1.4; letter-spacing: -.2px; margin: 12px 0 16px; }
-.data-note .training-efficiency { grid-column: 1 / -1; font-size: 16px; line-height: 1.8; margin: 0; }
+.data-note .training-efficiency { font-size: 16px; line-height: 1.8; margin: 26px 0 0; }
 .training-efficiency a { text-decoration: underline; text-decoration-color: #d8b6af; text-underline-offset: 3px; }
 .data-note .training-efficiency strong { font-weight: 600; }
 @media (max-width: 950px) {
