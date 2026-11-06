@@ -126,6 +126,6 @@ METHOD 架构图按自下而上的结构呈现：任务 instruction、reference 
 
 ## Pages and architecture notation
 
-顶部导航仅保留 `index.html`（Overview）、`playground.html`、`application.html`。后两页使用同样的背景、页头和页尾，目前只有页面名与 Coming soon；没有上传、推理或下游功能。旧 05 / BEYOND EVALUATION 内容保存在 `content/application-draft.html`，供后续编写 Application 使用，部署不复制该目录。首页资源区顺延为 05。
+顶部导航仅保留 `index.html`（Overview）、`playground.html`、`application.html`。后两页使用同样的背景、页头和页尾；Playground 目前只有页面名与 Coming soon，没有上传或推理功能。首页保留完整的 05 / BEYOND EVALUATION，四个 Explore 按钮链接到 Application 中对应的空白小节锚点，后续再填入应用内容。`content/application-draft.html` 保留原应用文案备份，部署不复制该目录。首页资源区保持 06。页头导航居中，页头页尾均显示 icon + 艺术字 Yuheng。
 
 `concept-overview.js` 在查询图片完全出现之后（10 秒）才淡入模型，11 秒开始展示输出。公式 SVG 由 `scripts/prepare-architecture-math.py` 使用 Matplotlib mathtext 的 STIX 数学字体生成，包含规范的下标和 `p_hat = sum(pi_i * p_i)`；运行方式与其他 Matplotlib 脚本相同。

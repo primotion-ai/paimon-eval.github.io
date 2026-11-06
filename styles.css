@@ -2500,9 +2500,9 @@ display:none}
 @media (max-width: 700px) { .architecture-figure { padding: 18px 12px; } .architecture-vlm-description { display: none; } }
 
 /* Shared three-page navigation and icon + artistic wordmark branding. */
-.site-header.page-header { width: 100%; margin: 0 auto; flex-shrink: 0; justify-content: space-between; gap: 22px; }
+.site-header.page-header { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); width: 100%; margin: 0 auto; flex-shrink: 0; gap: 22px; }
 .page-header .icon-wordmark img { width: 40px; height: 40px; }
-.site-header.page-header nav { display: flex; gap: 28px; margin: 0; }
+.site-header.page-header nav { display: flex; justify-self: center; gap: 28px; margin: 0; }
 .site-header.page-header nav a { display: inline-block; padding-block: 8px; font-size: 16px; border-bottom: 2px solid transparent; }
 .site-header.page-header nav a[aria-current="page"] { color: var(--accent-dark); border-bottom-color: var(--accent); }
 .page-footer .icon-wordmark img { width: 36px; height: 36px; }
@@ -2537,3 +2537,14 @@ footer.page-footer > span { margin: 0; }
   .page-header .wordmark-name { font-size: 28px; }
 }
 .icon-wordmark img { margin-right: 0; }
+
+.page-header > .wordmark { justify-self: start; }
+.application-link { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; padding: 7px 12px; border: 1px solid #d5b7ad; border-radius: 5px; font-size: 14px; color: var(--accent-dark); background: #fff9; }
+.application-link:hover { background: #f7e8e1; }
+.application-page .application-placeholder { margin-top: 32px; min-height: 200px; border: 1px solid var(--line); border-radius: 8px; padding: 28px; background: #fff8; text-align: left; }
+.application-placeholder h2 { font-size: 24px; font-family: var(--serif); font-weight: 400; }
+@media (max-width: 760px) {
+  .site-header.page-header { grid-template-columns: minmax(0, 1fr); height: auto; min-height: 72px; padding-block: 12px; row-gap: 4px; }
+  .site-header.page-header nav { width: 100%; justify-content: center; }
+}
+.application-link { align-self: flex-start; }
