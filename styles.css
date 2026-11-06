@@ -2548,3 +2548,29 @@ footer.page-footer > span { margin: 0; }
   .site-header.page-header nav { width: 100%; justify-content: center; }
 }
 .application-link { align-self: flex-start; }
+
+/* Active code link, reserved project video, and an editorial left-column introduction. */
+.button-code { cursor: pointer; color: var(--accent-dark); background: #fff9; border-color: #b87568; gap: 10px; font-weight: 600; transition: background .2s, border-color .2s, transform .2s; }
+.button-code:hover { background: #fff; border-color: var(--accent-dark); transform: translateY(-2px); }
+.button-code:focus-visible { outline: 2px solid var(--accent-dark); outline-offset: 4px; }
+.title-colon { margin-left: .04em; }
+.project-video-placeholder { margin: 28px auto 40px; }
+.project-video-slot { aspect-ratio: 16 / 9; border: 1px solid #d8bbb5; border-radius: 10px; background: linear-gradient(145deg, #f8ece8, #fffaf8); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: #987b70; }
+.project-video-slot svg { fill: none; stroke: currentColor; stroke-width: 1.2; }
+.project-video-slot span { font-size: 16px; }
+#overview.intro { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: start; }
+.idea-text { min-width: 0; text-align: left; }
+.idea-text .section-heading { margin-bottom: 24px; }
+.idea-points { margin: 0; padding-left: 22px; display: grid; gap: 16px; }
+.idea-points li { font-size: 17px; line-height: 1.8; padding-left: 3px; }
+.idea-points li::marker { color: var(--accent); }
+.idea-text .name-note { align-items: flex-start; margin-top: 24px; text-align: left; }
+.idea-text .name-note p { margin: 0; }
+#method .section-heading .method-description { text-align: left; max-width: none; font-size: 17px; line-height: 1.8; }
+.architecture-keyframes span img, .architecture-labels span img { width: 28px; height: 29.12px; max-width: none; object-fit: contain; }
+.architecture-keyframes span { height: 32px; }
+@media (max-width: 760px) {
+  #overview.intro { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .idea-visual-space { display: none; }
+  .project-video-placeholder { margin-block: 22px 30px; }
+}

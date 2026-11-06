@@ -8,7 +8,7 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261107-navigation">
+  <link rel="stylesheet" href="styles.css?v=20261107-layout-polish">
   <script src="script.js?v=20261104-benchmark-fold" defer></script>
   <script src="dataset-explorer.js?v=20261102-reference" defer></script>
   <script src="benchmark-comparison.js?v=20261102-ground-truth" defer></script>
@@ -27,18 +27,22 @@
 
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
-      <h1 id="hero-title"><span class="title-brand"><img src="icon.png?v=20261031-orange" alt="" width="48" height="48"><span class="title-yuheng">Yuheng</span>:</span> Toward Universal Progress Modeling <span class="title-continuation">through In-Context Learning and Semantic Alignment</span></h1>
+      <h1 id="hero-title"><span class="title-brand"><img src="icon.png?v=20261031-orange" alt="" width="48" height="48"><span class="title-yuheng">Yuheng</span> <span class="title-colon">:</span></span> Toward Universal Progress Modeling <span class="title-continuation">through In-Context Learning and Semantic Alignment</span></h1>
       <p class="hero-description">One demonstration. Your definition of progress.<br>A shared measure across trajectories and embodiments.</p>
       <p class="authors">Primotion Team</p>
       <p class="project-date">Project date · <time datetime="2026-10-30">October 30, 2026</time></p>
       <div class="hero-actions" aria-label="Research resources">
         <a class="button button-primary" href="playground.html">Try Yuheng <span aria-hidden="true">↗</span></a>
         <button class="button button-quiet" type="button" disabled>Paper <span class="soon">Coming soon</span></button>
-        <a class="button button-quiet" href="https://github.com/primotion-ai/Yuheng" target="_blank" rel="noopener noreferrer">Code</a>
+        <a class="button button-code" href="https://github.com/primotion-ai/Yuheng" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.11.79-.25.79-.55v-2.14c-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.16 1.18A11 11 0 0 1 12 6.03c.98 0 1.96.13 2.88.39 2.2-1.49 3.16-1.18 3.16-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.83 1.18 3.09 0 4.42-2.69 5.4-5.25 5.69.41.36.78 1.06.78 2.14v3.16c0 .31.21.67.79.55A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>Code <span aria-hidden="true">↗</span></a>
         <button class="button button-quiet" type="button" disabled>Dataset <span class="soon">Coming soon</span></button>
       </div>
       <div class="hero-tags"><span>One-shot generalization</span><span>In-context learning</span><span>Cross-embodiment transfer</span><span>4B &amp; 27B</span></div>
     </section>
+
+    <figure class="project-video-placeholder content-width" aria-label="Reserved space for a project video, 16 by 9">
+      <div class="project-video-slot"><svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true"><circle cx="24" cy="24" r="21"/><path d="m20 16 12 8-12 8Z"/></svg><span>Project video</span></div>
+    </figure>
 
     <section class="teaser content-width concept-demo" id="concept-overview" aria-labelledby="teaser-title">
       <div class="concept-heading"><h2 id="teaser-title">CONCEPTUAL OVERVIEW</h2><div class="concept-controls"><button id="concept-play" class="dataset-button" type="button" disabled>Pause</button><button id="concept-restart" class="dataset-icon-button" type="button" disabled aria-label="Restart conceptual overview">↺</button></div></div>
@@ -70,8 +74,16 @@
     </section>
 
     <section class="intro section content-width" id="overview" aria-labelledby="intro-title">
-      <div class="section-heading"><span class="eyebrow">01 / THE IDEA</span><h2 id="intro-title">Progress is more than<br><em>time passing.</em></h2></div>
-      <div class="intro-copy"><p class="lead">To advance embodied post-training, we need progress models that truly generalize.</p><p>Progress labels must reflect task semantics, rather than simply track elapsed trajectory time.</p><p>To this end, we introduce <strong>Yuheng</strong>: a generalizable, semantically aligned progress model.</p><div class="name-note"><span class="name-character" aria-hidden="true"><img src="icon.png?v=20261031-orange" width="32" height="32" alt=""></span><p><strong>Yuheng · 玉衡</strong><br>Named after Yuheng, one of the seven stars of the Big Dipper. Its name evokes balance and measurement, guiding how we measure robot progress.</p></div></div>
+      <div class="idea-text">
+        <div class="section-heading"><span class="eyebrow">01 / THE IDEA</span><h2 id="intro-title">Progress is more than<br><em>time passing.</em></h2></div>
+        <ul class="idea-points">
+          <li>To advance embodied post-training, we need progress models that truly generalize.</li>
+          <li>Progress labels must reflect task semantics, rather than simply track elapsed trajectory time.</li>
+          <li>To this end, we introduce <strong>Yuheng</strong>: a generalizable, semantically aligned progress model.</li>
+        </ul>
+        <div class="name-note"><span class="name-character" aria-hidden="true"><img src="icon.png?v=20261031-orange" width="32" height="32" alt=""></span><p><strong>Yuheng · 玉衡</strong><br>Named after Yuheng, one of the seven stars of the Big Dipper. Its name evokes balance and measurement, guiding how we measure robot progress.</p></div>
+      </div>
+      <div class="idea-visual-space" aria-hidden="true"></div>
     </section>
 
     <section class="principles content-width" aria-label="Four core capabilities">
@@ -82,24 +94,24 @@
     </section>
 
     <section class="section method-section" id="method" aria-labelledby="method-title"><div class="content-width">
-      <div class="section-heading centered"><span class="eyebrow">02 / THE METHOD</span><h2 id="method-title">A reference to reason with.<br><em>A scale to measure against.</em></h2><p>A vision-language model reads the task instruction, reference keyframes,<br>and current frame together.<br>The progress head predicts where that frame belongs on your scale.</p></div>
+      <div class="section-heading centered"><span class="eyebrow">02 / THE METHOD</span><h2 id="method-title">A reference to reason with.<br><em>A scale to measure against.</em></h2><p class="method-description">The VLM jointly processes the task instruction, reference keyframes, and current frame.<br>The progress projection head estimates progress on the reference scale.</p></div>
       <figure class="architecture-figure" aria-label="Yuheng architecture: task instruction, reference keyframes, their progress labels, and the current frame are encoded as input tokens; the VLM representation is projected to keyframe classification probabilities, which weight the assigned keyframe progress values to produce relative progress.">
         <div class="architecture-scroll" tabindex="0" role="region" aria-label="Model architecture; scroll horizontally on small screens">
           <div class="architecture-diagram">
             <div class="architecture-result"><img src="assets/progress-symbol.svg" width="36" height="38" alt="Predicted progress: p hat"><div><strong>Relative progress</strong><span>On the reference scale</span></div></div>
             <div class="architecture-up" aria-hidden="true"></div>
-            <div class="architecture-weighted"><strong>Progress-weighted sum</strong><img src="assets/architecture-math/weighted-progress.svg" alt="p hat equals the sum over keyframes of classification probability pi i times assigned progress p i"><span>Weight each keyframe’s progress by its probability</span></div>
+            <div class="architecture-weighted"><strong>Keyframe progress aggregation</strong><img src="assets/architecture-math/weighted-progress.svg" alt="p hat equals the sum over keyframes of classification probability pi i times assigned progress p i"><span>Aggregate keyframe progress using classification probabilities</span></div>
             <div class="architecture-up" aria-hidden="true"></div>
             <div class="architecture-probabilities"><strong>Keyframe classification probabilities</strong><img src="assets/architecture-math/probabilities.svg" alt="Probabilities pi 1, pi 2, through pi n"></div>
             <div class="architecture-up" aria-hidden="true"></div>
-            <div class="architecture-projection">Projection head</div>
+            <div class="architecture-projection">Progress projection head</div>
             <div class="architecture-up" aria-hidden="true"></div>
             <div class="architecture-vlm"><div><img src="icon.png?v=20261031-orange" width="32" height="32" alt=""><h3>Yuheng VLM</h3></div><span class="architecture-vlm-description">In-context progress modeling</span><div class="architecture-sizes"><span>4B</span><span>27B</span></div></div>
             <div class="architecture-inputs">
               <div class="architecture-input" style="--token-color:#b59976;--token-fill:#eee4d4"><div class="architecture-up" aria-hidden="true"></div><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="architecture-token-label">Text tokens</span><div class="architecture-up" aria-hidden="true"></div><div class="architecture-source"><h4>Task instruction</h4><div class="architecture-text-lines" aria-hidden="true"><i></i><i></i><i></i></div><p>What to accomplish</p></div></div>
-              <div class="architecture-input" style="--token-color:#8298b2;--token-fill:#e3ebf3"><div class="architecture-up" aria-hidden="true"></div><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="architecture-token-label">Visual tokens</span><div class="architecture-up" aria-hidden="true"></div><div class="architecture-source"><h4>Reference keyframes</h4><div class="architecture-keyframes" aria-label="Reference keyframes k1 to kn"><span><img src="assets/architecture-math/k1.svg" alt="k subscript 1"></span><span><img src="assets/architecture-math/k2.svg" alt="k subscript 2"></span><b>⋯</b><span><img src="assets/architecture-math/kn.svg" alt="k subscript n"></span></div><p>One successful trajectory</p></div></div>
-              <div class="architecture-input" style="--token-color:#c18b7b;--token-fill:#f2e0d9"><div class="architecture-up" aria-hidden="true"></div><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="architecture-token-label">Progress-label tokens</span><div class="architecture-up" aria-hidden="true"></div><div class="architecture-source"><h4>Keyframe progress</h4><div class="architecture-labels" aria-label="Assigned progress p1 to pn"><span><img src="assets/architecture-math/p1.svg" alt="p subscript 1"></span><span><img src="assets/architecture-math/p2.svg" alt="p subscript 2"></span><b>⋯</b><span><img src="assets/architecture-math/pn.svg" alt="p subscript n"></span></div><p>User-defined scale</p></div></div>
-              <div class="architecture-input" style="--token-color:#7ba195;--token-fill:#e0ede7"><div class="architecture-up" aria-hidden="true"></div><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="architecture-token-label">Visual tokens</span><div class="architecture-up" aria-hidden="true"></div><div class="architecture-source"><h4>Current frame</h4><div class="architecture-keyframes architecture-current" aria-label="Current image"><span><img src="assets/architecture-math/xt.svg" alt="x subscript t"></span></div><p>Any trajectory of the task</p></div></div>
+              <div class="architecture-input" style="--token-color:#8298b2;--token-fill:#e3ebf3"><div class="architecture-up" aria-hidden="true"></div><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="architecture-token-label">Visual tokens</span><div class="architecture-up" aria-hidden="true"></div><div class="architecture-source"><h4>Reference keyframes</h4><div class="architecture-keyframes" aria-label="Reference keyframes k1 to kn"><span><img src="assets/architecture-math/k1.svg?v=20261107-uniform" alt="k subscript 1"></span><span><img src="assets/architecture-math/k2.svg?v=20261107-uniform" alt="k subscript 2"></span><b>⋯</b><span><img src="assets/architecture-math/kn.svg?v=20261107-uniform" alt="k subscript n"></span></div><p>One successful trajectory</p></div></div>
+              <div class="architecture-input" style="--token-color:#c18b7b;--token-fill:#f2e0d9"><div class="architecture-up" aria-hidden="true"></div><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="architecture-token-label">Progress-label tokens</span><div class="architecture-up" aria-hidden="true"></div><div class="architecture-source"><h4>Keyframe progress</h4><div class="architecture-labels" aria-label="Assigned progress p1 to pn"><span><img src="assets/architecture-math/p1.svg?v=20261107-uniform" alt="p subscript 1"></span><span><img src="assets/architecture-math/p2.svg?v=20261107-uniform" alt="p subscript 2"></span><b>⋯</b><span><img src="assets/architecture-math/pn.svg?v=20261107-uniform" alt="p subscript n"></span></div><p>User-defined scale</p></div></div>
+              <div class="architecture-input" style="--token-color:#7ba195;--token-fill:#e0ede7"><div class="architecture-up" aria-hidden="true"></div><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="architecture-token-label">Visual tokens</span><div class="architecture-up" aria-hidden="true"></div><div class="architecture-source"><h4>Current frame</h4><div class="architecture-keyframes architecture-current" aria-label="Current image"><span><img src="assets/architecture-math/xt.svg?v=20261107-uniform" alt="x subscript t"></span></div><p>Any trajectory of the task</p></div></div>
             </div>
           </div>
         </div>
