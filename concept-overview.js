@@ -23,8 +23,8 @@
     cards.forEach((card, i) => fade(card, ease(ramp(t, 700 + i * 900)), 10));
     const queryOpacity = ease(ramp(t, 4300)) * (1 - .25 * ramp(t, 11000) * (1 - final));
     fade(get('query'), queryOpacity);
-    fade(get('model'), ease(ramp(t, 4300)));
-    fade(get('input-arrow'), ease(ramp(t, 4300)));
+    fade(get('model'), ease(ramp(t, 10000)));
+    fade(get('input-arrow'), ease(ramp(t, 10000)));
     queryCards.forEach((card, i) => {
       const start = i < 4 ? 4900 + i * 550 : 7800 + (i - 4) * 550;
       fade(card, ease(ramp(t, start, 500)), 8);
@@ -37,11 +37,11 @@
       const progress = ease(ramp(t, 12100, 1900)) * Number(row.dataset.target);
       row.querySelector('i').style.width = `${progress}%`;
     });
-    const phase = t < 700 ? 'reference' : t < 4300 ? 'keyframes' : t < 11000 ? 'query' : t < 14000 ? 'output' : 'complete';
+    const phase = t < 700 ? 'reference' : t < 4300 ? 'keyframes' : t < 10000 ? 'query' : t < 11000 ? 'model' : t < 14000 ? 'output' : 'complete';
     root.dataset.phase = phase;
     if (phase !== lastPhase) {
       lastPhase = phase;
-      get('status').textContent = {reference: 'Define your reference scale.', keyframes: 'Four reference keyframes define the progress scale.', query: 'Early query frames, followed by later frames from the same human hand trajectory.', output: 'Evaluate successful, suboptimal, and failed trajectories.', complete: 'Overview complete. Replay to watch again.'}[phase];
+      get('status').textContent = {reference: 'Define your reference scale.', keyframes: 'Four reference keyframes define the progress scale.', query: 'Early query frames, followed by later frames from the same human hand trajectory.', model: 'Yuheng evaluates the query against the reference scale.', output: 'Evaluate successful, suboptimal, and failed trajectories.', complete: 'Overview complete. Replay to watch again.'}[phase];
     }
   }
   function canPlay() { return ready && visible && !paused && !document.hidden && elapsed < duration; }

@@ -8,22 +8,21 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261106-token-architecture">
+  <link rel="stylesheet" href="styles.css?v=20261107-pages">
   <script src="script.js?v=20261104-benchmark-fold" defer></script>
   <script src="dataset-explorer.js?v=20261102-reference" defer></script>
   <script src="benchmark-comparison.js?v=20261102-ground-truth" defer></script>
   <script src="scale-animation.js?v=20261106-once" defer></script>
   <script src="semantic-alignment.js?v=20261105-controls" defer></script>
-  <script src="concept-overview.js?v=20261106-query-stacks" defer></script>
+  <script src="concept-overview.js?v=20261107-model-timing" defer></script>
   <script src="one-shot-animation.js?v=20261105-radial" defer></script>
   <script src="cross-embodiment.js?v=20261105-keyframe-pacing" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header">
-    <a class="wordmark" href="#" aria-label="Yuheng home"><img src="icon.png?v=20261031-orange" alt="" width="26" height="26">Yuheng<span class="wordmark-dot">.</span></a>
-    <nav aria-label="Main navigation"><a href="#overview">Overview</a><a href="#method">Method</a><a href="#capabilities">Capabilities</a><a href="#benchmark">Benchmark</a><a href="#applications">Applications</a></nav>
-    <a class="header-link" href="#resources">Resources <span aria-hidden="true">↗</span></a>
+  <header class="site-header page-header">
+    <a class="wordmark icon-wordmark" href="index.html" aria-label="Yuheng home"><img src="icon.png?v=20261031-orange" alt="" width="40" height="40"></a>
+    <nav aria-label="Main navigation"><a href="index.html" aria-current="page">Overview</a><a href="playground.html">Playground</a><a href="application.html">Application</a></nav>
   </header>
 
   <main id="main">
@@ -84,21 +83,23 @@
 
     <section class="section method-section" id="method" aria-labelledby="method-title"><div class="content-width">
       <div class="section-heading centered"><span class="eyebrow">02 / THE METHOD</span><h2 id="method-title">A reference to reason with.<br><em>A scale to measure against.</em></h2><p>A vision-language model reads the task instruction, reference keyframes,<br>and current frame together.<br>The progress head predicts where that frame belongs on your scale.</p></div>
-      <figure class="architecture-figure" aria-label="Yuheng architecture: task instruction, reference keyframes, their progress labels, and the current frame are encoded as input tokens; the VLM outputs a representation projected to relative progress.">
+      <figure class="architecture-figure" aria-label="Yuheng architecture: task instruction, reference keyframes, their progress labels, and the current frame are encoded as input tokens; the VLM representation is projected to keyframe classification probabilities, which weight the assigned keyframe progress values to produce relative progress.">
         <div class="architecture-scroll" tabindex="0" role="region" aria-label="Model architecture; scroll horizontally on small screens">
           <div class="architecture-diagram">
             <div class="architecture-result"><img src="assets/progress-symbol.svg" width="36" height="38" alt="Predicted progress: p hat"><div><strong>Relative progress</strong><span>On the reference scale</span></div></div>
             <div class="architecture-up" aria-hidden="true"></div>
-            <div class="architecture-projection">Projection head</div>
+            <div class="architecture-weighted"><strong>Progress-weighted sum</strong><img src="assets/architecture-math/weighted-progress.svg" alt="p hat equals the sum over keyframes of classification probability pi i times assigned progress p i"><span>Weight each keyframe’s progress by its probability</span></div>
             <div class="architecture-up" aria-hidden="true"></div>
-            <div class="architecture-output"><span>Output tokens</span><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i class="architecture-readout"></i><i></i><i></i><i></i><i></i></div></div>
+            <div class="architecture-probabilities"><strong>Keyframe classification probabilities</strong><img src="assets/architecture-math/probabilities.svg" alt="Probabilities pi 1, pi 2, through pi n"></div>
+            <div class="architecture-up" aria-hidden="true"></div>
+            <div class="architecture-projection">Projection head</div>
             <div class="architecture-up" aria-hidden="true"></div>
             <div class="architecture-vlm"><div><img src="icon.png?v=20261031-orange" width="32" height="32" alt=""><h3>Yuheng VLM</h3></div><span class="architecture-vlm-description">In-context progress modeling</span><div class="architecture-sizes"><span>4B</span><span>27B</span></div></div>
             <div class="architecture-inputs">
               <div class="architecture-input" style="--token-color:#b59976;--token-fill:#eee4d4"><div class="architecture-up" aria-hidden="true"></div><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="architecture-token-label">Text tokens</span><div class="architecture-up" aria-hidden="true"></div><div class="architecture-source"><h4>Task instruction</h4><div class="architecture-text-lines" aria-hidden="true"><i></i><i></i><i></i></div><p>What to accomplish</p></div></div>
-              <div class="architecture-input" style="--token-color:#8298b2;--token-fill:#e3ebf3"><div class="architecture-up" aria-hidden="true"></div><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="architecture-token-label">Visual tokens</span><div class="architecture-up" aria-hidden="true"></div><div class="architecture-source"><h4>Reference keyframes</h4><div class="architecture-keyframes" aria-label="Reference keyframes k1 to kn"><span>k₁</span><span>k₂</span><b>⋯</b><span>kₙ</span></div><p>One successful trajectory</p></div></div>
-              <div class="architecture-input" style="--token-color:#c18b7b;--token-fill:#f2e0d9"><div class="architecture-up" aria-hidden="true"></div><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="architecture-token-label">Progress-label tokens</span><div class="architecture-up" aria-hidden="true"></div><div class="architecture-source"><h4>Keyframe progress</h4><div class="architecture-labels" aria-label="Assigned progress p1 to pn"><span>p₁</span><span>p₂</span><b>⋯</b><span>pₙ</span></div><p>User-defined scale</p></div></div>
-              <div class="architecture-input" style="--token-color:#7ba195;--token-fill:#e0ede7"><div class="architecture-up" aria-hidden="true"></div><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="architecture-token-label">Visual tokens</span><div class="architecture-up" aria-hidden="true"></div><div class="architecture-source"><h4>Current frame</h4><div class="architecture-keyframes architecture-current" aria-label="Current image"><span>xₜ</span></div><p>Any trajectory of the task</p></div></div>
+              <div class="architecture-input" style="--token-color:#8298b2;--token-fill:#e3ebf3"><div class="architecture-up" aria-hidden="true"></div><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="architecture-token-label">Visual tokens</span><div class="architecture-up" aria-hidden="true"></div><div class="architecture-source"><h4>Reference keyframes</h4><div class="architecture-keyframes" aria-label="Reference keyframes k1 to kn"><span><img src="assets/architecture-math/k1.svg" alt="k subscript 1"></span><span><img src="assets/architecture-math/k2.svg" alt="k subscript 2"></span><b>⋯</b><span><img src="assets/architecture-math/kn.svg" alt="k subscript n"></span></div><p>One successful trajectory</p></div></div>
+              <div class="architecture-input" style="--token-color:#c18b7b;--token-fill:#f2e0d9"><div class="architecture-up" aria-hidden="true"></div><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="architecture-token-label">Progress-label tokens</span><div class="architecture-up" aria-hidden="true"></div><div class="architecture-source"><h4>Keyframe progress</h4><div class="architecture-labels" aria-label="Assigned progress p1 to pn"><span><img src="assets/architecture-math/p1.svg" alt="p subscript 1"></span><span><img src="assets/architecture-math/p2.svg" alt="p subscript 2"></span><b>⋯</b><span><img src="assets/architecture-math/pn.svg" alt="p subscript n"></span></div><p>User-defined scale</p></div></div>
+              <div class="architecture-input" style="--token-color:#7ba195;--token-fill:#e0ede7"><div class="architecture-up" aria-hidden="true"></div><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="architecture-token-label">Visual tokens</span><div class="architecture-up" aria-hidden="true"></div><div class="architecture-source"><h4>Current frame</h4><div class="architecture-keyframes architecture-current" aria-label="Current image"><span><img src="assets/architecture-math/xt.svg" alt="x subscript t"></span></div><p>Any trajectory of the task</p></div></div>
             </div>
           </div>
         </div>
@@ -409,15 +410,9 @@
 
     </section>
 
-    <section class="section applications-section content-width" id="applications" aria-labelledby="applications-title"><div class="section-heading"><span class="eyebrow">05 / BEYOND EVALUATION</span><h2 id="applications-title">A measure of progress.<br><em>A foundation for better robots.</em></h2><p>From learning better policies to understanding the data they learn from.</p></div><div class="application-grid">
-      <article class="application-card"><div class="application-top"><span class="application-index">01</span><span class="application-category">ONLINE LEARNING</span><span aria-hidden="true">↗</span></div><h3>Reinforcement fine-tuning</h3><p>Use Yuheng’s progress estimates as a reward signal for reinforcement fine-tuning, following a DSRL-based approach.</p><div class="application-footer"><span>Progress → reward → policy improvement</span><span class="detail-note">Details to follow</span></div></article>
-      <article class="application-card"><div class="application-top"><span class="application-index">02</span><span class="application-category">OFFLINE LEARNING</span><span aria-hidden="true">↗</span></div><h3>Progress-weighted offline RL</h3><p>Weight offline learning with progress information in an AW-BC-based approach, helping policies learn from task advancement.</p><div class="application-footer"><span>Progress-informed policy learning</span><span class="detail-note">Details to follow</span></div></article>
-      <article class="application-card"><div class="application-top"><span class="application-index">03</span><span class="application-category">DATA ANNOTATION</span><span aria-hidden="true">↗</span></div><h3>Semantic keyframe transfer</h3><p>Mark semantic keyframes in one successful trajectory. Retrieve frames with the closest progress values in other trajectories to find corresponding task stages.</p><div class="application-footer"><span>Annotate once. Align across trajectories.</span><span class="detail-note">Details to follow</span></div></article>
-      <article class="application-card"><div class="application-top"><span class="application-index">04</span><span class="application-category">DATA CURATION</span><span aria-hidden="true">↗</span></div><h3>Pretraining data filtering</h3><p>Use progress patterns to identify successful and failed trajectories, and flag executions with repeated setbacks for more informed data selection.</p><div class="application-footer"><span>Understand the journey, not just the outcome.</span><span class="detail-note">Details to follow</span></div></article>
-    </div><div class="failure-note"><span aria-hidden="true">◎</span><p><strong>A signal for failure detection.</strong> Progress estimates can also help identify stalled or regressing execution, providing a useful signal for recognizing when a robot is no longer advancing toward its goal.</p></div></section>
 
-    <section class="resources-section content-width" id="resources" aria-labelledby="resources-title"><div><span class="eyebrow">06 / WHAT’S NEXT</span><h2 id="resources-title">More to come.</h2><p>Paper, models, code, dataset, and benchmark will be released progressively and linked here as they become available.</p></div><div class="resource-list"><div><span>Research paper</span><span>Coming soon</span></div><div><span>Code &amp; model weights <small>4B / 27B</small></span><span>Coming soon</span></div><div><span>Dataset</span><span>Coming soon</span></div><div><span>Progress benchmark</span><span>Coming soon</span></div></div></section>
+    <section class="resources-section content-width" id="resources" aria-labelledby="resources-title"><div><span class="eyebrow">05 / WHAT’S NEXT</span><h2 id="resources-title">More to come.</h2><p>Paper, models, code, dataset, and benchmark will be released progressively and linked here as they become available.</p></div><div class="resource-list"><div><span>Research paper</span><span>Coming soon</span></div><div><span>Code &amp; model weights <small>4B / 27B</small></span><span>Coming soon</span></div><div><span>Dataset</span><span>Coming soon</span></div><div><span>Progress benchmark</span><span>Coming soon</span></div></div></section>
   </main>
-  <footer class="content-width"><a class="wordmark" href="#"><img src="icon.png?v=20261031-orange" width="24" height="24" alt="">Yuheng<span class="wordmark-dot">.</span></a><p>A shared scale. A clearer sense of progress.</p><span>Primotion Team</span></footer>
+  <footer class="content-width page-footer"><a class="wordmark icon-wordmark" href="index.html" aria-label="Yuheng home"><img src="icon.png?v=20261031-orange" width="36" height="36" alt=""></a><span>Primotion Team</span></footer>
 </body>
 </html>

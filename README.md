@@ -122,4 +122,10 @@ UV_CACHE_DIR=/tmp/yuheng-uv-cache uv run --no-project --with matplotlib==3.11.2 
 
 训练数据标题直接复用 `.explorer-copy > .small-label`；卡片内部底部的数据规模对比使用 Robometer 官方项目页和 NimCritic 论文公开规模（约 1M 与约 250k），页面按要求仅显示纯文本。
 
-METHOD 架构图按自下而上的结构呈现：任务 instruction、reference keyframes、对应进度标签、current frame → 输入 token → 横向 Yuheng VLM → output tokens → projection head → relative progress。token 方块仅表达输入/输出结构，不表示实际序列长度；窄屏在图内水平滚动。
+METHOD 架构图按自下而上的结构呈现：任务 instruction、reference keyframes、对应进度标签、current frame → 输入 token → 横向 Yuheng VLM → projection head → 每个 keyframe 的分类概率 → 概率加权的 keyframe progress → relative progress。token 方块仅表达输入结构，不表示实际序列长度；窄屏在图内水平滚动。
+
+## Pages and architecture notation
+
+顶部导航仅保留 `index.html`（Overview）、`playground.html`、`application.html`。后两页使用同样的背景、页头和页尾，目前只有页面名与 Coming soon；没有上传、推理或下游功能。旧 05 / BEYOND EVALUATION 内容保存在 `content/application-draft.html`，供后续编写 Application 使用，部署不复制该目录。首页资源区顺延为 05。
+
+`concept-overview.js` 在查询图片完全出现之后（10 秒）才淡入模型，11 秒开始展示输出。公式 SVG 由 `scripts/prepare-architecture-math.py` 使用 Matplotlib mathtext 的 STIX 数学字体生成，包含规范的下标和 `p_hat = sum(pi_i * p_i)`；运行方式与其他 Matplotlib 脚本相同。

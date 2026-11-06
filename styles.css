@@ -2498,3 +2498,32 @@ display:none}
 .architecture-text-lines i { height: 3px; width: 100%; background: var(--token-color); border-radius: 2px; }
 .architecture-text-lines i:nth-child(2) { width: 85%; }.architecture-text-lines i:nth-child(3) { width: 60%; }
 @media (max-width: 700px) { .architecture-figure { padding: 18px 12px; } .architecture-vlm-description { display: none; } }
+
+/* Shared three-page navigation and icon-only branding. */
+.site-header.page-header { width: 100%; margin: 0 auto; flex-shrink: 0; justify-content: space-between; gap: 22px; }
+.page-header .icon-wordmark img { width: 40px; height: 40px; }
+.site-header.page-header nav { display: flex; gap: 28px; margin: 0; }
+.site-header.page-header nav a { display: inline-block; padding-block: 8px; font-size: 16px; border-bottom: 2px solid transparent; }
+.site-header.page-header nav a[aria-current="page"] { color: var(--accent-dark); border-bottom-color: var(--accent); }
+.page-footer .icon-wordmark img { width: 36px; height: 36px; }
+footer.page-footer { display: flex; justify-content: space-between; align-items: center; }
+footer.page-footer > span { margin: 0; }
+.placeholder-page { min-height: 100vh; display: flex; flex-direction: column; }
+.page-placeholder { flex: 1; padding-block: 100px 160px; text-align: center; }
+.page-placeholder h1 { font: 500 clamp(32px, 4vw, 46px)/1.25 var(--serif); letter-spacing: -.5px; }
+.page-placeholder p { margin-top: 20px; color: var(--muted); font-size: 17px; }
+/* Give italic overhangs and descenders their own gradient paint area. */
+.title-yuheng { padding: .04em .16em .18em .04em; margin: -.04em -.12em -.18em -.04em; line-height: 1.35; overflow: visible; }
+.architecture-weighted, .architecture-probabilities { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 13px 24px; border: 1px solid #dac3b5; border-radius: 7px; background: #fff; }
+.architecture-weighted strong, .architecture-probabilities strong { font-size: 16px; font-weight: 550; }
+.architecture-weighted > img { width: auto; height: 48px; }
+.architecture-weighted > span { font-size: 14px; color: var(--muted); }
+.architecture-probabilities > img { width: auto; height: 25px; }
+.architecture-keyframes span img, .architecture-labels span img { display: block; width: auto; max-width: 28px; height: 22px; margin: auto; }
+@media (max-width: 600px) {
+  .site-header.page-header { gap: 8px; padding-inline: 16px; max-width: 100%; }
+  .site-header.page-header nav { gap: 12px; }
+  .site-header.page-header nav a { font-size: 14px; }
+  .page-header .icon-wordmark img { width: 32px; height: 32px; }
+  footer.page-footer > span { display: block; }
+}
