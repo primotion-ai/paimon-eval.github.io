@@ -2379,7 +2379,7 @@ display:none}
 
 /* Training composition: a white card, percentage legend and approximate total. */
 .data-note .training-composition { grid-column: 1 / -1; padding: 26px 32px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
-.training-composition h3 { margin: 0 0 20px; font-size: 21px; font-weight: 550; }
+.training-composition h3 { margin: 0 0 10px; font-size: 21px; font-weight: 550; }
 .training-composition-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 32px; align-items: center; max-width: 850px; margin-inline: auto; }
 .training-pie { margin: 0; text-align: center; }
 .training-pie img { display: block; width: min(100%, 300px); height: auto; margin-inline: auto; }
@@ -2396,3 +2396,7 @@ display:none}
   .training-source-legend { gap: 12px; }
   .training-source-legend li { gap: 9px; font-size: 15px; }
 }
+
+.data-note .training-tldr { margin: 0 0 12px; font-family: var(--serif); font-size: 22px; line-height: 1.4; color: var(--ink); }
+.data-note .training-description { max-width: 940px; margin: 0 0 26px; font-size: 16px; line-height: 1.8; }
+.data-note .training-description strong { font-weight: 600; }

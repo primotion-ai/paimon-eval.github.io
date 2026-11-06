@@ -8,7 +8,7 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261106-training">
+  <link rel="stylesheet" href="styles.css?v=20261106-training-card">
   <script src="script.js?v=20261104-benchmark-fold" defer></script>
   <script src="dataset-explorer.js?v=20261102-reference" defer></script>
   <script src="benchmark-comparison.js?v=20261102-ground-truth" defer></script>
@@ -85,10 +85,10 @@
           </div>
           <div class="milestone-control"><label for="milestone">Query frame’s semantic stage</label><output id="milestone-name" for="milestone">Grasp</output></div><input id="milestone" type="range" min="0" max="3" step="1" value="1" aria-describedby="explorer-note"><div class="range-labels"><span>Start</span><span>Grasp</span><span>Move</span><span>Finish(Place)</span></div><div class="aligned-output"><span>Matching reference progress <small id="explorer-note">Same semantic stage → same target value</small></span><output id="aligned-progress" for="milestone">33%</output></div></div></div>
       <div class="data-note" id="training-data">
-        <span class="small-label">A STRONGER DATA FOUNDATION</span>
-        <p>Yuheng is trained on data selected and filtered from <strong>Robometer</strong>, with progress labels annotated using <strong>GPT 6 Astra</strong> and <strong>GPT 6 Sol</strong>.</p>
         <div class="training-composition" aria-labelledby="training-composition-title">
-          <h3 id="training-composition-title">Training data composition</h3>
+          <h3 id="training-composition-title">A stronger data foundation</h3>
+          <p class="training-tldr">Diverse trajectories. More precise progress labels.</p>
+          <p class="training-description">Yuheng is trained on data selected and filtered from <strong>Robometer</strong>, with progress labels annotated using <strong>GPT 6 Astra</strong> and <strong>GPT 6 Sol</strong>. These eight sources bring together diverse tasks, environments, and embodiments, providing a broad foundation for learning semantically aligned progress.</p>
           <div class="training-composition-layout">
             <figure class="training-pie"><img src="assets/training-data/composition.svg" width="360" height="360" loading="lazy" alt="Training data shares. Galaxea Open World Dataset and RH20T are the largest sources; the adjacent legend lists all eight percentages."><figcaption><strong>~16k</strong><span>training trajectories</span></figcaption></figure>
             <ul class="training-source-legend" aria-label="Share of training trajectories by dataset">
