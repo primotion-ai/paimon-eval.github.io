@@ -2416,7 +2416,6 @@ display:none}
 .concept-keyframe { min-width: 0; text-align: center; }
 .concept-keyframe img { width: 100%; height: auto; aspect-ratio: 5 / 4; display: block; border-radius: 5px; }
 .concept-keyframe span { display: block; margin-top: 6px; font-size: 15px; font-weight: 600; color: var(--accent-dark); }
-.concept-query img { display: block; width: 160px; max-width: 100%; height: auto; border-radius: 6px; margin-inline: auto; }
 .concept-arrow { text-align: center; color: #ba8f88; font-size: 26px; }
 .concept-model { width: 100%; min-width: 0; flex-direction: column; gap: 0; }
 .concept-model > span { display: block; }
@@ -2435,7 +2434,6 @@ display:none}
 }
 .data-note .training-copy h3 { font-family: var(--serif); font-size: clamp(21px, 1.8vw, 25px); font-weight: 400; line-height: 1.4; letter-spacing: -.2px; margin: 12px 0 16px; }
 .data-note .training-efficiency { font-size: 16px; line-height: 1.8; margin: 26px 0 0; }
-.training-efficiency a { text-decoration: underline; text-decoration-color: #d8b6af; text-underline-offset: 3px; }
 .data-note .training-efficiency strong { font-weight: 600; }
 @media (max-width: 950px) {
   .concept-layout { grid-template-columns: minmax(0, 1.4fr) 18px 125px 18px minmax(0, 1fr); gap: 12px; }
@@ -2451,9 +2449,52 @@ display:none}
   .concept-arrow { transform: rotate(90deg); }
   .concept-model { max-width: 180px; justify-self: center; }
   .concept-result { grid-template-columns: 90px minmax(0, 1fr); }
-  .concept-query img { width: 160px; }
 }
 .concept-demo:not([data-ready="true"]) .concept-layout { opacity: .15; }
 
 .concept-keyframe small { display: block; margin-bottom: 7px; font-size: 14px; line-height: 1.4; color: var(--muted); }
 .concept-reference .reference-baseline { margin-top: 12px; padding-top: 9px; color: var(--muted); align-items: center; }
+
+/* Half-overlapping query frames, revealed in two groups around an ellipsis. */
+.concept-query-sequence { display: grid; grid-template-columns: minmax(0, 1fr) 22px minmax(0, 1fr); align-items: center; gap: 8px; padding-block: 5px; }
+.concept-query-stack { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; min-width: 0; }
+.concept-query-stack .concept-query-card { grid-row: 1; display: block; width: 100%; height: auto; aspect-ratio: 5 / 4; border: 2px solid #fff; border-radius: 5px; box-shadow: -3px 2px 8px #49332a16; }
+.concept-query-ellipsis { font-size: 24px; line-height: 1; text-align: center; color: var(--muted); }
+
+/* Bottom-up token architecture, distinct from the introductory usage diagram. */
+.architecture-figure { min-width: 0; margin: 34px 0 46px; padding: 26px; border: 1px solid var(--line); border-radius: 10px; background: #fffaf7; }
+.architecture-scroll { overflow-x: auto; }
+.architecture-diagram { min-width: 640px; max-width: 950px; margin-inline: auto; padding: 6px; display: flex; flex-direction: column; align-items: center; }
+.architecture-result { display: flex; gap: 16px; align-items: center; }
+.architecture-result img { width: 36px; height: 38px; object-fit: contain; }
+.architecture-result strong { display: block; font-size: 21px; font-weight: 600; }
+.architecture-result span { display: block; font-size: 14px; color: var(--muted); margin-top: 3px; }
+.architecture-up { position: relative; flex: none; width: 1px; height: 22px; margin: 4px auto; background: #b9a399; }
+.architecture-up::before { content: ''; position: absolute; top: 0; left: -3px; width: 7px; height: 7px; border-top: 1px solid #b9a399; border-left: 1px solid #b9a399; transform: rotate(45deg); }
+.architecture-projection { border: 1px solid #c79484; background: #f6e8df; border-radius: 6px; padding: 9px 30px; font-size: 16px; font-weight: 550; }
+.architecture-output { position: relative; --token-color: #be8b7c; --token-fill: #f2e1d9; }
+.architecture-output > span { position: absolute; right: calc(100% + 18px); white-space: nowrap; font-size: 14px; color: var(--muted); top: 2px; }
+.architecture-tokens { display: flex; gap: 6px; justify-content: center; }
+.architecture-tokens i { display: block; width: 19px; height: 24px; border: 1px solid var(--token-color); border-radius: 3px; background: var(--token-fill); }
+.architecture-tokens .architecture-readout { background: #b85d49; border-color: #a94d3c; }
+.architecture-vlm { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%; padding: 22px 28px; border: 1px solid #c98f7d; border-radius: 9px; background: linear-gradient(100deg,#f1d7cb,#fcf0e9); box-shadow: 0 4px 14px #aa6a4a08; }
+.architecture-vlm > div:first-child { display: flex; align-items: center; gap: 12px; }
+.architecture-vlm h3 { margin: 0; font-size: 24px; font-weight: 600; white-space: nowrap; }
+.architecture-vlm-description { font-size: 16px; color: #896c60; }
+.architecture-sizes { display: flex; gap: 8px; }
+.architecture-sizes span { padding: 4px 10px; border: 1px solid #d5ac9d; border-radius: 20px; font-size: 14px; background: #fff8; }
+.architecture-inputs { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 14px; width: 100%; }
+.architecture-input { min-width: 0; text-align: center; }
+.architecture-token-label { display: block; margin-top: 8px; color: var(--muted); font-size: 14px; line-height: 1.4; }
+.architecture-source { border: 1px solid var(--token-color); border-radius: 7px; background: #fff; padding: 16px 10px 12px; }
+.architecture-source h4 { margin: 0 0 16px; font-size: 16px; font-weight: 550; }
+.architecture-source p { margin: 12px 0 0; font-size: 14px; line-height: 1.5; color: var(--muted); min-height: 42px; }
+.architecture-keyframes, .architecture-labels { display: flex; justify-content: center; align-items: center; gap: 5px; height: 36px; }
+.architecture-keyframes span { display: grid; place-items: center; width: 34px; height: 28px; border: 1px solid var(--token-color); border-radius: 3px; background: var(--token-fill); font: italic 17px var(--serif); }
+.architecture-labels span { width: 34px; font: italic 19px var(--serif); }
+.architecture-keyframes b, .architecture-labels b { font-weight: 400; }
+.architecture-current span { width: 45px; height: 36px; }
+.architecture-text-lines { height: 36px; display: flex; flex-direction: column; justify-content: center; gap: 6px; align-items: flex-start; width: 80px; margin: auto; }
+.architecture-text-lines i { height: 3px; width: 100%; background: var(--token-color); border-radius: 2px; }
+.architecture-text-lines i:nth-child(2) { width: 85%; }.architecture-text-lines i:nth-child(3) { width: 60%; }
+@media (max-width: 700px) { .architecture-figure { padding: 18px 12px; } .architecture-vlm-description { display: none; } }

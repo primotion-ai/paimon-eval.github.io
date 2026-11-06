@@ -4,9 +4,9 @@
   if (!root) return;
   const get = name => root.querySelector(`#concept-${name}`);
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-  const duration = 15000, queryStart = 4900, queryFrameDuration = 180;
+  const duration = 15000;
   let ready = false, initialized = false, visible = false, paused = reducedMotion.matches;
-  let elapsed = 0, lastTime = null, raf = null, images, cards = [], lastPhase = '';
+  let elapsed = 0, lastTime = null, raf = null, images, cards = [], queryCards = [], lastPhase = '';
   const rows = [...root.querySelectorAll('.concept-result')];
   const ramp = (time, start, length = 600) => Math.max(0, Math.min(1, (time - start) / length));
   const ease = value => value * value * (3 - 2 * value);
@@ -25,13 +25,11 @@
     fade(get('query'), queryOpacity);
     fade(get('model'), ease(ramp(t, 4300)));
     fade(get('input-arrow'), ease(ramp(t, 4300)));
-    const frame = Math.max(0, Math.min(31, Math.floor((t - queryStart) / queryFrameDuration)));
-    const image = get('query-image');
-    if (image.dataset.frame !== String(frame)) {
-      image.src = images[frame].src; image.dataset.frame = frame;
-      image.alt = `Human hand reference query, frame ${frame + 1} of 32`;
-    }
-    image.hidden = false;
+    queryCards.forEach((card, i) => {
+      const start = i < 4 ? 4900 + i * 550 : 7800 + (i - 4) * 550;
+      fade(card, ease(ramp(t, start, 500)), 8);
+    });
+    fade(get('query-ellipsis'), ease(ramp(t, 7100, 500)));
     fade(get('output'), ease(ramp(t, 11000)));
     fade(get('output-arrow'), ease(ramp(t, 11000)));
     rows.forEach((row, i) => {
@@ -43,7 +41,7 @@
     root.dataset.phase = phase;
     if (phase !== lastPhase) {
       lastPhase = phase;
-      get('status').textContent = {reference: 'Define your reference scale.', keyframes: 'Four reference keyframes define the progress scale.', query: 'Play the human hand query trajectory.', output: 'Evaluate successful, suboptimal, and failed trajectories.', complete: 'Overview complete. Replay to watch again.'}[phase];
+      get('status').textContent = {reference: 'Define your reference scale.', keyframes: 'Four reference keyframes define the progress scale.', query: 'Early query frames, followed by later frames from the same human hand trajectory.', output: 'Evaluate successful, suboptimal, and failed trajectories.', complete: 'Overview complete. Replay to watch again.'}[phase];
     }
   }
   function canPlay() { return ready && visible && !paused && !document.hidden && elapsed < duration; }
@@ -83,7 +81,19 @@
       const data = await response.json();
       const human = data.trajectories.find(t => t.id === '1');
       if (human?.frames.length !== 32 || data.reference.frame_indices.length !== 4 || data.reference.progress.length !== 4) throw new Error('Invalid reference');
-      images = await Promise.all(human.frames.map(f => loadImage(f.image_path)));
+      const count = human.frames.length;
+      const queryIndices = [0, 2, 4, 6, count - 6, count - 4, count - 2, count - 1];
+      const selected = [...new Set([...data.reference.frame_indices, ...queryIndices])];
+      images = Object.fromEntries(await Promise.all(selected.map(async i => [i, await loadImage(human.frames[i].image_path)])));
+      get('query-start').replaceChildren(); get('query-end').replaceChildren();
+      queryCards = queryIndices.map((frame, i) => {
+        const image = document.createElement('img'); image.width = 320; image.height = 256;
+        image.src = images[frame].src; image.className = 'concept-query-card';
+        image.alt = `Human hand query, stored frame ${frame}`; image.dataset.frame = frame;
+        image.style.gridColumn = `${i % 4 + 1} / span 2`; image.style.zIndex = i % 4 + 1;
+        get(i < 4 ? 'query-start' : 'query-end').append(image);
+        return image;
+      });
       get('keyframes').replaceChildren();
       cards = data.reference.frame_indices.map((frame, i) => {
         const card = document.createElement('div'); card.className = 'concept-keyframe';

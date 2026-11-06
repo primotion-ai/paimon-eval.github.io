@@ -8,13 +8,13 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261106-reference-labels">
+  <link rel="stylesheet" href="styles.css?v=20261106-token-architecture">
   <script src="script.js?v=20261104-benchmark-fold" defer></script>
   <script src="dataset-explorer.js?v=20261102-reference" defer></script>
   <script src="benchmark-comparison.js?v=20261102-ground-truth" defer></script>
   <script src="scale-animation.js?v=20261106-once" defer></script>
   <script src="semantic-alignment.js?v=20261105-controls" defer></script>
-  <script src="concept-overview.js?v=20261106-reference-labels" defer></script>
+  <script src="concept-overview.js?v=20261106-query-stacks" defer></script>
   <script src="one-shot-animation.js?v=20261105-radial" defer></script>
   <script src="cross-embodiment.js?v=20261105-keyframe-pacing" defer></script>
 </head>
@@ -53,7 +53,7 @@
           </div>
           <div class="concept-query" id="concept-query">
             <div class="diagram-label"><span class="step-dot">02</span> Query current frame</div>
-            <img id="concept-query-image" width="320" height="256" alt="Human hand query trajectory" hidden>
+            <div class="concept-query-sequence" aria-label="Early and late frames of the Human hand query trajectory"><div class="concept-query-stack" id="concept-query-start"></div><span class="concept-query-ellipsis" id="concept-query-ellipsis" aria-hidden="true">…</span><div class="concept-query-stack" id="concept-query-end"></div></div>
           </div>
         </div>
         <div class="concept-arrow" id="concept-input-arrow" aria-hidden="true">→</div>
@@ -84,7 +84,25 @@
 
     <section class="section method-section" id="method" aria-labelledby="method-title"><div class="content-width">
       <div class="section-heading centered"><span class="eyebrow">02 / THE METHOD</span><h2 id="method-title">A reference to reason with.<br><em>A scale to measure against.</em></h2><p>A vision-language model reads the task instruction, reference keyframes,<br>and current frame together.<br>The progress head predicts where that frame belongs on your scale.</p></div>
-      <div class="method-flow"><div class="method-inputs"><div class="method-box"><span class="small-label">REFERENCE CONTEXT</span><strong>Task instruction</strong><p>A language description of the task</p><div class="reference-divider"></div><strong>Successful trajectory</strong><p>Selected keyframes + assigned progress</p><div class="mini-keyframes" aria-hidden="true"><span>k₁, p₁</span><span>k₂, p₂</span><span>…</span><span>kₙ, pₙ</span></div></div><div class="method-box query-box"><span class="small-label">QUERY</span><strong>Current frame</strong><p>Any trajectory of the same task,<br>including a different embodiment</p><div class="query-types">Successful <span>·</span> Suboptimal <span>·</span> Failed</div></div></div><span class="flow-arrow" aria-hidden="true">→</span><div class="vlm-box"><img src="icon.png?v=20261031-orange" width="46" height="46" alt=""><h3>Yuheng VLM</h3><p>Reason across visual context</p><div class="size-pills"><span>4B</span><span>27B</span></div><div class="progress-head">Progress head</div></div><span class="flow-arrow" aria-hidden="true">→</span><div class="method-output"><span class="small-label">OUTPUT</span><img class="output-variable" src="assets/progress-symbol.svg" alt="Predicted progress: p hat"><h3>Relative progress</h3><p>Aligned with the<br>reference scale</p></div></div>
+      <figure class="architecture-figure" aria-label="Yuheng architecture: task instruction, reference keyframes, their progress labels, and the current frame are encoded as input tokens; the VLM outputs a representation projected to relative progress.">
+        <div class="architecture-scroll" tabindex="0" role="region" aria-label="Model architecture; scroll horizontally on small screens">
+          <div class="architecture-diagram">
+            <div class="architecture-result"><img src="assets/progress-symbol.svg" width="36" height="38" alt="Predicted progress: p hat"><div><strong>Relative progress</strong><span>On the reference scale</span></div></div>
+            <div class="architecture-up" aria-hidden="true"></div>
+            <div class="architecture-projection">Projection head</div>
+            <div class="architecture-up" aria-hidden="true"></div>
+            <div class="architecture-output"><span>Output tokens</span><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i class="architecture-readout"></i><i></i><i></i><i></i><i></i></div></div>
+            <div class="architecture-up" aria-hidden="true"></div>
+            <div class="architecture-vlm"><div><img src="icon.png?v=20261031-orange" width="32" height="32" alt=""><h3>Yuheng VLM</h3></div><span class="architecture-vlm-description">In-context progress modeling</span><div class="architecture-sizes"><span>4B</span><span>27B</span></div></div>
+            <div class="architecture-inputs">
+              <div class="architecture-input" style="--token-color:#b59976;--token-fill:#eee4d4"><div class="architecture-up" aria-hidden="true"></div><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="architecture-token-label">Text tokens</span><div class="architecture-up" aria-hidden="true"></div><div class="architecture-source"><h4>Task instruction</h4><div class="architecture-text-lines" aria-hidden="true"><i></i><i></i><i></i></div><p>What to accomplish</p></div></div>
+              <div class="architecture-input" style="--token-color:#8298b2;--token-fill:#e3ebf3"><div class="architecture-up" aria-hidden="true"></div><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="architecture-token-label">Visual tokens</span><div class="architecture-up" aria-hidden="true"></div><div class="architecture-source"><h4>Reference keyframes</h4><div class="architecture-keyframes" aria-label="Reference keyframes k1 to kn"><span>k₁</span><span>k₂</span><b>⋯</b><span>kₙ</span></div><p>One successful trajectory</p></div></div>
+              <div class="architecture-input" style="--token-color:#c18b7b;--token-fill:#f2e0d9"><div class="architecture-up" aria-hidden="true"></div><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="architecture-token-label">Progress-label tokens</span><div class="architecture-up" aria-hidden="true"></div><div class="architecture-source"><h4>Keyframe progress</h4><div class="architecture-labels" aria-label="Assigned progress p1 to pn"><span>p₁</span><span>p₂</span><b>⋯</b><span>pₙ</span></div><p>User-defined scale</p></div></div>
+              <div class="architecture-input" style="--token-color:#7ba195;--token-fill:#e0ede7"><div class="architecture-up" aria-hidden="true"></div><div class="architecture-tokens" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><span class="architecture-token-label">Visual tokens</span><div class="architecture-up" aria-hidden="true"></div><div class="architecture-source"><h4>Current frame</h4><div class="architecture-keyframes architecture-current" aria-label="Current image"><span>xₜ</span></div><p>Any trajectory of the task</p></div></div>
+            </div>
+          </div>
+        </div>
+      </figure>
       <div class="scale-explorer" id="scale-explorer" hidden><div class="explorer-copy"><span class="small-label">EXPLORE THE IDEA</span><h3>The reference sets the meaning.</h3><p>Select a semantic milestone, then change its assigned scale. The example shows the alignment Yuheng aims to learn.</p></div><div class="explorer-controls"><fieldset class="scale-toggle"><legend>Reference progress scale</legend><label><input type="radio" name="scale" value="uniform" checked><span>Evenly spaced</span></label><label><input type="radio" name="scale" value="custom"><span>Custom milestones</span></label></fieldset>
           <div class="explorer-visuals">
             <div class="explorer-frame" id="explorer-frame" aria-busy="false">
@@ -113,7 +131,7 @@
               <!-- training-source-legend:end -->
             </ul>
           </div>
-          <p class="training-efficiency">Combining precise annotations with a one-shot design built for generalization, Yuheng achieves <a href="#benchmark">strong progress-modeling performance</a> with approximately <strong>16k training trajectories</strong>—far fewer than <a href="https://robometer.github.io/" target="_blank" rel="noopener noreferrer">Robometer (~1M)</a> or <a href="https://arxiv.org/html/2610.32776v1" target="_blank" rel="noopener noreferrer">NimCritic (~250k)</a>.</p>
+          <p class="training-efficiency">Combining precise annotations with a one-shot design built for generalization, Yuheng achieves strong progress-modeling performance with approximately <strong>16k training trajectories</strong>—far fewer than Robometer (~1M) or NimCritic (~250k).</p>
         </div>
       </div>
     </div></section>
