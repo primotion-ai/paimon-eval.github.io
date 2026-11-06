@@ -2376,3 +2376,23 @@ display:none}
 
 .one-shot-demo { min-width: 0; max-width: 100%; }
 .one-shot-plot-border { fill: none; stroke: #d4c5bc; stroke-width: 1; }
+
+/* Training composition: a white card, percentage legend and approximate total. */
+.data-note .training-composition { grid-column: 1 / -1; padding: 26px 32px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+.training-composition h3 { margin: 0 0 20px; font-size: 21px; font-weight: 550; }
+.training-composition-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 32px; align-items: center; max-width: 850px; margin-inline: auto; }
+.training-pie { margin: 0; text-align: center; }
+.training-pie img { display: block; width: min(100%, 300px); height: auto; margin-inline: auto; }
+.training-pie figcaption { display: flex; align-items: baseline; justify-content: center; gap: 10px; margin-top: 12px; color: var(--muted); font-size: 15px; }
+.data-note .training-pie strong { color: var(--ink); font-size: 32px; font-weight: 650; }
+.training-source-legend { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; }
+.training-source-legend li { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; align-items: center; gap: 12px; font-size: 16px; line-height: 1.5; }
+.training-source-legend i { width: 12px; height: 12px; border-radius: 3px; background: var(--source-color); }
+.data-note .training-source-legend strong { font-weight: 600; font-variant-numeric: tabular-nums; }
+@media (max-width: 650px) {
+  .data-note .training-composition { padding: 22px 18px; }
+  .training-composition-layout { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+  .training-pie img { max-width: 260px; }
+  .training-source-legend { gap: 12px; }
+  .training-source-legend li { gap: 9px; font-size: 15px; }
+}

@@ -8,11 +8,11 @@
   <title>Yuheng: Toward Universal Progress Modeling through In-Context Learning and Semantic Alignment</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/yuheng-favicon-32.png?v=20261031-orange">
   <link rel="icon" type="image/svg+xml" href="assets/yuheng-icon.svg?v=20261031-orange">
-  <link rel="stylesheet" href="styles.css?v=20261105-radial">
+  <link rel="stylesheet" href="styles.css?v=20261106-training">
   <script src="script.js?v=20261104-benchmark-fold" defer></script>
   <script src="dataset-explorer.js?v=20261102-reference" defer></script>
   <script src="benchmark-comparison.js?v=20261102-ground-truth" defer></script>
-  <script src="scale-animation.js?v=20261104-final-comparison" defer></script>
+  <script src="scale-animation.js?v=20261106-once" defer></script>
   <script src="semantic-alignment.js?v=20261105-controls" defer></script>
   <script src="one-shot-animation.js?v=20261105-radial" defer></script>
   <script src="cross-embodiment.js?v=20261105-keyframe-pacing" defer></script>
@@ -84,7 +84,28 @@
             <svg id="explorer-progress-chart" role="img" aria-labelledby="explorer-chart-title explorer-chart-description"><title id="explorer-chart-title">Progress on the reference scale</title><desc id="explorer-chart-description">Four evenly spaced time points show the assigned reference progress. The highlighted point matches the displayed image.</desc></svg>
           </div>
           <div class="milestone-control"><label for="milestone">Query frame’s semantic stage</label><output id="milestone-name" for="milestone">Grasp</output></div><input id="milestone" type="range" min="0" max="3" step="1" value="1" aria-describedby="explorer-note"><div class="range-labels"><span>Start</span><span>Grasp</span><span>Move</span><span>Finish(Place)</span></div><div class="aligned-output"><span>Matching reference progress <small id="explorer-note">Same semantic stage → same target value</small></span><output id="aligned-progress" for="milestone">33%</output></div></div></div>
-      <div class="data-note"><span class="small-label">A STRONGER DATA FOUNDATION</span><p>Yuheng is trained on processed and filtered <strong>Robometer</strong> data, with more precise annotations produced using <strong>GPT 6 astra</strong> and <strong>6.1 sol</strong>. The same annotation approach also underpins our progress benchmark.</p></div>
+      <div class="data-note" id="training-data">
+        <span class="small-label">A STRONGER DATA FOUNDATION</span>
+        <p>Yuheng is trained on data selected and filtered from <strong>Robometer</strong>, with progress labels annotated using <strong>GPT 6 Astra</strong> and <strong>GPT 6 Sol</strong>.</p>
+        <div class="training-composition" aria-labelledby="training-composition-title">
+          <h3 id="training-composition-title">Training data composition</h3>
+          <div class="training-composition-layout">
+            <figure class="training-pie"><img src="assets/training-data/composition.svg" width="360" height="360" loading="lazy" alt="Training data shares. Galaxea Open World Dataset and RH20T are the largest sources; the adjacent legend lists all eight percentages."><figcaption><strong>~16k</strong><span>training trajectories</span></figcaption></figure>
+            <ul class="training-source-legend" aria-label="Share of training trajectories by dataset">
+              <!-- training-source-legend:start -->
+                <li><i style="--source-color: #be6554" aria-hidden="true"></i><span>Galaxea Open World Dataset</span><strong>46.4%</strong></li>
+                <li><i style="--source-color: #719991" aria-hidden="true"></i><span>RH20T</span><strong>29.9%</strong></li>
+                <li><i style="--source-color: #dea86b" aria-hidden="true"></i><span>LIBERO</span><strong>13.8%</strong></li>
+                <li><i style="--source-color: #7f92b0" aria-hidden="true"></i><span>RoboArena</span><strong>4.6%</strong></li>
+                <li><i style="--source-color: #b690ad" aria-hidden="true"></i><span>AutoEval</span><strong>2.5%</strong></li>
+                <li><i style="--source-color: #a3ad79" aria-hidden="true"></i><span>Fino Net</span><strong>1.4%</strong></li>
+                <li><i style="--source-color: #d39b91" aria-hidden="true"></i><span>MetaWorld</span><strong>0.9%</strong></li>
+                <li><i style="--source-color: #858178" aria-hidden="true"></i><span>AgiBotWorld</span><strong>0.6%</strong></li>
+              <!-- training-source-legend:end -->
+            </ul>
+          </div>
+        </div>
+      </div>
     </div></section>
 
     <section class="section capability-section content-width" id="capabilities" aria-labelledby="capabilities-title">

@@ -25,7 +25,7 @@
   const percent = value => `${Math.round(value * 100)}%`;
 
   function stateAt(time) {
-    let remaining = time % cycle;
+    let remaining = Math.min(time, cycle - 1);
     for (const stage of stages) {
       if (remaining < stage.duration) {
         const frame = stage.phase === 'play' ? Math.min(31, Math.floor(remaining / 250)) : stage.phase === 'hold' ? 31 : 0;
@@ -133,18 +133,19 @@
     get('chart-description').textContent = `Reference labels ${data.curves[condition].reference_progress.map(percent).join(', ')}. Frame ${frame + 1} of 32${showingProgress ? `, predicted progress ${percent(value)}` : ''}. Markers show model predictions at the three reference keyframes; red circles use the first scale and blue diamonds use the second. The curve is revealed together with the trajectory frames.`;
   }
 
-  function canPlay() { return ready && inView && !paused && !document.hidden; }
+  function canPlay() { return ready && inView && !paused && elapsed < cycle && !document.hidden; }
   function tick(now) {
     animationId = null;
     if (!canPlay()) { lastTime = null; return; }
-    if (lastTime !== null) elapsed = (elapsed + now - lastTime) % cycle;
+    if (lastTime !== null) elapsed = Math.min(cycle, elapsed + now - lastTime);
     lastTime = now;
     render();
+    if (elapsed >= cycle) { paused = true; syncPlayback(); return; }
     animationId = requestAnimationFrame(tick);
   }
   function syncPlayback() {
-    get('toggle').textContent = paused ? 'Play' : 'Pause';
-    get('toggle').setAttribute('aria-label', paused ? 'Play scale animation' : 'Pause scale animation');
+    get('toggle').textContent = elapsed >= cycle ? 'Replay' : paused ? 'Play' : 'Pause';
+    get('toggle').setAttribute('aria-label', elapsed >= cycle ? 'Replay scale animation' : paused ? 'Play scale animation' : 'Pause scale animation');
     if (!canPlay()) {
       if (animationId !== null) cancelAnimationFrame(animationId);
       animationId = null; lastTime = null;
@@ -153,7 +154,11 @@
       animationId = requestAnimationFrame(tick);
     }
   }
-  get('toggle').addEventListener('click', () => { paused = !paused; syncPlayback(); });
+  get('toggle').addEventListener('click', () => {
+    if (elapsed >= cycle) { elapsed = 0; lastTime = null; paused = false; render(true); }
+    else paused = !paused;
+    syncPlayback();
+  });
   get('restart').addEventListener('click', () => { elapsed = 0; lastTime = null; paused = false; render(true); syncPlayback(); });
   document.addEventListener('visibilitychange', syncPlayback);
   reducedMotion.addEventListener('change', event => {

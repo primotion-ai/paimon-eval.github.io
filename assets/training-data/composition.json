@@ -1,0 +1,45 @@
+{
+  "approximate_total": "~16k trajectories",
+  "sources": [
+    {
+      "name": "Galaxea Open World Dataset",
+      "percentage": 46.4,
+      "color": "#be6554"
+    },
+    {
+      "name": "RH20T",
+      "percentage": 29.9,
+      "color": "#719991"
+    },
+    {
+      "name": "LIBERO",
+      "percentage": 13.8,
+      "color": "#dea86b"
+    },
+    {
+      "name": "RoboArena",
+      "percentage": 4.6,
+      "color": "#7f92b0"
+    },
+    {
+      "name": "AutoEval",
+      "percentage": 2.5,
+      "color": "#b690ad"
+    },
+    {
+      "name": "Fino Net",
+      "percentage": 1.4,
+      "color": "#a3ad79"
+    },
+    {
+      "name": "MetaWorld",
+      "percentage": 0.9,
+      "color": "#d39b91"
+    },
+    {
+      "name": "AgiBotWorld",
+      "percentage": 0.6,
+      "color": "#858178"
+    }
+  ]
+}

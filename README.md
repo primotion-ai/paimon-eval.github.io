@@ -82,7 +82,7 @@ UV_CACHE_DIR=/tmp/yuheng-uv-cache uv run --no-project --with matplotlib==3.11.2 
 
 ## User-defined progress scales 结果
 
-`#user-defined-scales` 展示同一条 Close the drawer 轨迹的参考帧 0、17、31，以及 Yuheng 27B 在 `[0, 20, 100]%` / `[0, 60, 100]%` 两种参考标尺下的 32 帧原始预测。曲线标记位于参考帧的实际预测值，不强制贴合标注值。
+`#user-defined-scales` 展示同一条 Close the drawer 轨迹的参考帧 0、17、31，以及 Yuheng 27B 在 `[0, 20, 100]%` / `[0, 60, 100]%` 两种参考标尺下的 32 帧原始预测。曲线标记位于参考帧的实际预测值，不强制贴合标注值。动画只自动播放一遍，停在两条曲线和两套标签均完整显示的比较状态；右上角可手动重播。
 
 原始导出 `capabilities/different_progress_scale/` 留在本地。公开图片、精简数值和桌面/窄屏 SVG 放在 `assets/capabilities/different-progress-scale/`。重新生成：
 
@@ -111,3 +111,7 @@ UV_CACHE_DIR=/tmp/yuheng-uv-cache uv run --no-project --with matplotlib==3.11.2 
 `#one-shot-generalization` 使用 `one-shot-animation.js` 将 25 条轨迹（21 个任务）排列为 5×5 网格。按距中心的曼哈顿距离依次播放 1、4、8、8、4 个格子；同一圈同步推进采样帧，每个视频右侧的独立曲线用闭合框围起，只绘制到当前帧；按提供的 Astra outcome，13 条成功为绿色，12 条失败为红色。未播放的格子淡化，已完成的格子保留最终画面。每帧至少停留 170ms，圈间停留 500ms，完整播放一次后停止。右上角支持暂停和重新播放，离开视口或切换标签页暂停计时，减少动态效果偏好下不自动播放。手机保留 5×5 排列并在展示框内横向滚动。
 
 `python3 scripts/prepare-one-shot.py` 从本地 `one_shot_multi_task/` 导出网页所需的 800 张 PNG 与精简 `index.json`，核对校验值和所有 CSV/JSON 模型预测。已有 PNG 在推理之后缩小至 160×120，导出时原样复制，不改动预测；原始 NPZ、标注、reference 文件和路径留在本地。旧的三轨迹源数据和专用网页素材已删除。
+
+## Training data composition
+
+`#training-data` 的白色卡片用饼图展示八个来源的训练轨迹占比，下方只显示约数 `~16k`。计数保存在 `scripts/prepare-training-composition.py`，运行 `UV_CACHE_DIR=/tmp/yuheng-uv-cache uv run --no-project --with matplotlib==3.11.2 python scripts/prepare-training-composition.py` 重新生成 SVG、公开百分比 JSON 和页面图例。说明仅涉及从 Robometer 筛选、使用 GPT 6 Astra 与 GPT 6 Sol 标注训练数据，不涉及 benchmark 标注流程。
