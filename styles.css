@@ -2499,7 +2499,7 @@ display:none}
 .architecture-text-lines i:nth-child(2) { width: 85%; }.architecture-text-lines i:nth-child(3) { width: 60%; }
 @media (max-width: 700px) { .architecture-figure { padding: 18px 12px; } .architecture-vlm-description { display: none; } }
 
-/* Shared three-page navigation and icon-only branding. */
+/* Shared three-page navigation and icon + artistic wordmark branding. */
 .site-header.page-header { width: 100%; margin: 0 auto; flex-shrink: 0; justify-content: space-between; gap: 22px; }
 .page-header .icon-wordmark img { width: 40px; height: 40px; }
 .site-header.page-header nav { display: flex; gap: 28px; margin: 0; }
@@ -2527,3 +2527,13 @@ footer.page-footer > span { margin: 0; }
   .page-header .icon-wordmark img { width: 32px; height: 32px; }
   footer.page-footer > span { display: block; }
 }
+
+.icon-wordmark { gap: 8px; flex-shrink: 0; }
+.icon-wordmark .wordmark-name { font-size: 30px; }
+.page-footer .wordmark-name { font-size: 28px; }
+@media (max-width: 600px) {
+  .site-header.page-header { height: auto; min-height: 72px; flex-wrap: wrap; padding-block: 12px; row-gap: 4px; }
+  .site-header.page-header nav { width: 100%; justify-content: center; }
+  .page-header .wordmark-name { font-size: 28px; }
+}
+.icon-wordmark img { margin-right: 0; }
