@@ -87,10 +87,11 @@
       get('keyframes').replaceChildren();
       cards = data.reference.frame_indices.map((frame, i) => {
         const card = document.createElement('div'); card.className = 'concept-keyframe';
+        const name = document.createElement('small'); name.textContent = `Frame ${String(i + 1).padStart(2, '0')}`;
         const image = document.createElement('img'); image.width = 320; image.height = 256; image.src = images[frame].src;
         image.alt = `Human reference keyframe ${i + 1}`; image.dataset.frame = frame;
         const label = document.createElement('span'); label.textContent = `${Math.round(data.reference.progress[i] * 100)}%`;
-        card.append(image, label); get('keyframes').append(card); return card;
+        card.append(name, image, label); get('keyframes').append(card); return card;
       });
       ready = true; root.dataset.ready = 'true';
       get('play').disabled = get('restart').disabled = false;

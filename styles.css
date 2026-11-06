@@ -2454,3 +2454,6 @@ display:none}
   .concept-query img { width: 160px; }
 }
 .concept-demo:not([data-ready="true"]) .concept-layout { opacity: .15; }
+
+.concept-keyframe small { display: block; margin-bottom: 7px; font-size: 14px; line-height: 1.4; color: var(--muted); }
+.concept-reference .reference-baseline { margin-top: 12px; padding-top: 9px; color: var(--muted); align-items: center; }
