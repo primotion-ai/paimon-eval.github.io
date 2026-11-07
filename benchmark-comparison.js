@@ -1,4 +1,4 @@
-// Method comparisons share the annotation PNGs, with curves split at the displayed frame.
+// Six independent model charts share one decoded frame and playback clock.
 (() => {
   const root = document.querySelector('#method-comparison');
   if (!root) return;
@@ -8,25 +8,37 @@
   const trajectorySelect = get('trajectory');
   const timeline = get('timeline');
   const image = get('image');
-  const chart = get('chart');
-  const assets = new URL('assets/annotation-examples/', document.baseURI);
+  const charts = get('charts');
+  const assets = new URL('assets/benchmark-comparison/', document.baseURI);
   const outcomes = { success: 'Success', suboptimal: 'Suboptimal', failure: 'Failure' };
   const percent = value => `${new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(value * 100)}%`;
   let data, task, trajectory, currentFrame = 0, requestedFrame = 0;
   let playing = false, timer, selection = 0, frameRequest = 0, initialized = false;
-  let cursor, dot, plot, pastClip, futureClip;
-  const legendValues = new Map();
+  let wantsPlayback = false, inView = false;
+  const chartStates = [];
   const imageCache = new Map();
 
-  function pause() {
-    if (playing) {
-      frameRequest += 1;
-      get('image-stage').setAttribute('aria-busy', 'false');
-    }
+  function suspend() {
     playing = false;
     clearTimeout(timer);
+    frameRequest += 1;
+    get('image-stage').setAttribute('aria-busy', 'false');
     get('play-label').textContent = currentFrame === trajectory?.frames.length - 1 ? 'Replay' : 'Play';
     get('play-symbol').setAttribute('d', 'm8 5 11 7-11 7Z');
+  }
+
+  function pause() {
+    wantsPlayback = false;
+    suspend();
+  }
+
+  function startPlayback() {
+    if (!wantsPlayback || playing || !inView || document.hidden || image.hidden) return;
+    if (currentFrame >= trajectory.frames.length - 1) return pause();
+    playing = true;
+    get('play-label').textContent = 'Pause';
+    get('play-symbol').setAttribute('d', 'M7 5h3v14H7ZM14 5h3v14h-3Z');
+    timer = setTimeout(tick, 250 / Number(get('speed').value));
   }
 
   function loadImage(frame) {
@@ -47,17 +59,21 @@
   }
 
   function updateCursor() {
-    if (!plot || !cursor) return;
-    const x = plot.x(currentFrame);
-    cursor.setAttribute('x1', x);
-    cursor.setAttribute('x2', x);
-    dot.setAttribute('cx', x);
-    dot.setAttribute('cy', plot.y(trajectory.frames[currentFrame].progress));
-    pastClip.setAttribute('width', currentFrame === 0 ? 0 : x - plot.left + 3);
-    futureClip.setAttribute('x', x);
-    futureClip.setAttribute('width', currentFrame === trajectory.frames.length - 1 ? 0 : plot.right - x + 3);
-    data.models.forEach(model => { legendValues.get(model.id).textContent = percent(trajectory.curves[model.id][currentFrame]); });
-    get('chart-description').textContent = `Progress ground truth and eight models for trajectory ${Number(trajectorySelect.value) + 1}. Frame ${currentFrame + 1} of ${trajectory.frames.length}. All curves are continuous lines. Frames up to the cursor are fully opaque; future frames are faded. Ground truth is black, ${percent(trajectory.frames[currentFrame].progress)}.`;
+    chartStates.forEach(({model, plot, cursor, dot, pastClip, futureClip, prediction, description}) => {
+      const x = plot.x(currentFrame);
+      const values = trajectory.curves[model.id];
+      cursor.setAttribute('x1', x);
+      cursor.setAttribute('x2', x);
+      dot.setAttribute('cx', x);
+      dot.setAttribute('cy', plot.y(values[currentFrame]));
+      pastClip.setAttribute('width', x - plot.left + 3);
+      futureClip.setAttribute('x', x);
+      futureClip.setAttribute('width', currentFrame === trajectory.frames.length - 1 ? 0 : plot.right - x + 3);
+      // Never include future model predictions in the visible path.
+      prediction.setAttribute('points', values.slice(0, currentFrame + 1).map((value, i) => `${plot.x(i)},${plot.y(value)}`).join(' '));
+      description.textContent = `${model.name}: ${percent(values[currentFrame])}. Progress ground truth: ${percent(trajectory.frames[currentFrame].progress)}. Frame ${currentFrame + 1} of ${trajectory.frames.length}.`;
+    });
+    get('chart-description').textContent = `Six models for ${task.instruction}. Frame ${currentFrame + 1} of ${trajectory.frames.length}. Model predictions end at the current frame; dashed ground truth is clear in the past and faded in the future.`;
   }
 
   async function showFrame(index) {
@@ -111,75 +127,70 @@
     return element;
   }
 
-  function drawChart() {
-    if (!trajectory || browser.hidden) return;
-    const width = chart.clientWidth, height = chart.clientHeight;
-    if (!width || !height) return;
-    chart.setAttribute('viewBox', `0 0 ${width} ${height}`);
-    chart.querySelectorAll(':scope > :not(title):not(desc)').forEach(node => node.remove());
-    const left = 52, right = width - 16, top = 20, bottom = height - 52;
-    plot = { left, right,
-      x: index => left + (right - left) * index / (trajectory.frames.length - 1),
-      y: progress => bottom - (bottom - top) * progress,
+  function drawCharts() {
+    chartStates.length = 0;
+    charts.replaceChildren();
+    const left = 42, right = 308, top = 12, bottom = 132;
+    const plot = { left, right,
+      x: i => left + (right - left) * i / (trajectory.frames.length - 1),
+      y: value => bottom - (bottom - top) * value,
     };
-    [0, .25, .5, .75, 1].forEach(value => {
-      chart.append(svgElement('line', { x1: left, y1: plot.y(value), x2: right, y2: plot.y(value), class: 'dataset-gridline' }));
-      chart.append(svgElement('text', { x: left - 10, y: plot.y(value) + 5, 'text-anchor': 'end', class: 'dataset-axis-label' }, `${value * 100}%`));
-    });
-    const last = trajectory.frames.length - 1;
-    [0, Math.round(last / 4), Math.round(last / 2), Math.round(last * 3 / 4), last].forEach(index => {
-      chart.append(svgElement('text', { x: plot.x(index), y: bottom + 25, 'text-anchor': 'middle', class: 'dataset-axis-label' }, index + 1));
-    });
-    chart.append(svgElement('text', { x: (left + right) / 2, y: height - 4, 'text-anchor': 'middle', class: 'dataset-axis-label' }, 'Frame'));
-    const defs = svgElement('defs', {});
-    for (const part of ['past', 'future']) {
-      const clip = svgElement('clipPath', { id: `comparison-${part}`, clipPathUnits: 'userSpaceOnUse' });
-      const rect = svgElement('rect', { x: left - 3, y: top - 3, width: 0, height: bottom - top + 6 });
-      if (part === 'past') pastClip = rect; else futureClip = rect;
-      clip.append(rect); defs.append(clip);
-    }
-    chart.append(defs);
-    // Draw ground truth last so its black line remains visible at crossings.
-    [...data.models.slice(1), data.models[0]].forEach(model => {
-      const points = trajectory.curves[model.id].map((value, index) => `${plot.x(index)},${plot.y(value)}`).join(' ');
+    data.models.forEach((model, modelIndex) => {
+      const card = document.createElement('figure');
+      card.className = 'comparison-chart-card';
+      card.style.setProperty('--model-color', model.color);
+      card.dataset.model = model.id;
+      const titleId = `comparison-title-${modelIndex}`, descId = `comparison-desc-${modelIndex}`;
+      const chart = svgElement('svg', { viewBox: '0 0 320 172', class: 'comparison-mini-chart', role: 'img', 'aria-labelledby': `${titleId} ${descId}` });
+      const description = svgElement('desc', { id: descId });
+      chart.append(svgElement('title', { id: titleId }, `${model.name} and progress ground truth`), description);
+      [0, .5, 1].forEach(value => {
+        chart.append(svgElement('line', { x1: left, y1: plot.y(value), x2: right, y2: plot.y(value), class: 'dataset-gridline' }));
+        chart.append(svgElement('text', { x: left - 7, y: plot.y(value) + 4, 'text-anchor': 'end', class: 'dataset-axis-label' }, `${value * 100}%`));
+      });
+      const last = trajectory.frames.length - 1;
+      [0, Math.round(last / 2), last].forEach(i => {
+        chart.append(svgElement('text', { x: plot.x(i), y: bottom + 18, 'text-anchor': 'middle', class: 'dataset-axis-label' }, i + 1));
+      });
+      chart.append(svgElement('text', { x: (left + right) / 2, y: 168, 'text-anchor': 'middle', class: 'dataset-axis-label' }, 'Frame'));
+      chart.append(svgElement('rect', { x: left, y: top, width: right - left, height: bottom - top, class: 'comparison-plot-border' }));
+      const defs = svgElement('defs', {}), clips = {};
       for (const part of ['past', 'future']) {
-        chart.append(svgElement('polyline', { points, stroke: model.color,
-          class: `comparison-curve comparison-${part}`, 'data-model': model.id,
-          'clip-path': `url(#comparison-${part})`,
-        }));
+        const id = `comparison-${modelIndex}-${part}`;
+        const clip = svgElement('clipPath', { id, clipPathUnits: 'userSpaceOnUse' });
+        clips[part] = svgElement('rect', { x: left - 3, y: top - 3, width: 0, height: bottom - top + 6 });
+        clip.append(clips[part]); defs.append(clip);
       }
+      chart.append(defs);
+      const truthPoints = trajectory.curves['ground-truth'].map((value, i) => `${plot.x(i)},${plot.y(value)}`).join(' ');
+      for (const part of ['future', 'past']) {
+        chart.append(svgElement('polyline', { points: truthPoints, class: `comparison-curve comparison-truth comparison-${part}`, 'clip-path': `url(#comparison-${modelIndex}-${part})` }));
+      }
+      const prediction = svgElement('polyline', { stroke: model.color, class: 'comparison-curve comparison-model' });
+      const cursor = svgElement('line', { y1: top, y2: bottom, class: 'dataset-chart-cursor' });
+      const dot = svgElement('circle', { r: 3.6, fill: model.color, stroke: '#fff', 'stroke-width': 1.4, class: 'comparison-current-dot' });
+      chart.append(cursor, prediction, dot);
+      const legend = document.createElement('figcaption');
+      legend.className = 'comparison-model-legend';
+      const swatch = document.createElement('i'); swatch.setAttribute('aria-hidden', 'true');
+      const label = document.createElement('span'); label.textContent = model.name;
+      legend.append(swatch, label); card.append(chart, legend); charts.append(card);
+      chartStates.push({ model, plot, cursor, dot, pastClip: clips.past, futureClip: clips.future, prediction, description });
     });
-    cursor = svgElement('line', { y1: top, y2: bottom, class: 'dataset-chart-cursor' });
-    dot = svgElement('circle', { r: 4, fill: '#171717', stroke: '#fff', 'stroke-width': 1.5 });
-    chart.append(cursor, dot);
     updateCursor();
   }
 
-  function makeLegend() {
-    legendValues.clear();
-    get('legend').replaceChildren(...data.models.map(model => {
-      const item = document.createElement('div');
-      item.className = 'comparison-legend-item';
-      const swatch = document.createElement('i');
-      swatch.style.background = model.color;
-      swatch.setAttribute('aria-hidden', 'true');
-      const label = document.createElement('span');
-      label.textContent = model.name;
-      const value = document.createElement('span');
-      value.className = 'comparison-legend-value';
-      legendValues.set(model.id, value);
-      item.append(swatch, label, value);
-      return item;
-    }));
-  }
-
-  function chooseTrajectory() {
+  async function chooseTrajectory() {
     pause();
+    wantsPlayback = true;
     selection += 1;
     currentFrame = 0;
     requestedFrame = 0;
     imageCache.clear();
     trajectory = task.trajectories[Number(trajectorySelect.value)];
+    const version = selection;
+    get('image-stage').style.setProperty('--frame-aspect', `${trajectory.width} / ${trajectory.height}`);
+    image.width = trajectory.width; image.height = trajectory.height;
     timeline.max = trajectory.frames.length - 1;
     timeline.value = 0;
     timeline.style.setProperty('--frame-position', '0%');
@@ -193,8 +204,8 @@
     get('outcome').textContent = `Trajectory ${String(Number(trajectorySelect.value) + 1).padStart(2, '0')} · ${outcomes[trajectory.outcome]}`;
     get('outcome').dataset.outcome = trajectory.outcome;
     get('reference').hidden = !trajectory.is_reference;
-    drawChart();
-    showFrame(0);
+    drawCharts();
+    if (await showFrame(0) && version === selection) startPlayback();
   }
 
   function chooseTask() {
@@ -217,21 +228,20 @@
 
   get('play').addEventListener('click', async () => {
     if (playing) return pause();
-    playing = true;
-    get('play-label').textContent = 'Pause';
-    get('play-symbol').setAttribute('d', 'M7 5h3v14H7ZM14 5h3v14h-3Z');
+    wantsPlayback = true;
+    const version = selection;
     if (currentFrame === trajectory.frames.length - 1 && !await showFrame(0)) return;
-    if (playing) timer = setTimeout(tick, 250 / Number(get('speed').value));
+    if (version === selection) startPlayback();
   });
   timeline.addEventListener('input', () => { pause(); showFrame(Number(timeline.value)); });
   get('previous').addEventListener('click', () => { pause(); showFrame(currentFrame - 1); });
   get('next').addEventListener('click', () => { pause(); showFrame(currentFrame + 1); });
-  get('frame-retry').addEventListener('click', () => { pause(); showFrame(requestedFrame); });
+  get('frame-retry').addEventListener('click', async () => { pause(); wantsPlayback = true; if (await showFrame(requestedFrame)) startPlayback(); });
   taskSelect.addEventListener('change', chooseTask);
   trajectorySelect.addEventListener('change', chooseTrajectory);
-  document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); });
-  if ('ResizeObserver' in window) new ResizeObserver(drawChart).observe(chart);
-  else window.addEventListener('resize', drawChart);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && playing) suspend(); else startPlayback();
+  });
 
   async function initialize() {
     if (initialized) return;
@@ -239,14 +249,14 @@
     get('retry').hidden = true;
     get('loading').textContent = 'Loading method comparisons…';
     try {
-      const response = await fetch(new URL('assets/benchmark-comparison/index.json?v=20261102-ground-truth', document.baseURI));
+      const response = await fetch(new URL('assets/benchmark-comparison/index.json?v=20261107-six-charts', document.baseURI));
       if (!response.ok) throw new Error('Dataset unavailable');
       data = await response.json();
+      if (data.models?.length !== 6) throw new Error('Expected six methods');
       if (!data.tasks?.length || data.tasks.some(item => !item.trajectories?.length || item.trajectories.some(t => !t.frames?.length))) throw new Error('Empty dataset');
       taskSelect.replaceChildren(...data.tasks.map((item, index) => new Option(item.instruction, index)));
       browser.hidden = false;
       get('loading').hidden = true;
-      makeLegend();
       chooseTask();
     } catch {
       initialized = false;
@@ -257,9 +267,13 @@
   }
   get('retry').addEventListener('click', initialize);
   if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => {
-      if (entries.some(entry => entry.isIntersecting)) { observer.disconnect(); initialize(); }
+    const loader = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) { loader.disconnect(); initialize(); }
     }, { rootMargin: '500px' });
-    observer.observe(root);
-  } else initialize();
+    loader.observe(root);
+    new IntersectionObserver(entries => {
+      inView = entries.some(entry => entry.isIntersecting);
+      if (inView) startPlayback(); else if (playing) suspend();
+    }).observe(root);
+  } else { inView = true; initialize(); }
 })();

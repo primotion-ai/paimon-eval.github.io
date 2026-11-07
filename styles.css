@@ -1893,14 +1893,14 @@ display:none}
 .results-table th:first-child[rowspan] { z-index: 2; }
 .results-table tbody th { text-align: left; font-weight: 450; background: #fff; }
 .results-table tbody td { background: #fff; }
-.results-table tbody tr:nth-child(even) th, .results-table tbody tr:nth-child(even) td { background: #fcfaf8; }
+.results-table tbody:nth-of-type(even) th, .results-table tbody:nth-of-type(even) td { background: #fcfaf8; }
 .results-table tbody tr.ours-27b th, .results-table tbody tr.ours-27b td { background: #f7dfd2; }
 .results-table tbody tr.ours-4b th, .results-table tbody tr.ours-4b td { background: #fcebdc; }
 .results-table tbody tr[class^="ours"] th { font-weight: 550; }
 .results-table tbody tr:hover th, .results-table tbody tr:hover td { background: #f5ece6; }
 .results-table tbody tr.ours-27b:hover th, .results-table tbody tr.ours-27b:hover td { background: #f2d3c2; }
 .results-table tbody tr.ours-4b:hover th, .results-table tbody tr.ours-4b:hover td { background: #f8e0cd; }
-.results-table tbody tr:last-child th, .results-table tbody tr:last-child td { border-bottom: 0; }
+.results-table tbody:last-of-type tr:last-child th, .results-table tbody:last-of-type tr:last-child td { border-bottom: 0; }
 .results-table .result-average { border-right: 1px solid var(--line); }
 .results-table .result-number strong { font-size: 18px; font-weight: 750; color: #703f2e; }
 .result-second { font-weight: 700; text-decoration-line: underline; text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
@@ -1929,22 +1929,33 @@ display:none}
 #compare-progress { font-size: 27px; font-weight: 550; color: #171717; font-variant-numeric: tabular-nums; }
 #compare-reference { border-left: 1px solid var(--line); padding-left: 12px; }
 #compare-retry, #compare-frame-retry { margin-top: 12px; }
-#compare-chart { display: block; width: 100%; height: 360px; overflow: visible; margin-block: auto; }
 #method-comparison .dataset-outcome::before { background: #82736d; }
-.comparison-curve { fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; stroke-opacity: 1; }
-.comparison-future { stroke-opacity: .24; }
-.comparison-line-key { display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 16px; color: var(--muted); font-size: 15px; }
-.comparison-line-key span { display: flex; align-items: center; gap: 8px; }
-.comparison-line-key i { width: 24px; border-top: 2px solid #665b56; }
-.comparison-line-key span:last-child i { opacity: .24; }
-.comparison-legend { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 24px; padding-top: 24px; }
-.comparison-legend-item { display: flex; align-items: center; gap: 10px; min-width: 0; font-size: 16px; line-height: 1.5; }
-.comparison-legend-item i { flex: 0 0 22px; height: 3px; border-radius: 2px; }
-.comparison-legend-value { margin-left: auto; color: var(--muted); font-size: 15px; font-variant-numeric: tabular-nums; }
-@media (max-width: 1000px) { .comparison-legend { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 600px) {
-  .comparison-legend { grid-template-columns: 1fr; gap: 12px; }
-  #compare-chart { height: 315px; }
+#method-comparison .dataset-panels { grid-template-columns: minmax(0, .95fr) minmax(0, 1.65fr); align-items: start; gap: 20px; }
+#method-comparison .dataset-frame-panel, #method-comparison .dataset-progress-panel { padding: 18px; }
+#method-comparison .dataset-image-stage { width: 100%; aspect-ratio: var(--frame-aspect, 4 / 3); max-height: 440px; }
+.comparison-truth-legend { display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 15px; margin: 2px 0 16px; color: #171717; }
+.comparison-truth-legend i { width: 28px; border-top: 2px dashed currentColor; }
+.comparison-charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 16px; }
+.comparison-chart-card { margin: 0; min-width: 0; }
+.comparison-mini-chart { display: block; width: 100%; height: auto; aspect-ratio: 320 / 172; overflow: visible; }
+.comparison-mini-chart .dataset-axis-label { font-size: 14px; }
+.comparison-plot-border { fill: none; stroke: #ddcfc9; stroke-width: 1; }
+.comparison-curve { fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.comparison-truth { stroke: #171717; stroke-width: 1.8; stroke-dasharray: 5 4; }
+.comparison-past { stroke-opacity: .9; }
+.comparison-future { stroke-opacity: .2; }
+.comparison-model { stroke-opacity: 1; }
+.comparison-model-legend { display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 15px; line-height: 1.4; margin-top: 4px; min-height: 24px; text-align: center; }
+.comparison-model-legend i { position: relative; flex: 0 0 24px; height: 2px; background: var(--model-color); }
+.comparison-model-legend i::after { content: ''; position: absolute; width: 6px; height: 6px; border-radius: 50%; background: var(--model-color); left: 50%; top: 50%; transform: translate(-50%, -50%); }
+@media (max-width: 900px) {
+  #method-comparison .dataset-panels { grid-template-columns: minmax(0, 1fr); }
+  #method-comparison .dataset-frame-panel { width: 100%; max-width: 560px; margin-inline: auto; }
+  #method-comparison .dataset-image-stage { max-height: 400px; }
+}
+@media (max-width: 480px) {
+  #method-comparison .dataset-progress-panel { padding: 14px 10px; }
+  .comparison-charts { gap: 20px; grid-template-columns: minmax(0, 1fr); }
 }
 
 .comparison-heading { margin-bottom: 24px; }
@@ -2288,6 +2299,12 @@ display:none}
   .transfer-keyframe, .transfer-connection, .transfer-model, .transfer-result-row { transition: none; }
 }
 
+.result-method-label { display: flex; align-items: center; gap: 7px; }
+.result-method-toggle { flex: 0 0 26px; height: 26px; margin-left: auto; border: 1px solid #d8bfb3; border-radius: 5px; background: #fffaf6; color: var(--accent-dark); font-family: inherit; font-size: 18px; line-height: 1; cursor: pointer; }
+.result-method-toggle:hover { background: #f3e4da; }
+.result-method-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.results-table .result-method-name { vertical-align: middle; }
+.results-table tbody .result-config { position: static; min-width: 70px; max-width: 170px; box-shadow: none; font-size: 15px; }
 /* Overall stays first in each benchmark group; details expand to its right. */
 .results-table [hidden] { display: none !important; }
 .results-table .result-number { min-width: 92px; }

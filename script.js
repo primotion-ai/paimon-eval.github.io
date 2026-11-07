@@ -105,6 +105,22 @@ if (explorer && milestone) {
 (() => {
   const table = document.querySelector('.results-table');
   if (!table) return;
+  table.querySelectorAll('.result-method-toggle').forEach(button => {
+    const familyCell = button.closest('th');
+    const rows = [...button.closest('tbody').rows];
+    const configCells = rows.map(row => row.querySelector('.result-config'));
+    function showConfigurations(expanded) {
+      familyCell.colSpan = expanded ? 1 : 2;
+      familyCell.rowSpan = expanded ? rows.length : 1;
+      configCells.forEach(cell => { cell.hidden = !expanded; });
+      rows.slice(1).forEach(row => { row.hidden = !expanded; });
+      button.setAttribute('aria-expanded', String(expanded));
+      button.setAttribute('aria-label', `${expanded ? 'Collapse' : 'Expand'} ${button.dataset.methodName} configurations`);
+      button.textContent = expanded ? '−' : '+';
+    }
+    button.addEventListener('click', () => showConfigurations(button.getAttribute('aria-expanded') !== 'true'));
+    showConfigurations(false);
+  });
   const names = { within: 'within-trajectory', cross: 'cross-trajectory', mae: 'MAE' };
   table.querySelectorAll('[data-result-toggle]').forEach(button => {
     const group = button.dataset.resultToggle;

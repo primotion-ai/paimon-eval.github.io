@@ -1,7 +1,7 @@
       <section class="annotation-examples" id="method-comparison" aria-labelledby="comparison-title">
         <div class="comparison-heading">
           <h4 id="comparison-title">Progress curves across methods</h4>
-          <p>Compare progress ground truth with predictions from eight models on the same trajectory. Play or drag the timeline to compare their predictions.</p>
+          <p>Compare six models against progress ground truth on the same trajectory. Choose a task and trajectory, or drag the timeline to inspect a frame.</p>
         </div>
         <div id="compare-loading" class="dataset-loading" role="status">Loading method comparisons…</div>
         <button id="compare-retry" class="dataset-button" type="button" hidden>Retry loading comparison</button>
@@ -35,10 +35,10 @@
             <div class="dataset-progress-panel">
               <div class="dataset-panel-heading"><h4>Progress</h4><output id="compare-progress" for="compare-timeline" aria-label="Progress ground truth">0%</output></div>
               <div class="dataset-trajectory-meta"><span id="compare-outcome" class="dataset-outcome"></span><span id="compare-reference" hidden>reference</span></div>
-              <svg id="compare-chart" role="img" aria-labelledby="compare-chart-title compare-chart-description"><title id="compare-chart-title">Progress predictions and ground truth</title><desc id="compare-chart-description">All curves are continuous lines. Frames up to the playback position are fully opaque; future frames are faded.</desc></svg>
-              <div class="comparison-line-key"><span><i aria-hidden="true"></i>Up to current frame</span><span><i aria-hidden="true"></i>Future frames</span></div>
+              <div class="comparison-truth-legend"><i aria-hidden="true"></i><span>Progress ground truth</span></div>
+              <div id="compare-charts" class="comparison-charts" aria-label="Six model progress charts"></div>
+              <p id="compare-chart-description" class="visually-hidden">Each chart compares one model with progress ground truth. Predictions appear up to the current frame; future ground truth is faded.</p>
             </div>
           </div>
-          <div id="compare-legend" class="comparison-legend" aria-label="Methods and current progress values"></div>
         </div>
       </section>

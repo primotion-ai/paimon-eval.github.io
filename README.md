@@ -60,7 +60,7 @@ npm run check
 
 `benchmark_results/ood_20261031/` 为本地原始结果目录，不随网站提交。公开资源在 `assets/benchmark/ood_20261031/`，含一张平均总分 Matplotlib SVG、精简 JSON 和完整精度 CSV。
 
-平均分为同轨迹 Overall、跨轨迹 Overall、末帧一致率的等权平均，MAE 不计入平均分。柱状图仅展示平均总分，按分数降序排列；表格按未舍入的平均分降序，缺失平均分的模型置于末尾、保持未排名。Within-trajectory、Cross-trajectory 和 MAE 默认只显示最左侧的 Overall，点击表头 Overall 可独立向右展开或收起分项。页面数字保留一位小数，每列按原始精度放大并加粗最佳值、为第二名加粗并加下划线（MAE 取最小）。非成功包含次优与失败。
+平均分为同轨迹 Overall、跨轨迹 Overall、末帧一致率的等权平均，MAE 不计入平均分。柱状图和表格都按同一方法中最高的未舍入 Average 降序排列。表格默认展示该配置的整行分数，点击方法旁的加号展开同组所有配置。RynnValue 的 Average 不适用，保留在表格末尾，其折叠行按两个 Overall pair 分数的平均值选择。Within-trajectory、Cross-trajectory 和 MAE 默认只显示最左侧的 Overall，点击表头 Overall 可独立向右展开或收起分项。页面数字保留一位小数，每列按原始精度放大并加粗最佳值、为第二名加粗并加下划线（MAE 取最小）。非成功包含次优与失败。
 
 重新生成图表、结果表和公开导出：
 
@@ -72,9 +72,9 @@ UV_CACHE_DIR=/tmp/yuheng-uv-cache uv run --no-project --with matplotlib==3.11.2 
 
 ## 方法曲线对比
 
-指标说明下的 `#method-comparison` 展示 Close the drawer 的六条轨迹，PNG 直接复用 `assets/annotation-examples/`。AstraLabel 真值为黑色，八个模型按 benchmark Average 分数降序排列；所有曲线均为连续实线；左侧（截至当前帧）正常显示，右侧未来帧不透明度为 24%，按时间淡化。任务、轨迹、播放和时间轴独立于原标注示例。
+指标说明下的 `#method-comparison` 展示 12 个任务、106 条轨迹，每条 32 帧。右侧桌面布局为三行两列，六个方法按 benchmark Average 分数降序排列，每张图下方有自己的方法图例，共享的 Progress ground truth 图例居中位于六图上方。每张图的 Astra 真值为黑色虚线，已播放部分不透明度 90%，未来部分 20%；模型曲线只绘制截至当前帧的值，并标出当前位置。首次进入展示、切换任务或轨迹后自动播放一次，暂停、重播、调速和时间轴拖动仍可使用；离开视口或隐藏页面时暂停，返回后继续用户尚未暂停的播放。只有图片成功解码后才同步更新六张曲线，避免图像与数值错位。
 
-本地源文件 `benchmark_compare_example/close_drawer.json` / `close_drawer_frames.csv` 不提交。运行 `python3 scripts/prepare-comparison.py` 会核对 CSV、帧索引、真值与 PNG 路径，并导出不含原始推理附加字段的 `assets/benchmark-comparison/index.json`。模型值原样保留，不另做平滑或归一化。之后按上面的命令运行 `scripts/prepare-benchmark.py`，从 `scripts/comparison-section.html` 同步页面。
+本地原始目录 `benchmark_compare_example/` 不提交。运行 `python3 scripts/prepare-comparison.py` 会核对 manifest、CSV、Astra target、模型原始预测和 PNG SHA256，再导出独立的 `assets/benchmark-comparison/index.json` 与 `tasks/` 下的 3,392 张 PNG（约 198 MB，原尺寸原字节）。不再依赖标注示例的图片；不导出原始注释、提示词、推理元数据或 NPZ。模型值原样保留，不另做平滑、插值或归一化。`scripts/comparison-section.html` 是对应 HTML 模板，与首页同步维护。
 
 ## Reference scale 图片示例
 
