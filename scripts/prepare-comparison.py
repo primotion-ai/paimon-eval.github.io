@@ -7,17 +7,19 @@ import shutil
 import struct
 from pathlib import Path
 
+from benchmark_palette import METHOD_COLORS
+
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'benchmark_compare_example'
 DEST = ROOT / 'assets/benchmark-comparison'
 manifest = json.loads((SOURCE / 'manifest.json').read_text())
 selected = [
-    ('icl_27b_lora_astralabel_step1500', 'yuheng-27b', 'Yuheng 27B', '#ce553b'),
-    ('flora_rewarder', 'flora', 'Flora Rewarder', '#318572'),
-    ('robometer_4b_uniform8_interp32', 'robometer', 'Robometer 4B', '#3978b7'),
-    ('roboreward_4b', 'roboreward', 'RoboReward 4B', '#ba8b23'),
-    ('grm_2_0_preview_8b', 'grm-preview', 'GRM 2.0 Preview 8B', '#8262b0'),
-    ('nimcritic', 'nimcritic', 'NimCritic', '#439fae'),
+    ('icl_27b_lora_astralabel_step1500', 'yuheng-27b', 'Yuheng 27B', METHOD_COLORS['Yuheng']),
+    ('flora_rewarder', 'flora', 'Flora Rewarder', METHOD_COLORS['Flora Rewarder']),
+    ('robometer_4b_uniform8_interp32', 'robometer', 'Robometer 4B', METHOD_COLORS['Robometer']),
+    ('roboreward_4b', 'roboreward', 'RoboReward 4B', METHOD_COLORS['RoboReward']),
+    ('grm_2_0_preview_8b', 'grm-preview', 'GRM 2.0 Preview 8B', METHOD_COLORS['GRM 2.0 Preview']),
+    ('nimcritic', 'nimcritic', 'NimCritic', METHOD_COLORS['NimCritic']),
 ]
 assert {m['model_id'] for m in manifest['models']} == {m[0] for m in selected}
 scores = json.loads((ROOT / 'assets/benchmark/ood_20261031/results.json').read_text())['models']

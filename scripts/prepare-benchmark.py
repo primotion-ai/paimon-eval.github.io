@@ -11,6 +11,8 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
+from benchmark_palette import METHOD_COLORS
+
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'benchmark_results' / 'ood_20261031'
 DEST = ROOT / 'assets' / 'benchmark' / 'ood_20261031'
@@ -39,7 +41,6 @@ FIELDS = ['within_overall', 'within_success', 'within_non_success',
           'cross_overall', 'cross_success_success', 'cross_non_success_non_success', 'cross_success_non_success',
           'terminal_agreement', 'mae_overall', 'mae_success', 'mae_non_success']
 AGREEMENTS = ['within_overall', 'cross_overall', 'terminal_agreement']
-COLORS = {'ours-27b': '#ce553b', 'ours-4b': '#ed985e', 'baseline': '#a9b7c3'}
 models = []
 for original in DATA['models']:
     name, method, config, kind = NAMES[original['model_id']]
@@ -87,7 +88,7 @@ for key, title, description in CHARTS:
     fig.patch.set_alpha(0)
     ax.set_facecolor('none')
     bars = ax.bar(range(len(ranked)), [m[key] for m in ranked], width=.61,
-                  color=[COLORS[m['kind']] for m in ranked], zorder=3)
+                  color=[METHOD_COLORS[m['method']] for m in ranked], zorder=3)
     ax.set_ylim(0, 105)
     ax.set_xlim(-.65, len(ranked)-.35)
     ax.set_yticks([0, 25, 50, 75, 100], [f'{v}%' for v in [0, 25, 50, 75, 100]], fontsize=12)
@@ -101,7 +102,7 @@ for key, title, description in CHARTS:
                 weight='bold' if model['kind'].startswith('ours') else 'normal')
     for label, model in zip(ax.get_xticklabels(), ranked):
         if model['kind'].startswith('ours'):
-            label.set_color(COLORS[model['kind']]);label.set_weight('bold')
+            label.set_color(METHOD_COLORS[model['method']]);label.set_weight('bold')
     output = DEST / f'{key}.svg'
     fig.savefig(output, transparent=True, metadata={'Date': None, 'Title': title,
         'Description': 'Highest configuration Average per method, sorted from highest to lowest. Scores in percent, rounded to one decimal place.'})
@@ -112,17 +113,18 @@ for key, title, description in CHARTS:
     chart_version = hashlib.sha256(chart.encode()).hexdigest()[:12]
     missing = ' RynnValue is not included because this metric is not applicable.' if key in ('average','terminal_agreement') else ''
     chart_markup.append(f'''<figure class="result-chart" aria-labelledby="chart-{key}-title">
-      <figcaption><h4 id="chart-{key}-title">{title}</h4>
-      <div class="results-chart-key" aria-label="Chart colors"><span><i class="key-27b" aria-hidden="true"></i>Yuheng</span><span><i class="key-baseline" aria-hidden="true"></i>Other methods</span></div></figcaption>
+      <figcaption><h4 id="chart-{key}-title">{title}</h4></figcaption>
       <div class="result-chart-scroll" tabindex="0" role="region" aria-label="{title} chart; scroll horizontally"><img src="assets/benchmark/ood_20261031/{key}.svg?v={chart_version}" width="{chart_width}" height="304" style="min-width: {chart_width}px" loading="lazy" alt="{title}: best configuration per method, sorted from highest to lowest, with scores to one decimal place. Full numerical results are in the table below.{missing}"></div>
     </figure>''')
 
 columns = ['average'] + FIELDS
-# Rank distinct full-precision values; missing metrics are never ranked.
-ranked_values = {key: sorted({m[key] for m in models if m[key] is not None},
-                            reverse=not key.startswith('mae_')) for key in columns}
-best = {key: values[0] for key, values in ranked_values.items()}
-second = {key: values[1] if len(values) > 1 else None for key, values in ranked_values.items()}
+# Choose each column's best configuration before rounding for display.
+best = {}
+for key in columns:
+    values = [model[key] for model in models if model[key] is not None]
+    best[key] = (min(values) if key.startswith('mae_') else max(values)) if values else None
+
+
 def score_cells(model):
     cells = []
     for key in columns:
@@ -133,8 +135,6 @@ def score_cells(model):
             formatted = f'{value:.1f}'
             if value == best[key]:
                 content = f'<strong title="Best in this column">{formatted}</strong>'
-            elif value == second[key]:
-                content = f'<span class="result-second" title="Second-best in this column">{formatted}</span>'
             else:
                 content = formatted
         extra = ' result-average' if key == 'average' else ''

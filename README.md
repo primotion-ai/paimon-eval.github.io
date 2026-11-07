@@ -60,7 +60,7 @@ npm run check
 
 `benchmark_results/ood_20261031/` 为本地原始结果目录，不随网站提交。公开资源在 `assets/benchmark/ood_20261031/`，含一张平均总分 Matplotlib SVG、精简 JSON 和完整精度 CSV。
 
-平均分为同轨迹 Overall、跨轨迹 Overall、末帧一致率的等权平均，MAE 不计入平均分。柱状图和表格都按同一方法中最高的未舍入 Average 降序排列。表格默认展示该配置的整行分数，点击方法旁的加号展开同组所有配置。RynnValue 的 Average 不适用，保留在表格末尾，其折叠行按两个 Overall pair 分数的平均值选择。Within-trajectory、Cross-trajectory 和 MAE 默认只显示最左侧的 Overall，点击表头 Overall 可独立向右展开或收起分项。页面数字保留一位小数，每列按原始精度放大并加粗最佳值、为第二名加粗并加下划线（MAE 取最小）。非成功包含次优与失败。
+平均分为同轨迹 Overall、跨轨迹 Overall、末帧一致率的等权平均，MAE 不计入平均分。柱状图和表格都按同一方法中最高的未舍入 Average 降序排列。表格默认展示该配置的整行分数，点击方法旁的加号展开同组所有配置。RynnValue 的 Average 不适用，保留在表格末尾，其折叠行按两个 Overall pair 分数的平均值选择。Within-trajectory、Cross-trajectory 和 MAE 默认只显示最左侧的 Overall，点击表头 Overall 可独立向右展开或收起分项。页面数字保留一位小数，每列只放大并加粗按原始精度确定的最佳值（MAE 取最小）。非成功包含次优与失败。
 
 重新生成图表、结果表和公开导出：
 
